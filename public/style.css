@@ -2229,3 +2229,9 @@ blockquote::before {
 #logger {
     padding-top: 10%;
 }
+
+#alert {
+    padding-top: 10%;
+    padding-left: 10%;
+    position: absolute;
+}

@@ -15,8 +15,10 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab 
-            {{var_dump($_POST)}}
+    <title>LogUcab {{Cookie::get('_token')}}
+        @if (array_key_exists('email', $_POST))
+            {{$_POST['email']}}
+        @endif
     </title>
 
     <!--====== FAVICON ICON =======-->
@@ -139,34 +141,45 @@
             </div>
             <!--END MAINMENU AREA END-->
         </div>
-        <div class="container" id="logger">
-            <form class="form-horizontal" method="POST" action="{{url('/login')}}">
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="email">Email:</label>
-                    <div class="col-sm-10">
-                        <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="email" placeholder="Enter email" name = 'email'>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="pwd">Password:</label>
-                    <div class="col-sm-10"> 
-                        <input type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="pwd" placeholder="Enter password" name = 'password'>
-                    </div>
-                </div>
-                <div class="form-group"> 
-                        <div class="col-sm-offset-2 col-sm-10">
-                        <div class="checkbox">
-                            <label><input type="checkbox"> Remember me</label>
+        <!--START LOGIN-->
+        @if (empty($users))
+            <div class="container" id="logger">
+                @crsf
+                <form class="form-horizontal" method="POST" action="{{url('/login')}}">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Email:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="email" placeholder="Enter email" name = 'email'>
                         </div>
                     </div>
-                </div>
-                <div class="form-group"> 
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">Login</button>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pwd">Password:</label>
+                        <div class="col-sm-10"> 
+                            <input type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="pwd" placeholder="Enter password" name = 'password'>
+                        </div>
                     </div>
+                    <div class="form-group"> 
+                            <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label><input type="checkbox"> Remember me</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group"> 
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">Login</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        @else
+            <div class="container" id="alert">
+                <div class="alert alert-success" role="alert">
+                    Bienvenido {{$users[0]->usu_nombre}}!!
                 </div>
-            </form>
-        </div>
+            </div>
+        @endif
+        <!--END LOGIN-->
     </header>
     <!--END TOP AREA-->
 
