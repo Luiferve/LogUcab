@@ -1,24 +1,18 @@
 /*--------------------------------------------------------------------------------------
-Theme Name: Carries
-Theme URI: http://devitfamily.com
-Author URI: http://devitfamily.com
-Description: 100% Responsive, Highly Customizable, SEO Friendly transportation and Agency Based Template using Twitter Bootstrap Latest, Search Engine Friendly.
-Author: OCREATES
-Version: 1.0
 ----------------------------------------------------------------------------------------
-   1. BASE CSS
-    2. TOP AREA
-        2.1. SEARCH AND LANGUAGE
+    1.  BASE CSS
+    2.  TOP AREA
+        2.1 SEARCH AND LANGUAGE
         2.2 MAINMENU AREA
         2.3 WELCOME TEXT AREA
         2.4 WELCOME SLIDER AREA
-    3. BLOG AREA
-    4. ABOUT AREA
-    5. SERVICE AREA
-    6. SERVIE BOTTOM AREA
-    7. PROMO AREA
-    8. PROMO BOTTOM AREA
-    9. TESTMONIAL AREA
+    3.  BLOG AREA
+    4.  ABOUT AREA
+    5.  SERVICE AREA
+    6.  SERVIE BOTTOM AREA
+    7.  PROMO AREA
+    8.  PROMO BOTTOM AREA
+    9.  TESTMONIAL AREA
     10. FOOTER AREA
     11. FAQS AREA
     12. ABOUT DETAILS CONTENT AREA
@@ -2210,7 +2204,7 @@ blockquote::before {
     margin-bottom: 40px;
 }
 
-.error-content h3 {}
+/*.error-content h3 {}*/
 
 .error-content h2,
 .error-content h3 {
@@ -2222,16 +2216,176 @@ blockquote::before {
     width: auto;
 }
 
-/*------------------------------
-    24. CUSTOM
--------------------------------*/
+/* ----------------------------
+    24. LOGIN AREA
+-------------------------------- */
+.body-login-area{
+	margin:0;
+	color:#6a6f8c;
+	background:#c8c8c8;
+	font:600 16px/18px 'Open Sans',sans-serif;
+}
+*,:after,:before{box-sizing:border-box}
+.clearfix:after,.clearfix:before{content:'';display:table}
+.clearfix:after{clear:both;display:block}
+a{color:inherit;text-decoration:none}
 
-#logger {
-    padding-top: 10%;
+.login-wrap{
+	width:100%;
+	margin:auto;
+	max-width:525px;
+	min-height:670px;
+	position:relative;
+	background:url(http://www.fastrackworldwide.com/img/slider/slide_6.jpg) no-repeat center;
+  background-size:auto 100%;
+	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+}
+.login-html{
+	width:100%;
+	height:100%;
+	position:absolute;
+	padding:90px 70px 50px 70px;
+	background:rgba(40,57,101,.9);
+}
+.login-html .sign-in-htm,
+.login-html .sign-up-htm{
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	position:absolute;
+	-webkit-transform:rotateY(180deg);
+	        transform:rotateY(180deg);
+	-webkit-backface-visibility:hidden;
+	        backface-visibility:hidden;
+	transition:all .4s linear;
+}
+.login-html .sign-in,
+.login-html .sign-up,
+.login-form .group .check{
+	display:none;
+}
+.login-html .tab,
+.login-form .group .label,
+.login-form .group .button{
+	text-transform:uppercase;
+}
+.login-html .tab{
+	font-size:22px;
+	margin-right:15px;
+	padding-bottom:5px;
+	margin:0 15px 10px 0;
+	display:inline-block;
+	border-bottom:2px solid transparent;
+}
+.login-html .sign-in:checked + .tab,
+.login-html .sign-up:checked + .tab{
+	color:#f39c12;
+	border-color:#fc9802;
+}
+.login-form{
+	min-height:345px;
+	position:relative;
+	-webkit-perspective:1000px;
+	        perspective:1000px;
+	-webkit-transform-style:preserve-3d;
+	        transform-style:preserve-3d;
+}
+.login-form .group{
+	margin-bottom:15px;
+}
+.login-form .group .label,
+.login-form .group .input,
+.login-form .group .button{
+	width:100%;
+	color:#fff;
+	display:block;
+}
+.login-form .group .input,
+.login-form .group .button{
+	border:none;
+	padding:15px 20px;
+	border-radius:25px;
+	background:rgba(255,255,255,.1);
+}
+.login-form .group input[data-type="password"]{
+	-webkit-text-security:circle;
+}
+.login-form .group .label{
+	color:#aaa;
+	font-size:12px;
+}
+.login-form .group .button{
+	background:#f39c12;
+}
+.login-form .group .button:hover{
+  background:#fc8f00;
+}
+.login-form .group label .icon{
+	width:15px;
+	height:15px;
+	border-radius:2px;
+	position:relative;
+	display:inline-block;
+	background:rgba(255,255,255,.1);
+}
+.login-form .group label .icon:before,
+.login-form .group label .icon:after{
+	content:'';
+	width:10px;
+	height:2px;
+	background:#fff;
+	position:absolute;
+	transition:all .2s ease-in-out 0s;
+}
+.login-form .group label .icon:before{
+	left:3px;
+	width:5px;
+	bottom:6px;
+	-webkit-transform:scale(0) rotate(0);
+	        transform:scale(0) rotate(0);
+}
+.login-form .group label .icon:after{
+	top:6px;
+	right:0;
+	-webkit-transform:scale(0) rotate(0);
+	        transform:scale(0) rotate(0);
+}
+.login-form .group .check:checked + label{
+	color:#fff;
+}
+.login-form .group .check:hover + label{
+  color:#fc9802;
+}
+.login-form .group .check:checked + label .icon{
+	background:#f39c12;
+}
+.login-form .group .check:checked + label .icon:before{
+	-webkit-transform:scale(1) rotate(45deg);
+	        transform:scale(1) rotate(45deg);
+}
+.login-form .group .check:checked + label .icon:after{
+	-webkit-transform:scale(1) rotate(-45deg);
+	        transform:scale(1) rotate(-45deg);
+}
+.login-html .sign-in:checked + .tab + .sign-up + .tab + .login-form .sign-in-htm{
+	-webkit-transform:rotate(0);
+	        transform:rotate(0);
+}
+.login-html .sign-up:checked + .tab + .login-form .sign-up-htm{
+	-webkit-transform:rotate(0);
+	        transform:rotate(0);
 }
 
-#alert {
-    padding-top: 10%;
-    padding-left: 10%;
-    position: absolute;
+.hr{
+	height:2px;
+	margin:60px 0 50px 0;
+	background:rgba(255,255,255,.2);
+}
+.foot-lnk{
+	text-align:center;
+}
+
+.mouse-hover:hover{
+  color:#fc9802;
 }
