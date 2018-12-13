@@ -85,8 +85,10 @@
                                 @if (isset($permissions) && $permissions > 3)
                                     <li><a href="#">Menu</a>
                                         <ul>
-                                            <li><a href="{{url('/users')}}">User Tables</a></li>
-                                            <li><a href="{{url('/employees')}}">Employee Tables</a></li>
+                                            <li><a href="{{url('/users')}}">Users Table</a></li>
+                                            <li><a href="{{url('/employees')}}">Employees Table</a></li>
+                                            <li><a href="{{url('/locations')}}">Locations Table</a></li>
+                                            <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
                                         </ul>
                                     </li>
                                 @endif

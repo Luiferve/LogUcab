@@ -27,7 +27,8 @@ Route::get('/franchises', function () {
 EOD;
     $franchises = DB::select($query);
 
-    return view('franchises_table',['franchises' => $franchises]);
+    $permissions = 4;
+    return view('franchises_table',['franchises' => $franchises], ["permissions" => $permissions]);
 });
 
 Route::get('/locations', function () {
@@ -41,7 +42,8 @@ Route::get('/locations', function () {
 EOD;
     $locations = DB::select($query);
 
-    return view('locations_table',['locations' => $locations]);
+    $permissions = 4;
+    return view('locations_table',['locations' => $locations], ["permissions" => $permissions]);
 });
 
 Route::get('/users', function () {
@@ -51,7 +53,8 @@ Route::get('/users', function () {
 EOD;
     $users = DB::select($query);
 
-    return view('users_table',['users' => $users]);
+    $permissions = 4;
+    return view('users_table',['users' => $users], ["permissions" => $permissions]);
 });
 
 Route::get('/employees', function () {
@@ -62,7 +65,8 @@ Route::get('/employees', function () {
 EOD;
     $employees = DB::select($query);
 
-    return view('employees_table',['employees' => $employees]);
+    $permissions = 4;
+    return view('employees_table',['employees' => $employees], ["permissions" => $permissions]);
 });
 
 Route::get('/login', function () {
