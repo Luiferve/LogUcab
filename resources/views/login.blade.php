@@ -42,11 +42,11 @@
 					<div class="sign-in-htm">
 						<div class="group">
 							<label for="user" class="label">Username</label>
-							<input id="user" type="email" class="input" name="email">
+							<input id="user" type="email" class="input" name="email" required>
 						</div>
 						<div class="group">
 							<label for="pass" class="label">Password</label>
-							<input id="pass" type="password" class="input" data-type="password" name="password">
+							<input id="pass" type="password" class="input" data-type="password" name="password" required>
 						</div>
 						<div class="group">
 							<input id="check" type="checkbox" class="check" checked>
@@ -66,15 +66,15 @@
 					<div class="sign-up-htm">
 						<div class="group">
 							<label for="pass" class="label">Email Address</label>
-							<input id="pass" type="text" class="input" name="email">
+							<input id="pass" type="text" class="input" name="email" required>
 						</div>
 						<div class="group">
 							<label for="pass" class="label">Password</label>
-							<input id="pass" type="password" class="input" data-type="password" name="password">
+							<input id="pass" type="password" class="input" data-type="password" name="password" required>
 						</div>
 						<div class="group">
 							<label for="pass" class="label">Repeat Password</label>
-							<input id="pass" type="password" class="input" data-type="password">
+							<input id="pass" type="password" class="input" data-type="password" name="password2" required>
 						</div>
 						<div class="group">
 							<input type="submit" class="button" value="Sign Up">
@@ -88,13 +88,7 @@
 			</div>
 		</div>
 	</div>
-	@if (!empty($users))
-		<div class="container" id="alert">
-			<div class="alert alert-success" role="alert">
-				{{$message}}
-			</div>
-		</div>
-	@elseif (isset($message))
+	@if (isset($message))
 	<div class="container" id="alert">
 			<div class="alert alert-success" role="alert">
 				{{$message}}
