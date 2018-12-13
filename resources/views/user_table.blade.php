@@ -40,9 +40,9 @@
 
 <body class="home-one">
     <!--- PRELOADER -->
-    <div class="preeloader">
+    <!-- <div class="preeloader">
         <div class="preloader-spinner"></div>
-    </div>
+    </div> -->
 
     <!--SCROLL TO TOP-->
     <a href="#home" class="scrolltotop"><i class="fa fa-long-arrow-up"></i></a>
@@ -122,7 +122,7 @@
         </div>
 
         <!--====== SCRIPTS JS ======-->
-    <script src="js/vendor/jquery-1.12.4.min.js"></script>
+    <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
     <script src="js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
