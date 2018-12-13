@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
-    return view('index');
+    $permissions = 4;
+
+    return view('index', ["permissions" => $permissions]);
 });
 
 Route::get('/users', function () {

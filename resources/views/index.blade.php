@@ -85,51 +85,18 @@
                         </div>
                         <div id="main-nav" class="stellarnav">
                             <ul id="nav" class="nav navbar-nav">
-                                <li><a href="index.html">home</a>
-                                    <ul>
-                                        <li><a href="{{url('/')}}">Home Version 1</a></li>
-                                        <li><a href="index-2.html">Home Version 2</a></li>
-                                        <li><a href="index-3.html">Home Version 3</a></li>
-                                        <li><a href="index-4.html">Home Version 4</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="about.html">about</a>
-                                    <ul>
-                                        <li><a href="about.html">About</a></li>
-                                        <li><a href="about-company-profile.html">About Profile</a></li>
-                                        <li><a href="about-company-history.html">About History</a></li>
-                                        <li><a href="about-company-report.html">About Report</a></li>
-                                        <li><a href="about-team.html">About Team</a></li>
-                                        <li><a href="about-support.html">About Support</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="service.html">Service</a>
-                                    <ul>
-                                        <li><a href="service.html">Service Version 1</a></li>
-                                        <li><a href="service-2.html">Service Version 2</a></li>
-                                        <li><a href="service-3.html">Service Version 3</a></li>
-                                        <li><a href="single-service.html">Service Details</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="">Other Pages</a>
-                                    <ul>
-                                        <li><a href="404.html">404</a></li>
-                                        <li><a href="coming-soon.html">Coming Soon</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="blog.html">Blog</a>
-                                    <ul>
-                                        <li><a href="blog.html">Blog Version 1</a></li>
-                                        <li><a href="blog-2.html">Blog Version 2</a></li>
-                                        <li><a href="single-blog.html">Single Blog</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="contact.html">Contact</a>
-                                    <ul>
-                                        <li><a href="contact.html">Contact Version 1</a></li>
-                                        <li><a href="contact-2.html">Contact Version 2</a></li>
-                                    </ul>
-                                </li>
+                                <li><a href="{{url('/')}}">home</a></li>
+                                <li><a href="about.html">about</a></li>
+                                <li><a href="service.html">Service</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                                @if (isset($permissions) && $permissions > 3)
+                                    <li><a href="#">Menu</a>
+                                        <ul>
+                                            <li><a href="{{url('/users')}}">User Tables</a></li>
+                                            <li><a href="#">Employee Tables</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </div>
