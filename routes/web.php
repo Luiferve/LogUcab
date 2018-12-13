@@ -19,10 +19,10 @@ Route::get('/', function () {
     return view('index', ["permissions" => $permissions]);
 });
 
-Route::get('/user_table', function () {
+Route::get('/users', function () {
     $users = DB::select('select usu_codigo,usu_email,usu_password from usuario');
 
-    return view('user_table',['users' => $users]);
+    return view('users_table',['users' => $users]);
 });
 
 Route::get('/login', function () {
