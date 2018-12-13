@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Home</title>
+    <title>LogUcab | Users</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
@@ -86,7 +86,7 @@
                                     <li><a href="#">Menu</a>
                                         <ul>
                                             <li><a href="{{url('/users')}}">User Tables</a></li>
-                                            <li><a href="#">Employee Tables</a></li>
+                                            <li><a href="{{url('/employees')}}">Employee Tables</a></li>
                                         </ul>
                                     </li>
                                 @endif
@@ -100,7 +100,7 @@
 
         <div class="datatables-area">
                 <div class="table-responsive container">
-                    <table class="table table-bordered table-hover dt-responsive" id="users-table">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
                         <thead>
                             <tr>
                                 <th>Codigo</th>

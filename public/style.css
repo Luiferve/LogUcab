@@ -2410,7 +2410,7 @@ table tr th{
     vertical-align:center;
 }
 
-#users-table{
+.custom-table{
     background: white;
     border-radius: 5px;
 }

@@ -19,10 +19,22 @@ Route::get('/', function () {
     return view('index', ["permissions" => $permissions]);
 });
 
+Route::get('/locations', function () {
+    $locations = DB::select('select (select d.lug_nombre from lugar b,lugar c,lugar d where a.lug_lugar=b.lug_codigo and b.lug_lugar=c.lug_codigo and c.lug_lugar=d.lug_codigo) pais,(select c.lug_nombre from lugar b,lugar c where a.lug_lugar=b.lug_codigo and b.lug_lugar=c.lug_codigo) estado,(select b.lug_nombre from lugar b where a.lug_lugar=b.lug_codigo) municipio,a.lug_nombre parroquia from lugar a where a.lug_tipo = \'Parroquia\'');
+
+    return view('locations_table',['locations' => $locations]);
+});
+
 Route::get('/users', function () {
     $users = DB::select('select usu_codigo,usu_email,usu_password from usuario');
 
     return view('users_table',['users' => $users]);
+});
+
+Route::get('/employees', function () {
+    $employees = DB::select('select emp_cedula, emp_nombre || \' \' || emp_apellido as emp_nombre,emp_email_personal as emp_ep, emp_email_coorporativo as emp_ec from empleado');
+
+    return view('employees_table',['employees' => $employees]);
 });
 
 Route::get('/login', function () {

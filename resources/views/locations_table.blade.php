@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Employees</title>
+    <title>LogUcab | Locations</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
@@ -100,22 +100,22 @@
 
         <div class="datatables-area">
                 <div class="table-responsive container">
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="employees-table">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
                         <thead>
                             <tr>
-                                <th>Cedula</th>
-                                <th>Nombre y Apellido</th>
-                                <th>Email personal</th>
-                                <th>Email corporativo</th>
+                                <th>Pais</th>
+                                <th>Estado</th>
+                                <th>Municipio</th>
+                                <th>Parroquia</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($employees as $employee)
+                            @foreach ($locations as $location)
                                 <tr>
-                                    <td>{{$employee->emp_cedula}}</td>
-                                    <td>{{$employee->emp_nombre}}</td>
-                                    <td>{{$employee->emp_ep}}</td>
-                                    <td>{{$employee->emp_ec}}</td>
+                                    <td>{{$location->pais}}</td>
+                                    <td>{{$location->estado}}</td>
+                                    <td>{{$location->municipio}}</td>
+                                    <td>{{$location->parroquia}}</td>
                                 </tr>
                             @endforeach   
                         </tbody>
@@ -148,6 +148,6 @@
 <!--=====  DATA TABLE =====-->
 <script>  
     $(document).ready(function(){  
-            $('#employees-table').DataTable();  
+            $('#users-table').DataTable();  
     });  
 </script> 
