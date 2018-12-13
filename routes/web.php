@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
-    $permissions = 4;
+    $permissions = Cookie::get('permissions');
 
     return view('index', ["permissions" => $permissions]);
 });
@@ -27,7 +27,7 @@ Route::get('/franchises', function () {
 EOD;
     $franchises = DB::select($query);
 
-    $permissions = 4;
+    $permissions = Cookie::get('permissions');
     return view('franchises_table',['franchises' => $franchises], ["permissions" => $permissions]);
 });
 
@@ -42,7 +42,7 @@ Route::get('/locations', function () {
 EOD;
     $locations = DB::select($query);
 
-    $permissions = 4;
+    $permissions = Cookie::get('permissions');
     return view('locations_table',['locations' => $locations], ["permissions" => $permissions]);
 });
 
@@ -53,7 +53,7 @@ Route::get('/users', function () {
 EOD;
     $users = DB::select($query);
 
-    $permissions = 4;
+    $permissions = Cookie::get('permissions');;
     return view('users_table',['users' => $users], ["permissions" => $permissions]);
 });
 
@@ -65,7 +65,7 @@ Route::get('/employees', function () {
 EOD;
     $employees = DB::select($query);
 
-    $permissions = 4;
+    $permissions = Cookie::get('permissions');
     return view('employees_table',['employees' => $employees], ["permissions" => $permissions]);
 });
 
@@ -76,12 +76,18 @@ Route::get('/login', function () {
 
 Route::post('/login', function () {
     $users = [];
+    $redirect = false;
     if (array_key_exists('password2', $_POST)){
         if ($_POST['password'] == $_POST['password2'] && $_POST['password'] != '' && $_POST['email'] != ''){
             $users = DB::select('select usu_email from usuario where usu_email = \''.$_POST['email'].'\'');
             
             if (empty($users)){
-                $users = DB::insert('insert into usuario (usu_codigo,usu_email,usu_password) values((select max(usu_codigo) from usuario)+1,\''.$_POST['email'].'\',\''.$_POST['password'].'\')');
+                $code = DB::select('select max(usu_codigo) m from usuario');
+                if (empty($code)){$code = 0;}
+                else {
+                    $code = $code[0]->m;
+                }
+                $users = DB::insert('insert into usuario (usu_codigo,usu_email,usu_password) values('.$code.'+1,\''.$_POST['email'].'\',\''.$_POST['password'].'\')');
                 $message = 'Registro exitoso.';
             } else {
                 $message = 'El email ('.$_POST['email'].') ya esta registrado.';
@@ -96,9 +102,12 @@ Route::post('/login', function () {
             $message = 'Datos erroneos.';
         } else {
             $message = 'Bienvenido '.$_POST['email'].'.';
+
+            Cookie::queue('permissions', 4, 60);
+            $redirect = true;
         }
     }
     
     // Cookie::queue('_token', 'test-123456789', 60);
-    return view('login',['users' => $users, 'message' => $message]);
+    return view('login',['users' => $users, 'message' => $message, 'redirect' => $redirect]);
 });

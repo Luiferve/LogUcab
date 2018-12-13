@@ -68,6 +68,10 @@
                         <div class="search-and-language-bar pull-right">
                             <ul>
                                 <li><a href="{{url('/login')}}"><i class="fa fa-user"></i></a></li>
+                                @if ($permissions > 0)
+                                <li><a href="{{url('/login')}}"><i class="fa"></i>X</a></li> 
+                                <!-- falta linkear el logout aqui -->
+                                @endif
                                 <li class="search-box"><i class="fa fa-search"></i></li>
                                 <li><a href="#"><i class="fa fa-shopping-bag"></i></a></li>
                                 <li class="select-language">

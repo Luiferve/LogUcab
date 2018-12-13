@@ -9,7 +9,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Transportation & Agency Template is a simple Smooth transportation and Agency Based Template" />
 <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
-
+@if (isset($redirect) && $redirect == true)
+<meta http-equiv="refresh" content="0;url={{url('/')}}">
+@endif
 <!--====== TITLE TAG ======-->
 <title>LogUcab | Login</title>
 
