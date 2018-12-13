@@ -26,8 +26,15 @@ Route::post('/login', function () {
     $users = [];
     if (array_key_exists('password2', $_POST)){
         if ($_POST['password'] == $_POST['password2'] && $_POST['password'] != '' && $_POST['email'] != ''){
-            $users = DB::insert('insert into usuario (usu_codigo,usu_email,usu_password) values((select max(usu_codigo) from usuario)+1,\''.$_POST['email'].'\',\''.$_POST['password'].'\')');
-            $message = 'Registro exitoso';
+            $users = DB::select('select usu_email from usuario where usu_email = \''.$_POST['email'].'\'');
+            
+            if (empty($users)){
+                $users = DB::insert('insert into usuario (usu_codigo,usu_email,usu_password) values((select max(usu_codigo) from usuario)+1,\''.$_POST['email'].'\',\''.$_POST['password'].'\')');
+                $message = 'Registro exitoso.';
+            } else {
+                $message = 'El email ('.$_POST['email'].') ya esta registrado.';
+            }
+
         } else {
             $message = 'Las contraseñas no coinciden.';
         }
