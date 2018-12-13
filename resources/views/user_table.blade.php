@@ -100,7 +100,7 @@
 
         <div class="datatables-area">
                 <div class="table-responsive container">
-                    <table class="table table-bordered table-hover dt-responsive" id="users">
+                    <table class="table table-bordered table-hover dt-responsive" id="users-table">
                         <thead>
                             <tr>
                                 <th>Codigo</th>
@@ -146,6 +146,6 @@
 <!--=====  DATA TABLE =====-->
 <script>  
     $(document).ready(function(){  
-            $('#users').DataTable();  
+            $('#users-table').DataTable();  
     });  
 </script> 

@@ -2408,4 +2408,9 @@ table tr th{
     color:white;
     text-align:left;
     vertical-align:center;
-  }
+}
+
+#users-table{
+    background: white;
+    border-radius: 5px;
+}
