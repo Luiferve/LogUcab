@@ -19,6 +19,17 @@ Route::get('/', function () {
     return view('index', ["permissions" => $permissions]);
 });
 
+Route::get('/franchises', function () {
+    $query = <<<'EOD'
+    select (select b.lug_nombre from lugar a, lugar b where s.suc_lugar = a.lug_codigo and a.lug_lugar = b.lug_codigo) estado,
+        s.suc_nombre nombre
+    from sucursal s
+EOD;
+    $franchises = DB::select($query);
+
+    return view('franchises_table',['franchises' => $franchises]);
+});
+
 Route::get('/locations', function () {
     $query = <<<'EOD'
     select (select d.lug_nombre from lugar b,lugar c,lugar d where a.lug_lugar=b.lug_codigo and b.lug_lugar=c.lug_codigo and c.lug_lugar=d.lug_codigo) pais,
