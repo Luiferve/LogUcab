@@ -63,7 +63,7 @@
                             <ul>
                                 <li><a href="{{url('/login')}}"><i class="fa fa-user"></i></a></li>
                                 @if ($permissions > 0)
-                                <li><a href="{{url('/login')}}"><i class="fa"></i>X</a></li> 
+                                <li><a href="{{url('/logout')}}"><i class="fa"></i>X</a></li> 
                                 <!-- falta linkear el logout aqui -->
                                 @endif
                                 <li class="search-box"><i class="fa fa-search"></i></li>

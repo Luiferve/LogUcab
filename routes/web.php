@@ -111,3 +111,9 @@ Route::post('/login', function () {
     // Cookie::queue('_token', 'test-123456789', 60);
     return view('login',['users' => $users, 'message' => $message, 'redirect' => $redirect]);
 });
+
+Route::get('/logout', function () {
+    Cookie::forget('permissions');
+
+    return view('index',['permissions' => 0]);
+});
