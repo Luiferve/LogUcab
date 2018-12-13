@@ -17,6 +17,12 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/users', function () {
+    $users = DB::select('select usu_codigo,usu_email,usu_password from usuario');
+
+    return view('users',['users' => $users]);
+});
+
 Route::get('/login', function () {
 
     return view('login',[]);
