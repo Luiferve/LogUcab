@@ -22,7 +22,7 @@ Route::get('/', function () {
 Route::get('/user_table', function () {
     $users = DB::select('select usu_codigo,usu_email,usu_password from usuario');
 
-    return view('user_table',['users' => $users]);
+    return view('users_test',['users' => $users]);
 });
 
 Route::get('/login', function () {

@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html class="no-js" lang="en">
 
 <head>
@@ -22,16 +23,19 @@
     <link rel="stylesheet" href="css/owl.carousel.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.12/css/datatables.bootstrap.min.js" rel="stylesheet">
-    <!--====== MAIN STYLESHEETS ======-->
-    <link href="style.css" rel="stylesheet">
-    <link href="css/responsive.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
     <script type="text/javascript" src="js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
+
+    <!--====== MAIN STYLESHEETS ======-->
+    <link href="style.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
+
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    
 </head>
 
 <body class="home-one">
@@ -95,7 +99,7 @@
         </div>
 
         <div class="datatables-area">
-                <div class="container">
+                <div class="table-responsive container">
                     <table class="table table-bordered table-hover dt-responsive" id="users">
                         <thead>
                             <tr>
@@ -134,12 +138,14 @@
 
     <!--===== ACTIVE JS =====-->
     <script src="js/main.js"></script>
-    <!--=====  DATA TABLE =====-->
-    <script>  
-        $(document).ready(function(){  
-             $('#users').DataTable();  
-        });  
-    </script> 
+    
 </body>
 
 </html>
+
+<!--=====  DATA TABLE =====-->
+<script>  
+    $(document).ready(function(){  
+            $('#users').DataTable();  
+    });  
+</script> 
