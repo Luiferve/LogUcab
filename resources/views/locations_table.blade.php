@@ -63,8 +63,7 @@
                             <ul>
                                 <li><a href="{{url('/login')}}"><i class="fa fa-user"></i></a></li>
                                 @if ($permissions > 0)
-                                <li><a href="{{url('/logout')}}"><i class="fa" title="Logout"></i>X</a></li> 
-                                <!-- falta linkear el logout aqui -->
+                                <li><a href="{{url('/logout')}}"><i class="fa" title="Logout"></i>X</a></li>
                                 @endif
                                 <li class="search-box"><i class="fa fa-search"></i></li>
                                 <li class="select-language">
@@ -92,6 +91,7 @@
                                             <li><a href="{{url('/employees')}}">Employees Table</a></li>
                                             <li><a href="{{url('/locations')}}">Locations Table</a></li>
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
+                                            <li><a href="{{url('/ship')}}">Ship Package</a></li>
                                         </ul>
                                     </li>
                                 @endif

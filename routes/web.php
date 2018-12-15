@@ -104,6 +104,7 @@ Route::post('/login', function () {
             $message = 'Bienvenido '.$_POST['email'].'.';
 
             Cookie::queue('permissions', 4, 60);
+            Cookie::queue('user-email',$_POST['email'],60);
             $redirect = true;
         }
     }
@@ -114,6 +115,13 @@ Route::post('/login', function () {
 
 Route::get('/logout', function () {
     Cookie::forget('permissions');
+    Cookie::forget('user-email');
 
     return view('index',['permissions' => 0]);
+});
+
+Route::get('/ship', function () {
+    
+    $permissions = Cookie::get('permissions');
+    return view('shipping',['permissions' => $permissions]);
 });

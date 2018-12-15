@@ -92,6 +92,7 @@
                                             <li><a href="{{url('/employees')}}">Employees Table</a></li>
                                             <li><a href="{{url('/locations')}}">Locations Table</a></li>
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
+                                            <li><a href="{{url('/ship')}}">Ship Package</a></li>
                                         </ul>
                                     </li>
                                 @endif
