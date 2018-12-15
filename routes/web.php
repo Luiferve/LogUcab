@@ -109,7 +109,6 @@ Route::post('/login', function () {
         }
     }
     
-    // Cookie::queue('_token', 'test-123456789', 60);
     return view('login',['users' => $users, 'message' => $message, 'redirect' => $redirect]);
 });
 
@@ -121,7 +120,39 @@ Route::get('/logout', function () {
 });
 
 Route::get('/ship', function () {
-    
+    $types = DB::select('select tip_codigo cod, tip_tipo nombre from tipo_paquete');
+    $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
+    $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
+
     $permissions = Cookie::get('permissions');
-    return view('shipping',['permissions' => $permissions]);
+    return view('shipping',['permissions' => $permissions,'types' => $types, 'countries' => $countries, 'states' => $states]);
+});
+
+Route::post('/ship', function () {
+    $types = DB::select('select tip_codigo cod, tip_tipo nombre from tipo_paquete');
+    $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
+    $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
+    $message = '';
+    if ($_POST['id1'] == ''){
+        $message = $message.'Campo Id1 Vacio</br>';
+    }
+    if ($_POST['peso'] == ''){
+        $message = $message.'Campo Peso Vacio</br>';
+    }
+    if ($_POST['alto'] == ''){
+        $message = $message.'Campo Alto Vacio</br>';
+    }
+    if ($_POST['ancho'] == ''){
+        $message = $message.'Campo Ancho Vacio</br>';
+    }
+    if ($_POST['profundidad'] == ''){
+        $message = $message.'Campo Profundidad Vacio</br>';
+    }
+    if ($_POST['tipo'] == ''){
+        $message = $message.'Campo Tipo Vacio</br>';
+    }
+
+
+    $permissions = Cookie::get('permissions');
+    return view('shipping',['permissions' => $permissions,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states]);
 });

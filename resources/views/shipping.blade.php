@@ -27,13 +27,10 @@
     <link rel="stylesheet" href="css/owl.carousel.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.12/css/datatables.bootstrap.min.js" rel="stylesheet">
     <!--====== MAIN STYLESHEETS ======-->
     <link href="style.css" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="text/javascript" src="js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
@@ -116,39 +113,76 @@
 
         <div class="shipping-area">
             <!-- multistep form -->
-            <form id="msform">
+            @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
+                    </div>
+                </div>
+            @endif
+            <form id="msform" method="POST" action="{{url('/ship')}}">
+                @csrf
                 <!-- progressbar -->
                 <ul id="progressbar">
-                <li class="active">Billing Information</li>
-                <li>Shipping Information</li>
-                <li>Payment Information</li>
-                <li>Finalize</br>Order</li>
+                <li class="active">Billing</li>
+                <li>Shipping</li>
+                <li>Payment</li>
+                <li>Finalize</li>
                 
                 </ul>
                 <!-- fieldsets -->
                 <fieldset>
                 <h2 class="fs-title">Billing Information</h2>
                 <h3 class="fs-subtitle">To whom you ship</h3>
-                <input type="text" name="first-name" placeholder="First Name" />
-                <input type="text" name="surname" placeholder="Surname" />
-                <input type="text" name="phone-#" placeholder="+77(777)7777777" />
-                <input type="text" name="company" placeholder="Company" />
-                <input type="text" name="country" placeholder="Country" />
-                <input type="text" name="city" placeholder="City" />
-                <input type="text" name="state" placeholder="State" />
-                <input type="text" name="zip-code-#" placeholder="Zip Code" />
+                <input type="text" name="id1" placeholder="Id"
+                @if (!empty($_POST))
+                    value="{{$_POST['id1']}}"
+                @endif
+                />
+                <input type="text" name="first-name" placeholder="First Name"
+                @if (!empty($_POST))
+                    value="{{$_POST['first-name']}}"
+                @endif
+                />
+                <input type="text" name="surname" placeholder="Surname"
+                @if (!empty($_POST))
+                    value="{{$_POST['surname']}}"
+                @endif
+                />
+                <input type="text" name="phone-#" placeholder="+77(777)7777777"
+                @if (!empty($_POST))
+                    value="{{$_POST['phone-#']}}"
+                @endif
+                />
+                <select name="country" class="form-control" style="margin-bottom: 10px;">
+                    <option value="">Seleccione el pais</option>
+                    @foreach ($countries as $country)
+                        <option value="{{$country->cod}}">{{$country->nombre}}</option>
+                    @endforeach
+                </select>
+                <select name="state" class="form-control" style="margin-bottom: 10px;">
+                    <option value="">Seleccione el estado</option>
+                    @foreach ($states as $state)
+                        <option value="{{$state->cod}}">{{$state->nombre}}</option>
+                    @endforeach
+                </select>
                 <textarea name="address" placeholder="Address"></textarea>
-                <input type="button" name="previous" class="previous action-button" value="Previous" />
                 <input type="button" name="next" class="next action-button" value="Next" />
                 </fieldset>
                 <fieldset>
                 <h2 class="fs-title">Shipping Information</h2>
                 <h3 class="fs-subtitle">How you want to ship</h3>
-                <input type="number" name="peso" placeholder="Peso" />
+                <input type="number" name="peso" placeholder="Peso"/>
                 <input type="number" name="alto" placeholder="Alto" />
                 <input type="number" name="ancho" placeholder="Ancho" />
                 <input type="number" name="profundidad" placeholder="Profundidad" />
                 <input type="text" name="tipo-paquete" placeholder="Tipo paquete" />
+                <select name="tipo" class="form-control" style="margin-bottom: 10px;">
+                    <option value="">Seleccione el tipo de paquete</option>
+                    @foreach ($types as $type)
+                        <option value="{{$type->cod}}">{{$type->nombre}}</option>
+                    @endforeach
+                </select>
                 <input type="text" name="clasificacion" placeholder="Clasificacion" />
                 <input type="radio" name="tipo-envio-1"/><label> Terrestres Shipping <span class="price">$4.00</span></label>
                 <input type="radio" name="tipo-envio-2"/><label> Aereo Shipping <span class="price">$4.00</span></label>
@@ -161,29 +195,21 @@
                 <h2 class="fs-title">Payment Information</h2>
                 <h3 class="fs-subtitle">We will never sell it</h3>
                 <input type="text" name="card-number" placeholder="Card number: xxxxxx-xxxxx-xxxx-xxxx " />
-                <input type="text" name="exp-date" placeholder="Expedition Data: e.g. MM/YY" />
-                <input type="text" name="exp-date" placeholder="Expedition Data: e.g. MM/YY" />
+                <input type="text" name="expe-date" placeholder="Expedition Date: e.g. MM/YY" />
+                <input type="text" name="expi-date" placeholder="Expiration Date: e.g. MM/YY" />
                 <input type="text" name="sec-code" placeholder="Security Code: e.g. xxx" />
                 <input type="text" name="name" placeholder="Full name" />
                 <input type="text" name="number" placeholder="Cellphone number" />
-                <input type="text" name="id" placeholder="id" />
+                <input type="text" name="id2" placeholder="id" />
                 <input type="button" name="previous" class="previous action-button" value="Previous" />
                 <input type="button" name="next" class="next action-button" value="Next" />
                 </fieldset>
                 <fieldset>
                 <h2 class="fs-title">Finalize Order</h2>
-                <h3 class="fs-subtitle">
-            May the force be with you</h3>
+                <h3 class="fs-subtitle">May the force be with you</h3>
                 <input type="button" name="previous" class="previous action-button" value="Previous" />
-                <input type="button" name="next" class="next action-button" value="Submit" />
+                <input type="submit" class="action-button" value="Submit" />
                 </fieldset>
-                <fieldset>
-                    <h2 class="fs-title">Thanks for shipping with us</h2>
-                    <h3 class="fs-subtitle">Come back soon!</h3>
-                    <input type="button" name="ship-again" class="ship-again action-button" value="Ship Again" />
-                    <input type="button" name="print" class="print action-button" value="Print" />
-                    <input type="button" name="home" class="home action-button" value="Home" />
-                    </fieldset>
             </form>
         </div>
 

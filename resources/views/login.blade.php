@@ -91,7 +91,7 @@
 		</div>
 	</div>
 	@if (isset($message))
-	<div class="container" id="alert">
+		<div class="container" id="alert">
 			<div class="alert alert-success" role="alert">
 				{{$message}}
 			</div>
