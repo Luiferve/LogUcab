@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
     $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
 
-    return view('index', ["permissions" => $permissions]);
+    return view('index', ["permissions" => $permissions,"userEmail" => $userEmail]);
 });
 
 Route::get('/franchises', function () {
@@ -28,7 +29,8 @@ EOD;
     $franchises = DB::select($query);
 
     $permissions = Cookie::get('permissions');
-    return view('franchises_table',['franchises' => $franchises], ["permissions" => $permissions]);
+    $userEmail = Cookie::get('user-email');
+    return view('franchises_table',['franchises' => $franchises], ["permissions" => $permissions,"userEmail" => $userEmail]);
 });
 
 Route::get('/locations', function () {
@@ -43,7 +45,8 @@ EOD;
     $locations = DB::select($query);
 
     $permissions = Cookie::get('permissions');
-    return view('locations_table',['locations' => $locations], ["permissions" => $permissions]);
+    $userEmail = Cookie::get('user-email');
+    return view('locations_table',['locations' => $locations], ["permissions" => $permissions,"userEmail" => $userEmail]);
 });
 
 Route::get('/users', function () {
@@ -53,8 +56,9 @@ Route::get('/users', function () {
 EOD;
     $users = DB::select($query);
 
-    $permissions = Cookie::get('permissions');;
-    return view('users_table',['users' => $users], ["permissions" => $permissions]);
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    return view('users_table',['users' => $users], ["permissions" => $permissions,"userEmail" => $userEmail]);
 });
 
 Route::get('/employees', function () {
@@ -66,7 +70,8 @@ EOD;
     $employees = DB::select($query);
 
     $permissions = Cookie::get('permissions');
-    return view('employees_table',['employees' => $employees], ["permissions" => $permissions]);
+    $userEmail = Cookie::get('user-email');
+    return view('employees_table',['employees' => $employees], ["permissions" => $permissions,"userEmail" => $userEmail]);
 });
 
 Route::get('/login', function () {
@@ -125,7 +130,8 @@ Route::get('/ship', function () {
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
 
     $permissions = Cookie::get('permissions');
-    return view('shipping',['permissions' => $permissions,'types' => $types, 'countries' => $countries, 'states' => $states]);
+    $userEmail = Cookie::get('user-email');
+    return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types, 'countries' => $countries, 'states' => $states]);
 });
 
 Route::post('/ship', function () {
@@ -183,5 +189,6 @@ Route::post('/ship', function () {
 
 
     $permissions = Cookie::get('permissions');
-    return view('shipping',['permissions' => $permissions,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states]);
+    $userEmail = Cookie::get('user-email');
+    return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states]);
 });
