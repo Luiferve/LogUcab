@@ -28,7 +28,8 @@
     22. SERVICE PAGE
     23. 404 ERROR PAGE
     24. LOGIN AREA
-    25. USER TABLE
+    25. SHIPPING AREA
+    26. USER TABLE
 ----------------------------------------------------------------------------------------*/
 
 /*--------------------
@@ -2394,34 +2395,8 @@ a{color:inherit;text-decoration:none}
   color:#fc9802;
 }
 
-/* ----------------------------
-    25. USER TABLE
--------------------------------- */
-.datatables-area{
-    height: 100%;
-    position: relative;
-    padding-top: 14%;
-}
-
-table tr th{
-    background:#22262e;
-    color:white;
-    text-align:left;
-    vertical-align:center;
-  } 
-
-  tr td{
-      background:#FFFFFF;
-  }
-  
-  tr:hover td {
-    background:#fc9802;
-    color:#FFFFFF;
-    border-top: 1px solid #22262e;
-  } 
-
   /* ----------------------------
-    26. SHIPPING AREA
+    25. SHIPPING AREA
 -------------------------------- */
 
 .shipping-area{
@@ -2544,3 +2519,44 @@ table tr th{
   font-weight:bold;
 	color: #333;
 }
+
+/* -------------------------------------------
+    26. USER/EMPLOYEE/CLIENT/FRANCHISES TABLE
+---------------------------------------------- */
+.datatables-area{
+    height: 100%;
+    position: relative;
+    padding-top: 9%;
+}
+
+table tr th{
+    background:#22262e;
+    color:white;
+    text-align:left;
+    vertical-align:center;
+  } 
+
+  tr td{
+      background:#FFFFFF;
+  }
+  
+  tr:hover td {
+    background:#fc9802;
+    color:#FFFFFF;
+    border-top: 1px solid #22262e;
+  } 
+  
+  .table-header button {
+    float: right;
+    top:0;
+    margin-bottom: 3%;
+    color:white;
+    background: #22262e;
+  }
+  .table-header button:hover{
+    background:#fc9802;
+    color: solid #22262e;
+  }
+  .table-header {
+    overflow: hidden;
+  }

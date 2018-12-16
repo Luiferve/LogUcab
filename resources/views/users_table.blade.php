@@ -112,6 +112,7 @@
                                 <th>Codigo</th>
                                 <th>Email</th>
                                 <th>Password</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -120,13 +121,21 @@
                                     <td>{{$user->usu_codigo}}</td>
                                     <td>{{$user->usu_email}}</td>
                                     <td>{{$user->usu_password}}</td>
+                                    <td>
+                                    <div style="text-align: center">
+                                        <a href="" class="edit_details" title="edit" >
+                                            <img src="http://i.imgur.com/DHma3ln.png" alt="Edit" width=20px></a>
+                                        <a href="" class="delete_details"  title="delete" style="padding-left: 20px;">
+                                            <img src="http://i.imgur.com/HNUCXDU.png" alt="Delete" width=20px></a>
+                                    </div>
+                                    </td>
                                 </tr>
                             @endforeach   
                         </tbody>
                     </table>
                 </div>
         </div>
-
+        
         <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
     <script src="js/vendor/bootstrap.min.js"></script>

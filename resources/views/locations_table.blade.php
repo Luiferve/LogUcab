@@ -105,6 +105,9 @@
 
         <div class="datatables-area">
                 <div class="table-responsive container">
+                <div class="table-header">
+                        <button class="add-another btn">Add new location</button>
+                    </div>
                     <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
                         <thead>
                             <tr>
@@ -112,6 +115,7 @@
                                 <th>Estado</th>
                                 <th>Municipio</th>
                                 <th>Parroquia</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -121,6 +125,14 @@
                                     <td>{{$location->estado}}</td>
                                     <td>{{$location->municipio}}</td>
                                     <td>{{$location->parroquia}}</td>
+                                    <td>
+                                        <div style="text-align: center">
+                                        <a href="" class="edit_details" title="edit" >
+                                            <img src="http://i.imgur.com/DHma3ln.png" alt="Edit" width=20px></a>
+                                        <a href="" class="delete_details"  title="delete" style="padding-left: 20px;">
+                                            <img src="http://i.imgur.com/HNUCXDU.png" alt="Delete" width=20px></a>
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach   
                         </tbody>
