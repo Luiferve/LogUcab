@@ -15,9 +15,8 @@ use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
     $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
 
-    return view('index', ["permissions" => $permissions,"userEmail" => $userEmail]);
+    return view('index', ["permissions" => $permissions]);
 });
 
 Route::get('/franchises', function () {
@@ -29,8 +28,7 @@ EOD;
     $franchises = DB::select($query);
 
     $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    return view('franchises_table',['franchises' => $franchises], ["permissions" => $permissions,"userEmail" => $userEmail]);
+    return view('franchises_table',['franchises' => $franchises], ["permissions" => $permissions]);
 });
 
 Route::get('/locations', function () {
@@ -45,36 +43,39 @@ EOD;
     $locations = DB::select($query);
 
     $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    return view('locations_table',['locations' => $locations], ["permissions" => $permissions,"userEmail" => $userEmail]);
+    return view('locations_table',['locations' => $locations], ["permissions" => $permissions]);
 });
 
 Route::get('/users', function () {
     $query = <<<'EOD'
-    select usu_codigo,usu_email,usu_password 
-    from usuario
+    select U.usu_codigo,U.usu_email,U.usu_password, rol_nombre as rol_n
+    from usuario U, rol, usu_rol US
+    where (U.usu_cliente is not NUll or U.usu_empleado is not NULL) and US.usu_usuario = U.usu_codigo and US.usu_rol = rol_codigo
 EOD;
     $users = DB::select($query);
 
-    $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    return view('users_table',['users' => $users], ["permissions" => $permissions,"userEmail" => $userEmail]);
+    $permissions = Cookie::get('permissions');;
+    return view('users_table',['users' => $users], ["permissions" => $permissions]);
 });
 
 Route::get('/employees', function () {
     $query = <<<'EOD'
     select emp_cedula, emp_nombre || ' ' || emp_apellido as emp_nombre,
-        emp_email_personal as emp_ep, emp_email_coorporativo as emp_ec 
-    from empleado
+        emp_email_personal as emp_ep, emp_email_coorporativo as emp_ec,
+        emp_f_ingreso as emp_fi, emp_monto_base as emp_b, 
+        suc_nombre as suc_n
+    from empleado, sucursal
+    where
+    	emp_sucursal = suc_codigo
 EOD;
     $employees = DB::select($query);
 
     $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    return view('employees_table',['employees' => $employees], ["permissions" => $permissions,"userEmail" => $userEmail]);
+    return view('employees_table',['employees' => $employees], ["permissions" => $permissions]);
 });
 
 Route::get('/login', function () {
+
     return view('login',[]);
 });
 
@@ -107,8 +108,8 @@ Route::post('/login', function () {
         } else {
             $message = 'Bienvenido '.$_POST['email'].'.';
 
-            Cookie::queue('permissions', 4, 45000);
-            Cookie::queue('user-email',$_POST['email'],45000);
+            Cookie::queue('permissions', 4, 60);
+            Cookie::queue('user-email',$_POST['email'],60);
             $redirect = true;
         }
     }
@@ -129,8 +130,7 @@ Route::get('/ship', function () {
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
 
     $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types, 'countries' => $countries, 'states' => $states]);
+    return view('shipping',['permissions' => $permissions,'types' => $types, 'countries' => $countries, 'states' => $states]);
 });
 
 Route::post('/ship', function () {
@@ -138,93 +138,56 @@ Route::post('/ship', function () {
     $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
     $message = '';
-    $completed = true;
-
-    if ($_POST['receiverID'] == ''){
-        $message = $message.'Campo receiverID Vacio. ';
-        $completed = false;
-    }
-    if ($_POST['receiverName'] == ''){
-        $message = $message.'Campo receiverName Vacio. ';
-        $completed = false;
-    }
-    if ($_POST['senderID'] == ''){
-        $message = $message.'Campo senderID Vacio. ';
-        $completed = false;
+    if ($_POST['id1'] == ''){
+        $message = $message.'Campo Id1 Vacio</br>';
     }
     if ($_POST['peso'] == ''){
-        $message = $message.'Campo Peso Vacio. ';
-        $completed = false;
+        $message = $message.'Campo Peso Vacio</br>';
     }
     if ($_POST['alto'] == ''){
-        $message = $message.'Campo Alto Vacio. ';
-        $completed = false;
+        $message = $message.'Campo Alto Vacio</br>';
     }
     if ($_POST['ancho'] == ''){
-        $message = $message.'Campo Ancho Vacio. ';
-        $completed = false;
+        $message = $message.'Campo Ancho Vacio</br>';
     }
     if ($_POST['profundidad'] == ''){
-        $message = $message.'Campo Profundidad Vacio. ';
-        $completed = false;
+        $message = $message.'Campo Profundidad Vacio</br>';
     }
     if ($_POST['tipo'] == ''){
-        $message = $message.'Campo Tipo Vacio. ';
-        $completed = false;
+        $message = $message.'Campo Tipo Vacio</br>';
     }
-    if ($_POST['country'] == ''){
-        $message = $message.'Campo Pais Vacio. ';
-        $completed = false;
-    }
-    if ($_POST['state'] == ''){
-        $message = $message.'Campo Estado Vacio. ';
-        $completed = false;
-    }
-    if ($completed){
-        $receiver = DB::select('select des_cedula cedula, des_nombre nombre from destinatario where des_cedula='.$_POST['receiverID']);
-        if (empty($receiver)){
-            if ($_POST['receiverName'] != ''){
-                $receiver = DB::insert('insert into destinatario(des_cedula, des_nombre) values ('.$_POST['receiverID'].', \''.$_POST['receiverName'].'\')');
-                $receiver = DB::select('select des_cedula cedula, des_nombre nombre from destinatario order by des_codigo DESC limit 1');
-            } else {
-                $message = $message.'Faltan datos del destinatario. ';
-            }
-        }
-
-        $sender = DB::select('select cli_cedula cedula, cli_nombre nombre from cliente where cli_cedula='.$_POST['senderID']);
-        if (empty($sender)){
-            if ($_POST['senderName'] != '' && $_POST['surname'] != '' && $_POST['date'] != '' && $_POST['civil'] != '' && $_POST['company'] != '' && $_POST['phone-#'] != '' && $_POST['country'] != '' && $_POST['state'] != '' && $_POST['address'] != '' && $_POST['email'] != '' && $_POST['civil'] != ''){
-                $location = DB::insert('insert into lugar(lug_nombre,lug_tipo,lug_lugar) values(\''.$_POST['address'].'\',\'Otro\','.$_POST['state'].')');
-                $location = DB::select('select lug_codigo cod from lugar order by lug_codigo DESC limit 1');
-
-                $sender = DB::insert('insert into cliente(cli_cedula, cli_nombre, cli_apellido, cli_f_nacimiento, cli_empresa, cli_lugar, cli_estado_civil, cli_email) values ('.$_POST['senderID'].', \''.$_POST['senderName'].'\', \''.$_POST['surname'].'\',\''.$_POST['date'].'\', \''.$_POST['company'].'\', '.$location[0]->cod.', \''.$_POST['civil'].'\', \''.$_POST['email'].'\')');
-                $sender = DB::select('select cli_cedula cedula, cli_nombre nombre from cliente where cli_cedula='.$_POST['senderID']);
-
-                $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phone-#'].'\'');
-                if (empty($phone)){
-                    $phone = DB::insert('insert into telefono(tel_numero,tel_cliente) values(\''.$_POST['phone-#'].'\',\''.$_POST['senderID'].'\')');
-                    $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phone-#'].'\'');
-                }
-
-            } else {
-                $message = $message.'Faltan datos del remitente. ';
-            }
-        }
-    }
-    
-
-
-
 
 
     $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states]);
+    return view('shipping',['permissions' => $permissions,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states]);
 });
 
-Route::get('/print',function (){
+Route::get('/clients', function () {
+    $query = <<<'EOD'
+    select cli_cedula, cli_nombre || ' ' || cli_apellido as cli_nom,
+        cli_email as cli_em, cli_f_nacimiento as cli_fn, lug_nombre as cli_lu,
+        cli_carnet as cli_car 
+    from cliente, lugar
+    where
+    	cli_lugar = lug_codigo
+EOD;
+    $clients = DB::select($query);
 
     $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
+    return view('clients_table',['clients' => $clients], ["permissions" => $permissions]);
+});
+
+Route::get('/routes', function () {
+    $query = <<<'EOD'
+    select distinct rut_codigo as rut_c, s1.suc_nombre rut_o, s2.suc_nombre as rut_d, rut_duracion as rut_du,
+    tip_costo as rut_cos
+    from ruta, envio, paquete, tipo_envio, sucursal s1, sucursal s2
+    where rut_codigo = env_ruta and env_codigo = paq_envio and paq_tipo_envio = tip_codigo and s1.suc_codigo = rut_suc_origen
+    and s2.suc_codigo = rut_suc_destino
+    	
+EOD;
+    $routes = DB::select($query);
+
+    $permissions = Cookie::get('permissions');
+    return view('routes_table',['routes' => $routes], ["permissions" => $permissions]);
 });
