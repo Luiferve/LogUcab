@@ -65,7 +65,7 @@
                 <nav class="navbar">
                     <div class="container">
                         <div class="navbar-header">
-                            <a href="#home" class="navbar-brand"><img src="img/logo.png" alt="logo"></a>
+                            <a href="{{url('/')}}" class="navbar-brand"><img src="img/logo.png" alt="logo"></a>
                         </div>
                         <div class="search-and-language-bar pull-right">
                             <ul>
@@ -213,6 +213,26 @@
                 <fieldset>
                 <h2 class="fs-title">Shipping Information</h2>
                 <h3 class="fs-subtitle">How you want to ship</h3>
+                <select name="origen" class="form-control" style="margin-bottom: 10px;">
+                    <option value="">Seleccione el origen</option>
+                    @foreach ($franchises as $franchise)
+                        <option 
+                        @if (!empty($_POST) && $franchise->cod == $_POST['origen'])
+                        selected 
+                        @endif
+                        value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
+                    @endforeach
+                </select>
+                <select name="destino" class="form-control" style="margin-bottom: 10px;">
+                    <option value="">Seleccione el destino</option>
+                    @foreach ($franchises as $franchise)
+                        <option 
+                        @if (!empty($_POST) && $franchise->cod == $_POST['destino'])
+                        selected 
+                        @endif
+                        value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
+                    @endforeach
+                </select>
                 <input type="number" name="peso" placeholder="Peso"
                 @if (!empty($_POST))
                     value="{{$_POST['peso']}}"
@@ -243,9 +263,9 @@
                         value="{{$type->cod}}">{{$type->nombre}}</option>
                     @endforeach
                 </select>
-                <input type="radio" name="tipo-envio-1"/><label> Terrestres Shipping <span class="price">$4.00</span></label>
-                <input type="radio" name="tipo-envio-2"/><label> Aereo Shipping <span class="price">$4.00</span></label>
-                <input type="radio" name="tipo-envio-3"/><label> Marino Shipping <span class="price">$4.00</span></label>
+                <input type="radio" name="tipo-envio" value="1"/><label>Terrestre</label>
+                <input type="radio" name="tipo-envio" value="3"/><label>Aereo</label>
+                <input type="radio" name="tipo-envio" value="2"/><label>Marino</label>
                 <input type="number" name="precio-kg" placeholder="Precio por kilo" />
                 <input type="button" name="previous" class="previous action-button" value="Previous" />
                 <input type="button" name="next" class="next action-button" value="Next" />

@@ -127,16 +127,21 @@ Route::get('/ship', function () {
     $types = DB::select('select tip_codigo cod, tip_tipo nombre from tipo_paquete');
     $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
-
+    $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
+    
     $permissions = Cookie::get('permissions');
     $userEmail = Cookie::get('user-email');
-    return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types, 'countries' => $countries, 'states' => $states]);
+    return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types, 'countries' => $countries, 'states' => $states,'franchises' => $franchises]);
 });
 
 Route::post('/ship', function () {
+    $userEmail = Cookie::get('user-email');
+
     $types = DB::select('select tip_codigo cod, tip_tipo nombre from tipo_paquete');
     $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
+    $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
+    $employee = DB::select('select usu_empleado cod from usuario where usu_email=\''.$userEmail.'\'');
     $message = '';
     $completed = true;
 
@@ -150,6 +155,14 @@ Route::post('/ship', function () {
     }
     if ($_POST['senderID'] == ''){
         $message = $message.'Campo senderID Vacio. ';
+        $completed = false;
+    }
+    if ($_POST['origen'] == ''){
+        $message = $message.'Campo Origen Vacio. ';
+        $completed = false;
+    }
+    if ($_POST['destino'] == ''){
+        $message = $message.'Campo Destino Vacio. ';
         $completed = false;
     }
     if ($_POST['peso'] == ''){
@@ -181,11 +194,11 @@ Route::post('/ship', function () {
         $completed = false;
     }
     if ($completed){
-        $receiver = DB::select('select des_cedula cedula, des_nombre nombre from destinatario where des_cedula='.$_POST['receiverID']);
+        $receiver = DB::select('select des_codigo cod, des_cedula cedula, des_nombre nombre from destinatario where des_cedula='.$_POST['receiverID']);
         if (empty($receiver)){
             if ($_POST['receiverName'] != ''){
                 $receiver = DB::insert('insert into destinatario(des_cedula, des_nombre) values ('.$_POST['receiverID'].', \''.$_POST['receiverName'].'\')');
-                $receiver = DB::select('select des_cedula cedula, des_nombre nombre from destinatario order by des_codigo DESC limit 1');
+                $receiver = DB::select('select des_codigo cod, des_cedula cedula, des_nombre nombre from destinatario order by des_codigo DESC limit 1');
             } else {
                 $message = $message.'Faltan datos del destinatario. ';
             }
@@ -210,6 +223,17 @@ Route::post('/ship', function () {
                 $message = $message.'Faltan datos del remitente. ';
             }
         }
+
+
+        $route = DB::select('select rut_codigo cod from ruta where rut_suc_origen='.$_POST['origen'].' and rut_suc_destino='.$_POST['destino']);
+        if (empty($route)){
+            $route = DB::insert('insert into ruta(rut_duracion, rut_suc_origen, rut_suc_destino, rut_med_transporte) values(?, '.$_POST['origen'].', '.$_POST['destino'].', 1)');
+            $route = DB::select('select rut_codigo cod from ruta where rut_suc_origen='.$_POST['origen'].' and rut_suc_destino='.$_POST['destino']);
+        }
+        $shipment = DB::insert('insert into envio(env_fecha, env_cliente, env_empleado, env_suc_origen, env_suc_destino, env_ruta, env_pago) values ('.date('d/m/Y').', '.$sender[0]->cedula.', '.$employee[0]->cod.', '.$_POST['origen'].', '.$_POST['destino'].', ?, ?)');
+
+        $package = DB::insert('insert into paquete(paq_peso, paq_ancho, paq_alto, paq_profundidad, paq_destinatario, paq_envio, paq_tipo_paquete, paq_tipo_envio) values ('.$_POST['peso'].', '.$_POST['ancho'].', '.$_POST['alto'].', '.$_POST['profundidad'].', '.$receiver[0]->cod.', ?, '.$_POST['tipo'].', '.$_POST['tipo-envio'].')');
+
     }
     
 
@@ -218,8 +242,7 @@ Route::post('/ship', function () {
 
 
     $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states]);
+    return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states,'franchises' => $franchises]);
 });
 
 Route::get('/print',function (){
