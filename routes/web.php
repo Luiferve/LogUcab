@@ -75,7 +75,6 @@ EOD;
 });
 
 Route::get('/login', function () {
-
     return view('login',[]);
 });
 
@@ -108,8 +107,8 @@ Route::post('/login', function () {
         } else {
             $message = 'Bienvenido '.$_POST['email'].'.';
 
-            Cookie::queue('permissions', 4, 60);
-            Cookie::queue('user-email',$_POST['email'],60);
+            Cookie::queue('permissions', 4, 45000);
+            Cookie::queue('user-email',$_POST['email'],45000);
             $redirect = true;
         }
     }
@@ -149,17 +148,31 @@ Route::post('/ship', function () {
         $message = $message.'Campo senderID Vacio. ';
     }
 
-    $receiver = DB::select('select des_codigo cod, des_nombre nombre from destinatario');
+    $receiver = DB::select('select des_cedula cedula, des_nombre nombre from destinatario where des_cedula='.$_POST['receiverID']);
     if (empty($receiver)){
         if ($_POST['receiverName'] != ''){
-            $receiver = DB::insert('insert into destinatario(des_codigo, des_nombre) values ('.$_POST['receiverID'].', \''.$_POST['receiverName'].'\')');
+            $receiver = DB::insert('insert into destinatario(des_cedula, des_nombre) values ('.$_POST['receiverID'].', \''.$_POST['receiverName'].'\')');
+            $receiver = DB::select('select des_cedula cedula, des_nombre nombre from destinatario order by des_codigo DESC limit 1');
         }
     }
 
-    $sender = DB::select('select cli_codigo cod, cli_nombre nombre from cliente');
+    $sender = DB::select('select cli_cedula cedula, cli_nombre nombre from cliente where cli_cedula='.$_POST['senderID']);
     if (empty($sender)){
-        if ($_POST['senderName'] != '' && $_POST['senderName'] != ''){
-            $sender = DB::insert('insert into destinatario(des_codigo, des_nombre) values ('.$_POST['receiverID'].', \''.$_POST['receiverName'].'\')');
+        if ($_POST['senderName'] != '' && $_POST['surname'] != '' && $_POST['date'] != '' && $_POST['civil'] != '' && $_POST['company'] != '' && $_POST['phone-#'] != '' && $_POST['country'] != '' && $_POST['state'] != '' && $_POST['address'] != '' && $_POST['email'] != '' && $_POST['civil'] != ''){
+            $location = DB::insert('insert into lugar(lug_nombre,lug_tipo,lug_lugar) values(\''.$_POST['address'].'\',\'Otro\','.$_POST['state'].')');
+            $location = DB::select('select lug_codigo cod from lugar order by lug_codigo DESC limit 1');
+
+            $sender = DB::insert('insert into cliente(cli_cedula, cli_nombre, cli_apellido, cli_f_nacimiento, cli_empresa, cli_lugar, cli_estado_civil, cli_email) values ('.$_POST['senderID'].', \''.$_POST['senderName'].'\', \''.$_POST['surname'].'\',\''.$_POST['date'].'\', \''.$_POST['company'].'\', '.$location[0]->cod.', \''.$_POST['civil'].'\', \''.$_POST['email'].'\')');
+            $sender = DB::select('select cli_cedula cedula, cli_nombre nombre from cliente where cli_cedula='.$_POST['senderID']);
+
+            $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phone-#'].'\'');
+            if (empty($phone)){
+                $phone = DB::insert('insert into telefono(tel_numero,tel_cliente) values(\''.$_POST['phone-#'].'\',\''.$_POST['senderID'].'\')');
+                $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phone-#'].'\'');
+            }
+
+        } else {
+            $message = $message.'Faltan datos del remitente. ';
         }
     }
 

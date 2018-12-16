@@ -172,9 +172,19 @@
                     <option value="Divorciado/a">Divorciado</option>
                     <option value="Conyugue">Conyugue</option>
                 </select>
+                <input type="text" name="company" placeholder="Company"
+                @if (!empty($_POST))
+                    value="{{$_POST['company']}}"
+                @endif
+                />
                 <input type="text" name="phone-#" placeholder="+77(777)7777777"
                 @if (!empty($_POST))
                     value="{{$_POST['phone-#']}}"
+                @endif
+                />
+                <input type="text" name="email" placeholder="email@domain.com"
+                @if (!empty($_POST))
+                    value="{{$_POST['email']}}"
                 @endif
                 />
                 <select name="country" class="form-control" style="margin-bottom: 10px;">
