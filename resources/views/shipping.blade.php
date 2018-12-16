@@ -243,11 +243,6 @@
                         value="{{$type->cod}}">{{$type->nombre}}</option>
                     @endforeach
                 </select>
-                <input type="text" name="clasificacion" placeholder="Clasificacion" 
-                @if (!empty($_POST))
-                    value="{{$_POST['clasificacion']}}"
-                @endif
-                />
                 <input type="radio" name="tipo-envio-1"/><label> Terrestres Shipping <span class="price">$4.00</span></label>
                 <input type="radio" name="tipo-envio-2"/><label> Aereo Shipping <span class="price">$4.00</span></label>
                 <input type="radio" name="tipo-envio-3"/><label> Marino Shipping <span class="price">$4.00</span></label>
