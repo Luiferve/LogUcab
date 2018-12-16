@@ -266,20 +266,18 @@
                 <input type="radio" name="tipo-envio" value="1"/><label>Terrestre</label>
                 <input type="radio" name="tipo-envio" value="3"/><label>Aereo</label>
                 <input type="radio" name="tipo-envio" value="2"/><label>Marino</label>
-                <input type="number" name="precio-kg" placeholder="Precio por kilo" />
                 <input type="button" name="previous" class="previous action-button" value="Previous" />
                 <input type="button" name="next" class="next action-button" value="Next" />
                 </fieldset>
                 <fieldset>
                 <h2 class="fs-title">Payment Information</h2>
                 <h3 class="fs-subtitle">We will never sell it</h3>
-                <input type="text" name="card-number" placeholder="Card number: xxxxxx-xxxxx-xxxx-xxxx " />
-                <input type="text" name="expe-date" placeholder="Expedition Date: e.g. MM/YY" />
-                <input type="text" name="expi-date" placeholder="Expiration Date: e.g. MM/YY" />
-                <input type="text" name="sec-code" placeholder="Security Code: e.g. xxx" />
-                <input type="text" name="name" placeholder="Full name" />
-                <input type="text" name="number" placeholder="Cellphone number" />
-                <input type="text" name="id2" placeholder="id" />
+                <input type="radio" name="tipo-pago" value="Debito"/><label>Debito</label>
+                <input type="radio" name="tipo-pago" value="Credito"/><label>Credito</label>
+                <input type="radio" name="tipo-pago" value="Efectivo"/><label>Efectivo</label>
+                <input type="radio" name="tipo-pago" value="Cheque"/><label>Cheque</label>
+                <input type="radio" name="tipo-pago" value="N"/><label>Pago en destino</label>
+                <input type="text" name="card-number" placeholder="Card number/Check number" />
                 <input type="button" name="previous" class="previous action-button" value="Previous" />
                 <input type="button" name="next" class="next action-button" value="Next" />
                 </fieldset>

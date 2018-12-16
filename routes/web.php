@@ -193,6 +193,10 @@ Route::post('/ship', function () {
         $message = $message.'Campo Estado Vacio. ';
         $completed = false;
     }
+    if ($_POST['tipo-pago'] == ''){
+        $message = $message.'Campo Tipo de pago Vacio. ';
+        $completed = false;
+    }
     if ($completed){
         $receiver = DB::select('select des_codigo cod, des_cedula cedula, des_nombre nombre from destinatario where des_cedula='.$_POST['receiverID']);
         if (empty($receiver)){
@@ -227,20 +231,39 @@ Route::post('/ship', function () {
 
         $route = DB::select('select rut_codigo cod from ruta where rut_suc_origen='.$_POST['origen'].' and rut_suc_destino='.$_POST['destino']);
         if (empty($route)){
-            $route = DB::insert('insert into ruta(rut_duracion, rut_suc_origen, rut_suc_destino, rut_med_transporte) values(?, '.$_POST['origen'].', '.$_POST['destino'].', 1)');
+            $route = DB::insert('insert into ruta(rut_duracion, rut_suc_origen, rut_suc_destino, rut_med_transporte) values('.rand(20,120).', '.$_POST['origen'].', '.$_POST['destino'].', 2)');
             $route = DB::select('select rut_codigo cod from ruta where rut_suc_origen='.$_POST['origen'].' and rut_suc_destino='.$_POST['destino']);
         }
-        $shipment = DB::insert('insert into envio(env_fecha, env_cliente, env_empleado, env_suc_origen, env_suc_destino, env_ruta, env_pago) values ('.date('d/m/Y').', '.$sender[0]->cedula.', '.$employee[0]->cod.', '.$_POST['origen'].', '.$_POST['destino'].', ?, ?)');
 
-        $package = DB::insert('insert into paquete(paq_peso, paq_ancho, paq_alto, paq_profundidad, paq_destinatario, paq_envio, paq_tipo_paquete, paq_tipo_envio) values ('.$_POST['peso'].', '.$_POST['ancho'].', '.$_POST['alto'].', '.$_POST['profundidad'].', '.$receiver[0]->cod.', ?, '.$_POST['tipo'].', '.$_POST['tipo-envio'].')');
+        $payment = 'NULL';
+        if ($_POST['tipo-pago'] != 'N'){
+            $method = array('','');
+            if ($_POST['tipo-pago'] == 'Credito'){
+                $method[0] = ',cre_tarjeta';
+                $method[1] = ','.$_POST['card-number'];
+            } elseif ($_POST['tipo-pago'] == 'Debito'){
+                $method[0] = ',deb_tarjeta';
+                $method[1] = ','.$_POST['card-number'];
+            } elseif ($_POST['tipo-pago'] == 'Cheque'){
+                $method[0] = ',che-num-cheque';
+                $method[1] = ','.$_POST['card-number'];
+            }
 
+            $payment = DB::insert('insert into pago(pag_tipo, pag_fecha '.$method[0].') values (\''.$_POST['tipo-pago'].'\', \''.date('d/m/Y').'\' '.$method[1].' )');
+            $payment = DB::select('select pag_codigo cod from pago order by pag_codigo DESC limit 1')[0]->cod;
+        }
+
+        // echo(var_dump($employee));
+        // echo(var_dump($sender));
+        // echo(var_dump($route));
+        $shipment = DB::insert('insert into envio(env_fecha, env_cliente, env_empleado, env_suc_origen, env_suc_destino, env_ruta, env_pago) values (\''.date('d/m/Y').'\', '.$sender[0]->cedula.', '.$employee[0]->cod.', '.$_POST['origen'].', '.$_POST['destino'].', '.$route[0]->cod.', '.$payment.')');
+        $shipment = DB::select('select env_codigo cod from envio order by env_codigo DESC limit 1');
+        
+        $package = DB::insert('insert into paquete(paq_peso, paq_ancho, paq_alto, paq_profundidad, paq_destinatario, paq_envio, paq_tipo_paquete, paq_tipo_envio) values ('.$_POST['peso'].', '.$_POST['ancho'].', '.$_POST['alto'].', '.$_POST['profundidad'].', '.$receiver[0]->cod.', '.$shipment[0]->cod.', '.$_POST['tipo'].', '.$_POST['tipo-envio'].')');
+        $message = 'Envio Realizado';
+        $_POST = NULL;
     }
     
-
-
-
-
-
     $permissions = Cookie::get('permissions');
     return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states,'franchises' => $franchises]);
 });
