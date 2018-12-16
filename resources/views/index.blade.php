@@ -89,16 +89,44 @@
                         <div id="main-nav" class="stellarnav">
                             <ul id="nav" class="nav navbar-nav">
                                 <li><a href="{{url('/')}}">home</a></li>
-                                <li><a href="about.html">about</a></li>
-                                <li><a href="service.html">Service</a></li>
-                                <li><a href="contact.html">Contact</a></li>
-                                @if (isset($permissions) && $permissions > 3)
-                                    <li><a href="#">Menu</a>
+                                @if(isset($permissions) && $permissions > 3)
+                                    <li><a href="#">Clients</a>
+                                        <ul>
+                                            <li><a href="{{url('/clients')}}">Clients Table</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
+                                @if(isset($permissions) && $permissions > 3)
+                                    <li><a href="#">Employees</a>
+                                        <ul>
+                                            <li><a href="{{url('/employees')}}">Employees Table</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
+                                @if(isset($permissions) && $permissions > 3)
+                                    <li><a href="#">Franchises</a>
+                                        <ul>
+                                            <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
+                                @if(isset($permissions) && $permissions > 3)
+                                    <li><a href="#">Users & Rol</a>
                                         <ul>
                                             <li><a href="{{url('/users')}}">Users Table</a></li>
-                                            <li><a href="{{url('/employees')}}">Employees Table</a></li>
-                                            <li><a href="{{url('/locations')}}">Locations Table</a></li>
-                                            <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
+                                @if(isset($permissions) && $permissions > 3)
+                                    <li><a href="#">Routes & Transportation</a>
+                                        <ul>
+                                            <li><a href="{{url('/routes')}}">Routes Table</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
+                                @if(isset($permissions) && $permissions > 3)
+                                    <li><a href="#">Shipping</a>
+                                        <ul>
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
                                         </ul>
                                     </li>

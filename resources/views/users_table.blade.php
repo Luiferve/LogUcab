@@ -47,7 +47,7 @@
     <!--SCROLL TO TOP-->
     <a href="#home" class="scrolltotop"><i class="fa fa-long-arrow-up"></i></a>
 
-    <!--START TOP AREA-->
+   <!--START TOP AREA-->
     <header class="top-area" id="home">
         <div class="top-area-bg" data-stellar-background-ratio="0.6"></div>
         <div class="header-top-area">
@@ -61,7 +61,7 @@
                         </div>
                         <div class="search-and-language-bar pull-right">
                             <ul>
-                                <li><a href="{{url('/login')}}"><i class="fa fa-user"></i></a></li>
+                                <li><a href="{{url('/login')}}"><i class="fa fa-user" @if ($permissions > 0) title="Login" @endif></i></a></li>
                                 @if ($permissions > 0)
                                 <li><a href="{{url('/logout')}}"><i class="fa" title="Logout"></i>X</a></li> 
                                 <!-- falta linkear el logout aqui -->
@@ -69,9 +69,10 @@
                                 <li class="search-box"><i class="fa fa-search"></i></li>
                                 <li class="select-language">
                                     <select name="#" id="#">
-                                    <option selected value="End">SPA</option>
-                                    <option value="End">ENG</option>
-                                    </select>
+                                    <option selected value="End">ENG</option>
+                                    <option value="ARA">ARA</option>
+                                    <option value="CHI">CHI</option>
+                                </select>
                                 </li>
                             </ul>
                             <form action="#" class="search-form">
@@ -82,16 +83,44 @@
                         <div id="main-nav" class="stellarnav">
                             <ul id="nav" class="nav navbar-nav">
                                 <li><a href="{{url('/')}}">home</a></li>
-                                <li><a href="about.html">about</a></li>
-                                <li><a href="service.html">Service</a></li>
-                                <li><a href="contact.html">Contact</a></li>
-                                @if (isset($permissions) && $permissions > 3)
-                                    <li><a href="#">Menu</a>
+                                @if(isset($permissions) && $permissions > 3)
+                                    <li><a href="#">Clients</a>
+                                        <ul>
+                                            <li><a href="{{url('/clients')}}">Clients Table</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
+                                @if(isset($permissions) && $permissions > 3)
+                                    <li><a href="#">Employees</a>
+                                        <ul>
+                                            <li><a href="{{url('/employees')}}">Employees Table</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
+                                @if(isset($permissions) && $permissions > 3)
+                                    <li><a href="#">Franchises</a>
+                                        <ul>
+                                            <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
+                                @if(isset($permissions) && $permissions > 3)
+                                    <li><a href="#">Users & Rol</a>
                                         <ul>
                                             <li><a href="{{url('/users')}}">Users Table</a></li>
-                                            <li><a href="{{url('/employees')}}">Employees Table</a></li>
-                                            <li><a href="{{url('/locations')}}">Locations Table</a></li>
-                                            <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
+                                @if(isset($permissions) && $permissions > 3)
+                                    <li><a href="#">Routes & Transportation</a>
+                                        <ul>
+                                            <li><a href="{{url('/routes')}}">Routes Table</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
+                                @if(isset($permissions) && $permissions > 3)
+                                    <li><a href="#">Shipping</a>
+                                        <ul>
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
                                         </ul>
                                     </li>
@@ -112,6 +141,7 @@
                                 <th>Codigo</th>
                                 <th>Email</th>
                                 <th>Password</th>
+                                <th>Rol</th>>
                             </tr>
                         </thead>
                         <tbody>
@@ -120,6 +150,7 @@
                                     <td>{{$user->usu_codigo}}</td>
                                     <td>{{$user->usu_email}}</td>
                                     <td>{{$user->usu_password}}</td>
+                                    <td>{{$user->rol_n}}</td>
                                 </tr>
                             @endforeach   
                         </tbody>

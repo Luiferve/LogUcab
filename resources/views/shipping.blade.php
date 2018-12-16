@@ -134,24 +134,14 @@
                 <fieldset>
                 <h2 class="fs-title">Billing Information</h2>
                 <h3 class="fs-subtitle">To whom you ship</h3>
-                <input type="text" name="receiverID" placeholder="Receiver Id"
+                <input type="text" name="id1" placeholder="Id"
                 @if (!empty($_POST))
-                    value="{{$_POST['receiverID']}}"
+                    value="{{$_POST['id1']}}"
                 @endif
                 />
-                <input type="text" name="receiverName" placeholder="Receiver First Name"
+                <input type="text" name="first-name" placeholder="First Name"
                 @if (!empty($_POST))
-                    value="{{$_POST['receiverName']}}"
-                @endif
-                />
-                <input type="text" name="senderID" placeholder="Sender Id"
-                @if (!empty($_POST))
-                    value="{{$_POST['senderID']}}"
-                @endif
-                />
-                <input type="text" name="senderName" placeholder="Sender First Name"
-                @if (!empty($_POST))
-                    value="{{$_POST['senderName']}}"
+                    value="{{$_POST['first-name']}}"
                 @endif
                 />
                 <input type="text" name="surname" placeholder="Surname"
@@ -159,90 +149,41 @@
                     value="{{$_POST['surname']}}"
                 @endif
                 />
-                <input type="text" name="date" placeholder="Birthday"
-                @if (!empty($_POST))
-                    value="{{$_POST['date']}}"
-                @endif
-                />
-                <select name="civil" class="form-control" style="margin-bottom: 10px;">
-                    <option value="">Seleccione el estado civil</option>
-                    <option value="Soltero/a">Soltero</option>
-                    <option value="Casado/a">Casado</option>
-                    <option value="Viudo/a">Viudo</option>
-                    <option value="Divorciado/a">Divorciado</option>
-                    <option value="Conyugue">Conyugue</option>
-                </select>
-                <input type="text" name="company" placeholder="Company"
-                @if (!empty($_POST))
-                    value="{{$_POST['company']}}"
-                @endif
-                />
                 <input type="text" name="phone-#" placeholder="+77(777)7777777"
                 @if (!empty($_POST))
                     value="{{$_POST['phone-#']}}"
                 @endif
                 />
-                <input type="text" name="email" placeholder="email@domain.com"
-                @if (!empty($_POST))
-                    value="{{$_POST['email']}}"
-                @endif
-                />
                 <select name="country" class="form-control" style="margin-bottom: 10px;">
                     <option value="">Seleccione el pais</option>
                     @foreach ($countries as $country)
-                        <option 
-                        @if (!empty($_POST) && $country->cod == $_POST['country'])
-                        selected 
-                        @endif
-                        value="{{$country->cod}}">{{$country->nombre}}</option>
+                        <option value="{{$country->cod}}">{{$country->nombre}}</option>
                     @endforeach
                 </select>
                 <select name="state" class="form-control" style="margin-bottom: 10px;">
                     <option value="">Seleccione el estado</option>
                     @foreach ($states as $state)
-                        <option 
-                        @if (!empty($_POST) && $state->cod == $_POST['state'])
-                        selected 
-                        @endif
-                        value="{{$state->cod}}">{{$state->nombre}}</option>
+                        <option value="{{$state->cod}}">{{$state->nombre}}</option>
                     @endforeach
                 </select>
-                <textarea name="address" placeholder="Address">@if (!empty($_POST)){{$_POST['address']}}@endif</textarea>
+                <textarea name="address" placeholder="Address"></textarea>
                 <input type="button" name="next" class="next action-button" value="Next" />
                 </fieldset>
                 <fieldset>
                 <h2 class="fs-title">Shipping Information</h2>
                 <h3 class="fs-subtitle">How you want to ship</h3>
-                <input type="number" name="peso" placeholder="Peso"
-                @if (!empty($_POST))
-                    value="{{$_POST['peso']}}"
-                @endif
-                />
-                <input type="number" name="alto" placeholder="Alto" 
-                @if (!empty($_POST))
-                    value="{{$_POST['alto']}}"
-                @endif
-                />
-                <input type="number" name="ancho" placeholder="Ancho" 
-                @if (!empty($_POST))
-                    value="{{$_POST['ancho']}}"
-                @endif
-                />
-                <input type="number" name="profundidad" placeholder="Profundidad" 
-                @if (!empty($_POST))
-                    value="{{$_POST['profundidad']}}"
-                @endif
-                />
+                <input type="number" name="peso" placeholder="Peso"/>
+                <input type="number" name="alto" placeholder="Alto" />
+                <input type="number" name="ancho" placeholder="Ancho" />
+                <input type="number" name="profundidad" placeholder="Profundidad" />
+                <input type="text" name="tipo-paquete" placeholder="Tipo paquete" />
                 <select name="tipo" class="form-control" style="margin-bottom: 10px;">
                     <option value="">Seleccione el tipo de paquete</option>
                     @foreach ($types as $type)
-                        <option 
-                        @if (!empty($_POST) && $type->cod == $_POST['tipo'])
-                        selected 
-                        @endif
-                        value="{{$type->cod}}">{{$type->nombre}}</option>
+                        <option value="{{$type->cod}}">{{$type->nombre}}</option>
                     @endforeach
                 </select>
+                <input type="text" name="clasificacion" placeholder="Clasificacion" />
                 <input type="radio" name="tipo-envio-1"/><label> Terrestres Shipping <span class="price">$4.00</span></label>
                 <input type="radio" name="tipo-envio-2"/><label> Aereo Shipping <span class="price">$4.00</span></label>
                 <input type="radio" name="tipo-envio-3"/><label> Marino Shipping <span class="price">$4.00</span></label>

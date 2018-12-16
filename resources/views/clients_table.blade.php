@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Franchises</title>
+    <title>LogUcab | Clients</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
@@ -47,7 +47,7 @@
     <!--SCROLL TO TOP-->
     <a href="#home" class="scrolltotop"><i class="fa fa-long-arrow-up"></i></a>
 
-     <!--START TOP AREA-->
+    <!--START TOP AREA-->
     <header class="top-area" id="home">
         <div class="top-area-bg" data-stellar-background-ratio="0.6"></div>
         <div class="header-top-area">
@@ -135,18 +135,26 @@
 
         <div class="datatables-area">
                 <div class="table-responsive container">
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="clients-table">
                         <thead>
                             <tr>
-                                <th>Estado</th>
-                                <th>Sucursal</th>
+                                <th>Cedula</th>
+                                <th>Nombre y Apellido</th>
+                                <th>Email</th>
+                                <th>Fecha de Nacimiento</th>
+                                <th>Direccion</th>
+                                <th>Carnet</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($franchises as $franchise)
+                            @foreach ($clients as $client)
                                 <tr>
-                                    <td>{{$franchise->estado}}</td>
-                                    <td>{{$franchise->nombre}}</td>
+                                    <td>{{$client->cli_cedula}}</td>
+                                    <td>{{$client->cli_nom}}</td>
+                                    <td>{{$client->cli_em}}</td>
+                                    <td>{{$client->cli_fn}}</td>
+                                    <td>{{$client->cli_lu}}</td>
+                                    <td>{{$client->cli_car}}</td>
                                 </tr>
                             @endforeach   
                         </tbody>
@@ -179,6 +187,6 @@
 <!--=====  DATA TABLE =====-->
 <script>  
     $(document).ready(function(){  
-            $('#users-table').DataTable();  
+            $('#clients-table').DataTable();  
     });  
 </script> 
