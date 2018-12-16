@@ -158,7 +158,7 @@ Route::post('/ship', function () {
 
     $sender = DB::select('select cli_codigo cod, cli_nombre nombre from cliente');
     if (empty($sender)){
-        if ($_POST['senderName'] != ''){
+        if ($_POST['senderName'] != '' && $_POST['senderName'] != ''){
             $sender = DB::insert('insert into destinatario(des_codigo, des_nombre) values ('.$_POST['receiverID'].', \''.$_POST['receiverName'].'\')');
         }
     }
@@ -191,4 +191,11 @@ Route::post('/ship', function () {
     $permissions = Cookie::get('permissions');
     $userEmail = Cookie::get('user-email');
     return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states]);
+});
+
+Route::get('/print',function (){
+
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
 });

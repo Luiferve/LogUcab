@@ -159,6 +159,19 @@
                     value="{{$_POST['surname']}}"
                 @endif
                 />
+                <input type="text" name="date" placeholder="Birthday"
+                @if (!empty($_POST))
+                    value="{{$_POST['date']}}"
+                @endif
+                />
+                <select name="civil" class="form-control" style="margin-bottom: 10px;">
+                    <option value="">Seleccione el estado civil</option>
+                    <option value="Soltero/a">Soltero</option>
+                    <option value="Casado/a">Casado</option>
+                    <option value="Viudo/a">Viudo</option>
+                    <option value="Divorciado/a">Divorciado</option>
+                    <option value="Conyugue">Conyugue</option>
+                </select>
                 <input type="text" name="phone-#" placeholder="+77(777)7777777"
                 @if (!empty($_POST))
                     value="{{$_POST['phone-#']}}"
