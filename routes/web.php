@@ -133,24 +133,53 @@ Route::post('/ship', function () {
     $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
     $message = '';
-    if ($_POST['id1'] == ''){
-        $message = $message.'Campo Id1 Vacio</br>';
+    if ($_POST['receiverID'] == ''){
+        $message = $message.'Campo receiverID Vacio. ';
     }
+    if ($_POST['receiverName'] == ''){
+        $message = $message.'Campo receiverName Vacio. ';
+    }
+    if ($_POST['senderID'] == ''){
+        $message = $message.'Campo senderID Vacio. ';
+    }
+
+    $receiver = DB::select('select des_codigo cod, des_nombre nombre from destinatario');
+    if (empty($receiver)){
+        if ($_POST['receiverName'] != ''){
+            $receiver = DB::insert('insert into destinatario(des_codigo, des_nombre) values ('.$_POST['receiverID'].', \''.$_POST['receiverName'].'\')');
+        }
+    }
+
+    $sender = DB::select('select cli_codigo cod, cli_nombre nombre from cliente');
+    if (empty($sender)){
+        if ($_POST['senderName'] != ''){
+            $sender = DB::insert('insert into destinatario(des_codigo, des_nombre) values ('.$_POST['receiverID'].', \''.$_POST['receiverName'].'\')');
+        }
+    }
+
     if ($_POST['peso'] == ''){
-        $message = $message.'Campo Peso Vacio</br>';
+        $message = $message.'Campo Peso Vacio. ';
     }
     if ($_POST['alto'] == ''){
-        $message = $message.'Campo Alto Vacio</br>';
+        $message = $message.'Campo Alto Vacio. ';
     }
     if ($_POST['ancho'] == ''){
-        $message = $message.'Campo Ancho Vacio</br>';
+        $message = $message.'Campo Ancho Vacio. ';
     }
     if ($_POST['profundidad'] == ''){
-        $message = $message.'Campo Profundidad Vacio</br>';
+        $message = $message.'Campo Profundidad Vacio. ';
     }
     if ($_POST['tipo'] == ''){
-        $message = $message.'Campo Tipo Vacio</br>';
+        $message = $message.'Campo Tipo Vacio. ';
     }
+    if ($_POST['country'] == ''){
+        $message = $message.'Campo Pais Vacio. ';
+    }
+    if ($_POST['state'] == ''){
+        $message = $message.'Campo Estado Vacio. ';
+    }
+
+
 
 
     $permissions = Cookie::get('permissions');

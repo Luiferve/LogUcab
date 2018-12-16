@@ -134,14 +134,24 @@
                 <fieldset>
                 <h2 class="fs-title">Billing Information</h2>
                 <h3 class="fs-subtitle">To whom you ship</h3>
-                <input type="text" name="id1" placeholder="Id"
+                <input type="text" name="receiverID" placeholder="Receiver Id"
                 @if (!empty($_POST))
-                    value="{{$_POST['id1']}}"
+                    value="{{$_POST['receiverID']}}"
                 @endif
                 />
-                <input type="text" name="first-name" placeholder="First Name"
+                <input type="text" name="receiverName" placeholder="Receiver First Name"
                 @if (!empty($_POST))
-                    value="{{$_POST['first-name']}}"
+                    value="{{$_POST['receiverName']}}"
+                @endif
+                />
+                <input type="text" name="senderID" placeholder="Sender Id"
+                @if (!empty($_POST))
+                    value="{{$_POST['senderID']}}"
+                @endif
+                />
+                <input type="text" name="senderName" placeholder="Sender First Name"
+                @if (!empty($_POST))
+                    value="{{$_POST['senderName']}}"
                 @endif
                 />
                 <input type="text" name="surname" placeholder="Surname"
@@ -157,33 +167,64 @@
                 <select name="country" class="form-control" style="margin-bottom: 10px;">
                     <option value="">Seleccione el pais</option>
                     @foreach ($countries as $country)
-                        <option value="{{$country->cod}}">{{$country->nombre}}</option>
+                        <option 
+                        @if (!empty($_POST) && $country->cod == $_POST['country'])
+                        selected 
+                        @endif
+                        value="{{$country->cod}}">{{$country->nombre}}</option>
                     @endforeach
                 </select>
                 <select name="state" class="form-control" style="margin-bottom: 10px;">
                     <option value="">Seleccione el estado</option>
                     @foreach ($states as $state)
-                        <option value="{{$state->cod}}">{{$state->nombre}}</option>
+                        <option 
+                        @if (!empty($_POST) && $state->cod == $_POST['state'])
+                        selected 
+                        @endif
+                        value="{{$state->cod}}">{{$state->nombre}}</option>
                     @endforeach
                 </select>
-                <textarea name="address" placeholder="Address"></textarea>
+                <textarea name="address" placeholder="Address">@if (!empty($_POST)){{$_POST['address']}}@endif</textarea>
                 <input type="button" name="next" class="next action-button" value="Next" />
                 </fieldset>
                 <fieldset>
                 <h2 class="fs-title">Shipping Information</h2>
                 <h3 class="fs-subtitle">How you want to ship</h3>
-                <input type="number" name="peso" placeholder="Peso"/>
-                <input type="number" name="alto" placeholder="Alto" />
-                <input type="number" name="ancho" placeholder="Ancho" />
-                <input type="number" name="profundidad" placeholder="Profundidad" />
-                <input type="text" name="tipo-paquete" placeholder="Tipo paquete" />
+                <input type="number" name="peso" placeholder="Peso"
+                @if (!empty($_POST))
+                    value="{{$_POST['peso']}}"
+                @endif
+                />
+                <input type="number" name="alto" placeholder="Alto" 
+                @if (!empty($_POST))
+                    value="{{$_POST['alto']}}"
+                @endif
+                />
+                <input type="number" name="ancho" placeholder="Ancho" 
+                @if (!empty($_POST))
+                    value="{{$_POST['ancho']}}"
+                @endif
+                />
+                <input type="number" name="profundidad" placeholder="Profundidad" 
+                @if (!empty($_POST))
+                    value="{{$_POST['profundidad']}}"
+                @endif
+                />
                 <select name="tipo" class="form-control" style="margin-bottom: 10px;">
                     <option value="">Seleccione el tipo de paquete</option>
                     @foreach ($types as $type)
-                        <option value="{{$type->cod}}">{{$type->nombre}}</option>
+                        <option 
+                        @if (!empty($_POST) && $type->cod == $_POST['tipo'])
+                        selected 
+                        @endif
+                        value="{{$type->cod}}">{{$type->nombre}}</option>
                     @endforeach
                 </select>
-                <input type="text" name="clasificacion" placeholder="Clasificacion" />
+                <input type="text" name="clasificacion" placeholder="Clasificacion" 
+                @if (!empty($_POST))
+                    value="{{$_POST['clasificacion']}}"
+                @endif
+                />
                 <input type="radio" name="tipo-envio-1"/><label> Terrestres Shipping <span class="price">$4.00</span></label>
                 <input type="radio" name="tipo-envio-2"/><label> Aereo Shipping <span class="price">$4.00</span></label>
                 <input type="radio" name="tipo-envio-3"/><label> Marino Shipping <span class="price">$4.00</span></label>
