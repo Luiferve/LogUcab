@@ -315,7 +315,9 @@ Route::post('/employees/add',function () {
     $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
     $permissions = Cookie::get('permissions');
     $userEmail = Cookie::get('user-email');
-    return view('employee_registration',['permissions' => $permissions, 'userEmail' => $userEmail,'franchises' => $franchises,'countries' => $countries,'states' => $states]);
+
+    $message = 'Empleado agregado exitosamente.';
+    return view('employee_registration',['permissions' => $permissions, 'userEmail' => $userEmail,'franchises' => $franchises,'countries' => $countries,'states' => $states,'message' => $message]);
 });
 
 Route::get('/locations/{id}',function ($id) {
@@ -343,11 +345,17 @@ Route::get('/users/delete/{id}',function ($id) {
 })->where('id', '[0-9]+');
 
 Route::get('/employees/delete/{id}',function ($id) {
-
+    $del = DB::delete('delete from empleado where emp_cedula='.$id);
+    $query = <<<'EOD'
+    select emp_cedula, emp_nombre || ' ' || emp_apellido as emp_nombre,
+        emp_email_personal as emp_ep, emp_email_coorporativo as emp_ec 
+    from empleado
+EOD;
+    $employees = DB::select($query);
     $permissions = Cookie::get('permissions');
     $userEmail = Cookie::get('user-email');
-    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
-    return 'Got: '.$id;
+    $message = 'Empleado eliminado';
+    return view('employees_table',['employees' => $employees], ["permissions" => $permissions,"userEmail" => $userEmail,'message' => $message]);
 })->where('id', '[0-9]+');
 
 Route::get('/locations/delete/{id}',function ($id) {

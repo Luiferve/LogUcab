@@ -14,27 +14,27 @@
     <title>LogUcab | Employees</title>
 
     <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
+    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/animate.css">
-    <link rel="stylesheet" href="css/stellarnav.min.css">
-    <link rel="stylesheet" href="css/owl.carousel.css">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/stellarnav.min.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="text/javascript" src="js/DataTables-1.10.18/css/datatables.min.js"></script>
-    <script src="js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
-    <script src="js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
-    <script src="js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
+    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
+    <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
 
     <!--====== MAIN STYLESHEETS ======-->
-    <link href="style.css" rel="stylesheet">
-    <link href="css/responsive.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
 
-    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
 
@@ -57,7 +57,7 @@
                 <nav class="navbar">
                     <div class="container">
                         <div class="navbar-header">
-                            <a href="{{url('/')}}" class="navbar-brand"><img src="img/logo.png" alt="logo"></a>
+                            <a href="{{url('/')}}" class="navbar-brand"><img src="/img/logo.png" alt="logo"></a>
                         </div>
                         <div class="search-and-language-bar pull-right">
                             <ul>
@@ -105,6 +105,13 @@
         </div>
 
         <div class="datatables-area">
+        @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
+                    </div>
+                </div>
+            @endif
                 <div class="table-responsive container">
                     <div class="table-header">
                         <button class="add-another btn"><a href="{{url('/employees/add')}}">Add new employee</a></button>
@@ -129,9 +136,9 @@
                                     <td>
                                     <div style="text-align: center">
                                         <a href="{{url('/employees/'.$employee->emp_cedula)}}" class="edit_details" title="edit" >
-                                            <img src="img/edit.png" alt="Edit" width=20px></a>
+                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
                                         <a href="{{url('/employees/delete/'.$employee->emp_cedula)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
-                                            <img src="img/delete.png" alt="Delete" width=20px></a>
+                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
                                     </div>
                                     </td>
                                 </tr>
@@ -146,18 +153,18 @@
     <script src="js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
-    <script src="js/vendor/jquery.easing.1.3.js"></script>
-    <script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
-    <script src="js/vendor/jquery.appear.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/stellar.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/stellarnav.min.js"></script>
-    <script src="js/contact-form.js"></script>
-    <script src="js/jquery.sticky.js"></script>
+    <script src="/js/vendor/jquery.easing.1.3.js"></script>
+    <script src="/js/vendor/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/js/vendor/jquery.appear.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/stellar.js"></script>
+    <script src="/js/wow.min.js"></script>
+    <script src="/js/stellarnav.min.js"></script>
+    <script src="/js/contact-form.js"></script>
+    <script src="/js/jquery.sticky.js"></script>
 
     <!--===== ACTIVE JS =====-->
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
     
 </body>
 

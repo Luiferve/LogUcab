@@ -14,7 +14,7 @@
     <title>LogUcab | Employee Registration</title>
 
     <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
+    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
     <link rel="stylesheet" href="/css/normalize.css">
@@ -135,6 +135,13 @@
             <!--END MAINMENU AREA END-->
 
     <div class="container" id="cont1">
+            @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
+                    </div>
+                </div>
+            @endif
             <form class="form-horizontal" role="form" method="POST" action="{{url('/employees/add')}}">
                 @csrf
                 <div class="form-group">
@@ -170,7 +177,7 @@
                 <div class="form-group">
                     <label for="nivelAcademico" class="col-sm-3 control-label">Nivel Academico*</label>
                     <div class="col-sm-9">
-                    <select name="nivelAcademico" class="form-control" style="margin-bottom: 10px;" required>
+                    <select name="academico" class="form-control" style="margin-bottom: 10px;" required>
                         <option value="">Seleccione el Nivel Academico</option>
                         <option value="Basica">Basica</option>
                         <option value="Media">Media</option>
