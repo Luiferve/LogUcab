@@ -277,13 +277,7 @@ Route::get('/print',function (){
     return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
 });
 
-Route::get('/users/{id}',function ($id) {
 
-    $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
-    return 'Got: '.$id;
-});
 
 
 Route::get('/locations/{id}',function ($id) {
@@ -584,3 +578,68 @@ EOD;
     $message = 'sucursal eliminado';
     return view('users_table',['users' => $users, 'permissions' => $permissions, 'userEmail' => $userEmail]);
 })->where('id', '[0-9]+');
+
+
+
+Route::post('/routeReg',function (){
+    $message = NULL;
+    if ($_POST['add'] != ''){
+        $routes = DB::insert('insert into ruta(rut_suc_origen, rut_suc_destino, rut_duracion) values(\''.$_POST['sucursalO'].'\',\''.$_POST['sucursalD'].'\','.$_POST['duracion'].')');
+        $message = 'Ruta agregada exitosamente.';
+    }
+    else{
+        $routes = DB:: update('update ruta set rut_suc_origen = \''.$_POST['sucursalO'].'\', rut_suc_destino = \''.$_POST['sucursalD'].'\', rut_duracion = \''.$_POST['duracion'].'\' where rut_codigo = \''.$_POST['codigo'].'\'');
+        'Ruta actualizada exitosamente.';
+    }
+   
+    $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
+    $permissions = Cookie::get('permissions');
+    return view('route_registration', ["permissions" => $permissions, 'message' => $message, 'franchises' => $franchises] );
+});
+
+Route::get('/usuario', function () {
+    $rol = DB::select('select rol_codigo cod, rol_nombre nombre from rol');
+    $permissions = Cookie::get('permissions');
+
+    return view('user_registration', ["permissions" => $permissions, 'rol' => $rol, 'add' => true] );
+});
+
+Route::get('/users/delete/{id}',function ($id) {
+    $del = DB::delete('delete from usuario where usu_codigo='.$id);
+    $query = <<<'EOD'
+    select U.usu_codigo,usu_email,usu_password, rol_nombre
+    from usuario U, usu_rol UR, rol
+    where U.usu_codigo = UR.usu_usuario and rol_codigo = UR.usu_rol
+
+EOD;
+    $users = DB::select($query);
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    $message = 'sucursal eliminado';
+    return view('users_table',['users' => $users, 'permissions' => $permissions, 'userEmail' => $userEmail]);
+})->where('id', '[0-9]+');
+
+Route::get('/users/{id}',function ($id) {
+    $users= DB::select('select U.*, rol_codigo  from usuario U ,rol, usu_rol UR where U.usu_codigo = UR.usu_usuario and UR.usu_rol = rol_codigo and U.usu_codigo='.$id);
+    $rol = DB::select('select rol_codigo cod, rol_nombre nombre from rol');
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    return view('user_registration',['users' => $users, 'rol' => $rol, 'permissions' => $permissions, 'userEmail' => $userEmail]);
+})->where('id', '[0-9]+');
+
+
+Route::post('/usuarioReg',function (){
+    $message = NULL;
+        $message = 'Usuario agregado exitosamente.';
+        $users = DB:: update('update usuario set usu_email= \''.$_POST['email'].'\', usu_password = \''.$_POST['password'].'\'  where usu_codigo = \''.$_POST['codigo'].'\'');
+        'Ruta actualizada exitosamente.';
+    
+    $rol = DB::select('select rol_codigo cod, rol_nombre nombre from rol');
+    $permissions = Cookie::get('permissions');
+    return view('user_registration', ["permissions" => $permissions, 'message' => $message, 'rol' => $rol] );
+});
+
+
+
+
+

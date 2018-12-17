@@ -11,9 +11,9 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Route Registration</title>
+    <title>LogUcab | User Update</title>
 
-    <!--====== FAVICON ICON =======-->
+     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
@@ -29,7 +29,6 @@
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
-
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
@@ -85,10 +84,10 @@
                         <div id="main-nav" class="stellarnav">
                             <ul id="nav" class="nav navbar-nav">
                                 <li><a href="{{url('/')}}">home</a></li>
-                                <li><a href="about.html">about</a></li>
-                                <li><a href="service.html">Service</a></li>
-                                <li><a href="contact.html">Contact</a></li>
-                                @if (isset($permissions) && $permissions > 3)
+                                <li><a href="/about.html">about</a></li>
+                                <li><a href="/service.html">Service</a></li>
+                                <li><a href="/contact.html">Contact</a></li>
+                                
                                     <li><a href="#">Menu</a>
                                         <ul>
                                             <li><a href="{{url('/clients')}}">Clients</a></li>
@@ -102,7 +101,7 @@
 
                                         </ul>
                                     </li>
-                                @endif
+                                
                             </ul>
                         </div>
                     </div>
@@ -111,53 +110,50 @@
             <!--END MAINMENU AREA END-->
 
     <div class="container" id="cont1">
-        @if (isset($message))
+         @if (isset($message))
                 <div class="container" id="alert" style="margin-top: 2%;">
                     <div class="alert alert-success" role="alert">
                         {{$message}}
                     </div>
                 </div>
             @endif
-            <form class="form-horizontal" role="form"  method="POST" action="{{url('/routeReg')}}">
+            <form class="form-horizontal" role="form" method="POST" action="{{url('/usuarioReg')}}">
                 @csrf
                 <input type="hidden" name="add" value="@if (isset($add))add @endif">
-                <input type="hidden" name="codigo" @if (isset($routes))
-                            value="{{$routes[0]->rut_codigo}}"
+                <input type="hidden" name="codigo" @if (isset($users))
+                            value="{{$users[0]->usu_codigo}}"
                         @endif>
                 <div class="form-group">
-                    <label for="sucursal" class="col-sm-3 control-label">Sucursal de Origen*</label>
+                    <label for="email" class="col-sm-3 control-label">E-mail*</label>
                     <div class="col-sm-9">
-                        <select name="sucursalO" class="form-control" style="margin-bottom: 10px;">
-                            <option value="">Seleccione una Sucursal</option>
-                            @foreach ($franchises as $franchise)
-                                <option 
-                                @if (isset($routes) && isset($routes) && $franchise->cod == $routes[0]->rut_suc_origen)
-                                selected 
-                                @endif
-                                value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
-                            @endforeach
-                        </select>
+                        <input name = "email" type="text" id="email" placeholder="E-mail" class="form-control" autofocus required
+                        @if (isset($users))
+                            value="{{$users[0]->usu_email}}"
+                        @endif
+                        >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="sucursal" class="col-sm-3 control-label">Sucursal de Destino*</label>
+                    <label for="passwordr" class="col-sm-3 control-label">Password* </label>
                     <div class="col-sm-9">
-                        <select name="sucursalD" class="form-control" style="margin-bottom: 10px;">
-                            <option value="">Seleccione una sucursal</option>
-                            @foreach ($franchises as $franchise)
-                                <option 
-                                @if (isset($routes) && isset($routes) && $franchise->cod == $routes[0]->rut_suc_destino)
-                                selected 
-                                @endif
-                                value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
-                            @endforeach
-                        </select>
+                        <input name ="password" type="text" id="password"  placeholder="Password" class="form-control" required
+                        @if (isset($users))
+                            value="{{$users[0]->usu_password}}"
+                        @endif
+                        >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="duracion" class="col-sm-3 control-label">Duracion (en Horas)*</label>
+                    <label for="pais" class="col-sm-3 control-label">Rol*</label>
                     <div class="col-sm-9">
-                        <input name = "duracion" type="text" id="duracion" placeholder="Duracion" class="form-control">
+                        <select name="country" class="form-control" style="margin-bottom: 10px;">
+                            <option value="">Seleccione el Rol</option>
+                            @foreach ($rol as $rol)
+                                <option 
+                                
+                                value="{{$rol->cod}}">{{$rol->nombre}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             
@@ -168,6 +164,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+            </form>    
             </form> <!-- /form -->
         </div> <!-- ./container -->
 
