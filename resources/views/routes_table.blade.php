@@ -69,8 +69,9 @@
                                 <li class="search-box"><i class="fa fa-search"></i></li>
                                 <li class="select-language">
                                     <select name="#" id="#">
-                                    <option selected value="End">SPA</option>
-                                    <option value="End">ENG</option>
+                                    <option selected value="End">ENG</option>
+                                    <option value="ARA">ARA</option>
+                                    <option value="CHI">CHI</option>
                                 </select>
                                 </li>
                             </ul>
@@ -88,12 +89,12 @@
                                 @if (isset($permissions) && $permissions > 3)
                                     <li><a href="#">Menu</a>
                                         <ul>
-                                            <li><a href="{{url('/clients')}}">Clients Table</a></li>
+                                            <li><a href="{{url('/clients')}}">Clients</a></li>
                                             <li><a href="{{url('/users')}}">Users Table</a></li>
                                             <li><a href="{{url('/employees')}}">Employees Table</a></li>
                                             <li><a href="{{url('/locations')}}">Locations Table</a></li>
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
-                                            <li><a href="{{url('/routes')}}">Routes Table</a></li>
+                                            <li><a href="{{url('/routes')}}">Routes</a></li>
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
                                         </ul>
                                     </li>
@@ -106,16 +107,9 @@
         </div>
 
         <div class="datatables-area">
-        @if (isset($message))
-                <div class="container" id="alert" style="margin-top: 2%;">
-                    <div class="alert alert-success" role="alert">
-                        {{$message}}
-                    </div>
-                </div>
-            @endif
                 <div class="table-responsive container">
-                    <div class="table-header">
-                        <button class="add-another btn"><a href="{{url('/routes/add')}}">Add new route</a></button>
+					<div class="table-header">
+                        <button class="add-another btn" onclick="window.location='{{ url("/routeReg") }}'">Add new Route</button>
                     </div>
                     <table class="table table-bordered table-hover dt-responsive custom-table" id="routes-table">
                         <thead>
@@ -125,7 +119,7 @@
                                 <th>Sucursal Destino</th>
                                 <th>Duracion (Horas)</th>
                                 <th>Costo</th>
-                                <th></th>
+								<th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -136,14 +130,14 @@
                                     <td>{{$route->rut_d}}</td>
                                     <td>{{$route->rut_du}}</td>
                                     <td>{{$route->rut_cos}}</td>
-                                    <td>
-                                        <div style="text-align: center">
+									<td>
+										<div style="text-align: center">
                                         <a href="{{url('/routes/'.$route->rut_c)}}" class="edit_details" title="edit" >
-                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
+                                            <img src="http://i.imgur.com/DHma3ln.png" alt="Edit" width=20px></a>
                                         <a href="{{url('/routes/delete/'.$route->rut_c)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
-                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
-                                    </div>
-                                    </td>
+                                            <img src="http://i.imgur.com/HNUCXDU.png" alt="Delete" width=20px></a>
+                                    	</div>
+									</td>
                                 </tr>
                             @endforeach   
                         </tbody>
