@@ -306,3 +306,35 @@ Route::get('/franchises/{id}',function ($id) {
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
 });
+
+Route::get('/users/delete/{id}',function ($id) {
+
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
+    return 'Got: '.$id;
+});
+
+Route::get('/employees/delete/{id}',function ($id) {
+
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
+    return 'Got: '.$id;
+});
+
+Route::get('/locations/delete/{id}',function ($id) {
+
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
+    return 'Got: '.$id;
+});
+
+Route::get('/franchises/delete/{id}',function ($id) {
+
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
+    return 'Got: '.$id;
+});

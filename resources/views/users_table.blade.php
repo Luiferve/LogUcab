@@ -125,7 +125,7 @@
                                     <div style="text-align: center">
                                         <a href="{{url('/users/'.$user->usu_codigo)}}" class="edit_details" title="edit" >
                                             <img src="img/edit.png" alt="Edit" width=20px></a>
-                                        <a href="" class="delete_details"  title="delete" style="padding-left: 20px;">
+                                        <a href="{{url('/users/delete/'.$user->usu_codigo)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
                                             <img src="img/delete.png" alt="Delete" width=20px></a>
                                     </div>
                                     </td>

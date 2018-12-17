@@ -130,7 +130,7 @@
                                     <div style="text-align: center">
                                         <a href="{{url('/employees/'.$employee->emp_cedula)}}" class="edit_details" title="edit" >
                                             <img src="img/edit.png" alt="Edit" width=20px></a>
-                                        <a href="" class="delete_details"  title="delete" style="padding-left: 20px;">
+                                        <a href="{{url('/employees/delete/'.$employee->emp_cedula)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
                                             <img src="img/delete.png" alt="Delete" width=20px></a>
                                     </div>
                                     </td>
