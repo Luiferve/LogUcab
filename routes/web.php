@@ -319,6 +319,23 @@ EOD;
     return view('clients_table',['clients' => $clients], ["permissions" => $permissions]);
 });
 
+Route::get('/clients/delete/{id}', function ($id) {
+    $del = DB::delete('delete from cliente where cli_cedula='.$id);
+    $query = <<<'EOD'
+    select cli_cedula, cli_nombre || ' ' || cli_apellido as cli_nom,
+        cli_email as cli_em, cli_f_nacimiento as cli_fn, lug_nombre as cli_lu,
+        cli_carnet as cli_car 
+    from cliente, lugar
+    where
+        cli_lugar = lug_codigo
+EOD;
+    $clients = DB::select($query);
+    $message = 'Cliente Eliminado.';
+
+    $permissions = Cookie::get('permissions');
+    return view('clients_table',['clients' => $clients], ["permissions" => $permissions, '$message' => $message]);
+})->where('id', '[0-9]+');
+
 Route::get('/routes', function () {
     $query = <<<'EOD'
     select distinct rut_codigo as rut_c, s1.suc_nombre rut_o, s2.suc_nombre as rut_d, rut_duracion as rut_du,
