@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Employee Registration</title>
+    <title>LogUcab | CLient Modification</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
@@ -114,15 +114,14 @@
                     </div>
                 </div>
             @endif
-            <form class="form-horizontal" role="form" method="POST" action="{{url('/employees/add')}}">
+            <form class="form-horizontal" role="form" method="POST" action="{{url('clients')}}">
                 @csrf
-                <input type="hidden" name="add" value="@if (isset($add))add @endif">
                 <div class="form-group">
                     <label for="firstName" class="col-sm-3 control-label">Nombre*</label>
                     <div class="col-sm-9">
                         <input type="text" id="firstName" name="firstName" placeholder="Nombre" class="form-control" autofocus required
-                        @if (isset($employee))
-                            value="{{$employee[0]->emp_nombre}}"
+                        @if (isset($client))
+                            value="{{$client[0]->cli_nombre}}"
                         @endif
                         >
                     </div>
@@ -131,8 +130,8 @@
                     <label for="lastName" class="col-sm-3 control-label">Apellido*</label>
                     <div class="col-sm-9">
                         <input type="text" id="lastName" name="lastName" placeholder="Apellido" class="form-control" autofocus required
-                        @if (isset($employee))
-                            value="{{$employee[0]->emp_apellido}}"
+                        @if (isset($client))
+                            value="{{$client[0]->cli_apellido}}"
                         @endif
                         >
                     </div>
@@ -141,8 +140,8 @@
                     <label for="id" class="col-sm-3 control-label">Cedula*</label>
                     <div class="col-sm-9">
                         <input type="number" id="cedula" name="cedula" placeholder="Cedula" class="form-control" required
-                        @if (isset($employee))
-                            value="{{$employee[0]->emp_cedula}}"
+                        @if (isset($client))
+                            value="{{$client[0]->cli_cedula}}"
                         @endif
                         >
                     </div>
@@ -151,39 +150,46 @@
                     <label for="email" class="col-sm-3 control-label">Email* </label>
                     <div class="col-sm-9">
                         <input type="email" id="email" name="email" placeholder="Email" class="form-control" name= "email" required
-                        @if (isset($employee))
-                            value="{{$employee[0]->emp_email_personal}}"
+                        @if (isset($client))
+                            value="{{$client[0]->cli_email}}"
                         @endif
                         >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="profesion" class="col-sm-3 control-label">Profesion*</label>
+                    <label for="carnet" class="col-sm-3 control-label">Carnet* </label>
                     <div class="col-sm-9">
-                        <input type="text" id="profesion" name="profesion" placeholder="Profesion" class="form-control" required
-                        @if (isset($employee))
-                            value="{{$employee[0]->emp_profesion}}"
+                        <input type="text" id="carnet" name="carnet" placeholder="Carnet" class="form-control" name= "carnet" required
+                        @if (isset($client))
+                            value="{{$client[0]->cli_carnet}}"
                         @endif
                         >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="nivelAcademico" class="col-sm-3 control-label">Nivel Academico*</label>
+                    <label for="vip" class="col-sm-3 control-label">VIP*</label>
                     <div class="col-sm-9">
-                    <select name="academico" class="form-control" style="margin-bottom: 10px;" required>
-                        <option value="">Seleccione el Nivel Academico</option>
-                        <option value="Basica">Basica</option>
-                        <option value="Media">Media</option>
-                        <option value="Superior">Superior</option>
-                    </select>
+                        <select name="vip" class="form-control" style="margin-bottom: 10px;" required>
+                            <option value="">Seleccione si es cliente VIP</option>
+                            <option value="1" 
+                            @if (isset($client) && $client[0]->cli_vip == 1)
+                                selected
+                            @endif
+                            >Si</option>
+                            <option value="NULL" 
+                            @if (isset($client) && $client[0]->cli_vip != 1)
+                                selected
+                            @endif
+                            >No</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="numeroHijos" class="col-sm-3 control-label">Numero de Hijos*</label>
+                    <label for="empresa" class="col-sm-3 control-label">Empresa*</label>
                     <div class="col-sm-9">
-                        <input type="number" id="hijos" name="hijos" placeholder="Numero de hijos" class="form-control" required
-                        @if (isset($employee))
-                            value="{{$employee[0]->emp_num_hijos}}"
+                        <input type="text" id="empresa" name="empresa" placeholder="Empresa" class="form-control" required
+                        @if (isset($client))
+                            value="{{$client[0]->cli_empresa}}"
                         @endif
                         >
                     </div>
@@ -205,65 +211,10 @@
                     <label for="birthDate" class="col-sm-3 control-label">Fecha de Nacimiento*</label>
                     <div class="col-sm-9">
                         <input type="date" id="birthDate" class="form-control" name="fnac"required
-                        @if (isset($employee))
-                            value="{{$employee[0]->emp_f_nacimiento}}"
+                        @if (isset($client))
+                            value="{{$client[0]->cli_f_nacimiento}}"
                         @endif
                         >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="ingreDate" class="col-sm-3 control-label">Fecha de Ingreso*</label>
-                    <div class="col-sm-9">
-                        <input type="date" id="ingrehDate" class="form-control" name="fing" required
-                        @if (isset($employee))
-                            value="{{$employee[0]->emp_f_ingreso}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="sucursal" class="col-sm-3 control-label">Sucursal*</label>
-                    <div class="col-sm-9">
-                        <select name="sucursal" class="form-control" style="margin-bottom: 10px;" required>
-                            <option value="">Seleccione una sucursal</option>
-                            @foreach ($franchises as $franchise)
-                                <option 
-                                @if (isset($employee) && $franchise->cod == $employee[0]->emp_sucursal)
-                                selected 
-                                @endif
-                                value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="pais" class="col-sm-3 control-label">Pais*</label>
-                    <div class="col-sm-9">
-                        <select name="country" class="form-control" style="margin-bottom: 10px;" required>
-                            <option value="">Seleccione el pais</option>
-                            @foreach ($countries as $country)
-                                <option 
-                                @if (isset($employee) && $country->cod == $employee[0]->emp_lugar)
-                                selected 
-                                @endif
-                                value="{{$country->cod}}">{{$country->nombre}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="estado" class="col-sm-3 control-label">Estado*</label>
-                    <div class="col-sm-9">
-                        <select name="state" class="form-control" style="margin-bottom: 10px;" required>
-                            <option value="">Seleccione el estado</option>
-                            @foreach ($states as $state)
-                                <option 
-                                @if (isset($employee) && $state->cod == $employee[0]->emp_lugar)
-                                selected 
-                                @endif
-                                value="{{$state->cod}}">{{$state->nombre}}</option>
-                            @endforeach
-                        </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -277,13 +228,18 @@
                     </div>
                 </div>
                 <div class="form-group">
-                        <label for="Base" class="col-sm-3 control-label">Monto Base* </label>
+                    <label for="estado" class="col-sm-3 control-label">Estado*</label>
                     <div class="col-sm-9">
-                        <input type="number" id="base" name="base" placeholder="Salario Diario en Bolivares" class="form-control" required
-                        @if (isset($employee))
-                            value="{{$employee[0]->emp_monto_base}}"
-                        @endif
-                        >
+                        <select name="state" class="form-control" style="margin-bottom: 10px;" required>
+                            <option value="">Seleccione el estado</option>
+                            @foreach ($states as $state)
+                                <option 
+                                @if (isset($client) && $state->cod == $client[0]->cli_lugar)
+                                selected 
+                                @endif
+                                value="{{$state->cod}}">{{$state->nombre}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -302,7 +258,7 @@
                         <span class="help-block">*Obligatorio</span>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+                <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
             </form> <!-- /form -->
         </div> <!-- ./container -->
 

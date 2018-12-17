@@ -319,6 +319,44 @@ EOD;
     return view('clients_table',['clients' => $clients], ["permissions" => $permissions]);
 });
 
+Route::get('/clients/{id}', function ($id) {
+    $client = DB::select('select * from cliente where cli_cedula='.$id);
+    $phone = DB::select('select tel_numero from telefono where tel_cliente='.$client[0]->cli_cedula);
+    $location = DB::select('select * from lugar where lug_codigo='.$client[0]->cli_lugar);    
+    $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
+
+    $permissions = Cookie::get('permissions');
+    return view('client_registration',['client' => $client, 'phone' => $phone, 'location' => $location, 'states' => $states], ["permissions" => $permissions]);
+})->where('id', '[0-9]+');
+
+Route::post('/clients', function () {
+    $location = DB::insert('insert into lugar(lug_nombre,lug_tipo,lug_lugar) values(\''.$_POST['direcc'].'\',\'Otro\','.$_POST['state'].')');
+    $location = DB::select('select lug_codigo cod from lugar order by lug_codigo DESC limit 1');
+    $client = DB::update('update cliente set cli_cedula='.$_POST['cedula'].', cli_nombre=\''.$_POST['firstName'].'\', cli_apellido=\''.$_POST['lastName'].'\', cli_f_nacimiento=\''.$_POST['fnac'].'\', cli_empresa=\''.$_POST['empresa'].'\', cli_lugar='.$location[0]->cod.', cli_carnet=\''.$_POST['carnet'].'\', cli_estado_civil=\''.$_POST['civil'].'\', cli_vip='.$_POST['vip'].', cli_email=\''.$_POST['email'].'\' where cli_cedula='.$_POST['cedula']);
+    $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phoneNumber'].'\'');
+    if (empty($phone)){
+        $phone = DB::delete('delete from telefono where tel_cliente='.$_POST['cedula']);
+        $phone = DB::insert('insert into telefono(tel_numero,tel_cliente) values(\''.$_POST['phoneNumber'].'\',\''.$_POST['cedula'].'\')');
+        $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phoneNumber'].'\'');
+    } else {
+        $phone = DB::update('update telefono set tel_cliente='.$_POST['cedula'].' where tel_numero=\''.$_POST['phoneNumber'].'\'');
+    }
+    $message = 'Empleado actualizado exitosamente.';
+
+    $query = <<<'EOD'
+    select cli_cedula, cli_nombre || ' ' || cli_apellido as cli_nom,
+        cli_email as cli_em, cli_f_nacimiento as cli_fn, lug_nombre as cli_lu,
+        cli_carnet as cli_car 
+    from cliente, lugar
+    where
+        cli_lugar = lug_codigo
+EOD;
+    $clients = DB::select($query);
+
+    $permissions = Cookie::get('permissions');
+    return view('clients_table', ["permissions" => $permissions, 'message' => $message,'clients' => $clients]);
+});
+
 Route::get('/clients/delete/{id}', function ($id) {
     $del = DB::delete('delete from cliente where cli_cedula='.$id);
     $query = <<<'EOD'
