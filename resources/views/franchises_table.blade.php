@@ -124,7 +124,7 @@
                                     <td>{{$franchise->nombre}}</td>
                                     <td>
                                     <div style="text-align: center">
-                                        <a href="" class="edit_details" title="edit" >
+                                        <a href="{{url('/franchises/'.$franchise->codigo)}}" class="edit_details" title="edit" >
                                             <img src="img/edit.png" alt="Edit" width=20px></a>
                                         <a href="" class="delete_details"  title="delete" style="padding-left: 20px;">
                                             <img src="img/delete.png" alt="Delete" width=20px></a>

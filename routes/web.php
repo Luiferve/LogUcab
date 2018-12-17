@@ -23,7 +23,7 @@ Route::get('/', function () {
 Route::get('/franchises', function () {
     $query = <<<'EOD'
     select (select b.lug_nombre from lugar a, lugar b where s.suc_lugar = a.lug_codigo and a.lug_lugar = b.lug_codigo) estado,
-        s.suc_nombre nombre
+        s.suc_nombre nombre, s.suc_codigo codigo
     from sucursal s
 EOD;
     $franchises = DB::select($query);
@@ -38,7 +38,7 @@ Route::get('/locations', function () {
     select (select d.lug_nombre from lugar b,lugar c,lugar d where a.lug_lugar=b.lug_codigo and b.lug_lugar=c.lug_codigo and c.lug_lugar=d.lug_codigo) pais,
         (select c.lug_nombre from lugar b,lugar c where a.lug_lugar=b.lug_codigo and b.lug_lugar=c.lug_codigo) estado,
         (select b.lug_nombre from lugar b where a.lug_lugar=b.lug_codigo) municipio,
-        a.lug_nombre parroquia 
+        a.lug_nombre parroquia, a.lug_codigo codigo
     from lugar a 
     where a.lug_tipo = 'Parroquia'
 EOD;
@@ -273,4 +273,36 @@ Route::get('/print',function (){
     $permissions = Cookie::get('permissions');
     $userEmail = Cookie::get('user-email');
     return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
+});
+
+Route::get('/users/{id}',function ($id) {
+
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
+    return 'Got: '.$id;
+});
+
+Route::get('/employees/{id}',function ($id) {
+
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
+    return 'Got: '.$id;
+});
+
+Route::get('/locations/{id}',function ($id) {
+
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
+    return 'Got: '.$id;
+});
+
+Route::get('/franchises/{id}',function ($id) {
+
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
+    return 'Got: '.$id;
 });
