@@ -271,11 +271,17 @@ Route::post('/ship', function () {
     return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states,'franchises' => $franchises, 'invoice' => $invoice]);
 });
 
-Route::get('/print/{id}',function (){
+Route::get('/print/{id}',function ($id){
+    $shipment = DB::select('select * from envio where env_codigo='.$id)[0];
+    $employee = DB::select('select * from empleado where emp_cedula='.$shipment->env_empleado)[0];
+    $sender = DB::select('select *from cliente where cli_cedula='.$shipment->env_cliente)[0];
+    $package = DB::select('select * from paquete where paq_envio='.$shipment->env_codigo)[0];
+    $receiver = DB::select('select * from destinatario where des_codigo='.$package->paq_destinatario)[0];
+    $payment = DB::select('select * from pago where pag_codigo='.$shipment->env_pago)[0];
 
     $permissions = Cookie::get('permissions');
     $userEmail = Cookie::get('user-email');
-    return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
+    return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail,'shipment' => $shipment, 'employee' => $employee, 'sender' => $sender,'receiver' => $receiver, 'package' => $package, 'payment' => $payment]);
 })->where('id', '[0-9]+');
 
 
