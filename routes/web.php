@@ -23,8 +23,9 @@ Route::get('/', function () {
 Route::get('/franchises', function () {
     $query = <<<'EOD'
     select (select b.lug_nombre from lugar a, lugar b where s.suc_lugar = a.lug_codigo and a.lug_lugar = b.lug_codigo) estado,
-        s.suc_nombre nombre, s.suc_codigo codigo
-    from sucursal s
+        s.suc_nombre nombre, s.suc_codigo codigo, tel_numero as tel, suc_email as em
+    from sucursal s, telefono
+    where tel_sucursal is not NULL and tel_sucursal = suc_codigo
 EOD;
     $franchises = DB::select($query);
 
@@ -51,8 +52,9 @@ EOD;
 
 Route::get('/users', function () {
     $query = <<<'EOD'
-    select usu_codigo,usu_email,usu_password 
-    from usuario
+    select U.usu_codigo,usu_email,usu_password, rol_nombre
+    from usuario U, usu_rol UR, rol
+    where U.usu_codigo = UR.usu_usuario and rol_codigo = UR.usu_rol
 EOD;
     $users = DB::select($query);
 
@@ -281,7 +283,56 @@ Route::get('/users/{id}',function ($id) {
     $userEmail = Cookie::get('user-email');
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
+});
+
+
+Route::get('/locations/{id}',function ($id) {
+
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
+    return 'Got: '.$id;
+});
+
+
+
+Route::get('/locations/delete/{id}',function ($id) {
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
+    return 'Got: '.$id;
 })->where('id', '[0-9]+');
+
+
+Route::get('/clients', function () {
+    $query = <<<'EOD'
+    select cli_cedula, cli_nombre || ' ' || cli_apellido as cli_nom,
+        cli_email as cli_em, cli_f_nacimiento as cli_fn, lug_nombre as cli_lu,
+        cli_carnet as cli_car 
+    from cliente, lugar
+    where
+        cli_lugar = lug_codigo
+EOD;
+    $clients = DB::select($query);
+
+    $permissions = Cookie::get('permissions');
+    return view('clients_table',['clients' => $clients], ["permissions" => $permissions]);
+});
+
+Route::get('/routes', function () {
+    $query = <<<'EOD'
+    select distinct rut_codigo as rut_c, s1.suc_nombre rut_o, s2.suc_nombre as rut_d, rut_duracion as rut_du,
+    tip_costo as rut_cos
+    from ruta, envio, paquete, tipo_envio, sucursal s1, sucursal s2
+    where rut_codigo = env_ruta and env_codigo = paq_envio and paq_tipo_envio = tip_codigo and s1.suc_codigo = rut_suc_origen
+    and s2.suc_codigo = rut_suc_destino order by rut_codigo DESC
+        
+EOD;
+    $routes = DB::select($query);
+
+    $permissions = Cookie::get('permissions');
+    return view('routes_table',['routes' => $routes], ["permissions" => $permissions]);
+});
 
 Route::get('/employees/{id}',function ($id) {
     $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
@@ -291,7 +342,6 @@ Route::get('/employees/{id}',function ($id) {
     $employee = DB::select('select * from empleado where emp_cedula='.$id);
     $location = DB::select('select * from lugar where lug_codigo='.$employee[0]->emp_lugar);
     $phone = DB::select('select * from telefono where tel_empleado='.$id);
-
     $permissions = Cookie::get('permissions');
     $userEmail = Cookie::get('user-email');
     return view('employee_registration',['permissions' => $permissions, 'userEmail' => $userEmail,'franchises' => $franchises,'countries' => $countries,'states' => $states,'employee' => $employee,'location' => $location,'phone' => $phone]);
@@ -322,13 +372,12 @@ Route::post('/employees/add',function () {
     } else {
         $location = DB::insert('insert into lugar(lug_nombre,lug_tipo,lug_lugar) values(\''.$_POST['direcc'].'\',\'Otro\','.$_POST['state'].')');
         $location = DB::select('select lug_codigo cod from lugar order by lug_codigo DESC limit 1');
-        $employee = DB::update('update empleado	set emp_cedula='.$_POST['cedula'].', emp_nombre=\''.$_POST['firstName'].'\', emp_apellido=\''.$_POST['lastName'].'\', emp_email_personal=\''.$_POST['email'].'\', emp_f_nacimiento=\''.$_POST['fnac'].'\', emp_f_ingreso=\''.$_POST['fing'].'\', emp_num_hijos='.$_POST['hijos'].', emp_nivel_academico=\''.$_POST['academico'].'\', emp_profesion=\''.$_POST['profesion'].'\', emp_lugar='.$location[0]->cod.', emp_monto_base='.$_POST['base'].', emp_sucursal='.$_POST['sucursal'].', emp_edo_civil=\''.$_POST['civil'].'\' where emp_cedula='.$_POST['cedula']);
+        $employee = DB::update('update empleado set emp_cedula='.$_POST['cedula'].', emp_nombre=\''.$_POST['firstName'].'\', emp_apellido=\''.$_POST['lastName'].'\', emp_email_personal=\''.$_POST['email'].'\', emp_f_nacimiento=\''.$_POST['fnac'].'\', emp_f_ingreso=\''.$_POST['fing'].'\', emp_num_hijos='.$_POST['hijos'].', emp_nivel_academico=\''.$_POST['academico'].'\', emp_profesion=\''.$_POST['profesion'].'\', emp_lugar='.$location[0]->cod.', emp_monto_base='.$_POST['base'].', emp_sucursal='.$_POST['sucursal'].', emp_edo_civil=\''.$_POST['civil'].'\' where emp_cedula='.$_POST['cedula']);
         $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phoneNumber'].'\'');
         if (empty($phone)){
             $phone = DB::insert('insert into telefono(tel_numero,tel_empleado) values(\''.$_POST['phoneNumber'].'\',\''.$_POST['cedula'].'\')');
             $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phoneNumber'].'\'');
         }
-
         $message = 'Empleado actualizado exitosamente.';
     }
     
@@ -339,30 +388,6 @@ Route::post('/employees/add',function () {
     $userEmail = Cookie::get('user-email');
     return view('employee_registration',['permissions' => $permissions, 'userEmail' => $userEmail,'franchises' => $franchises,'countries' => $countries,'states' => $states,'message' => $message]);
 });
-
-Route::get('/locations/{id}',function ($id) {
-
-    $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
-    return 'Got: '.$id;
-})->where('id', '[0-9]+');
-
-Route::get('/franchises/{id}',function ($id) {
-
-    $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
-    return 'Got: '.$id;
-})->where('id', '[0-9]+');
-
-Route::get('/users/delete/{id}',function ($id) {
-
-    $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
-    return 'Got: '.$id;
-})->where('id', '[0-9]+');
 
 Route::get('/employees/delete/{id}',function ($id) {
     $del = DB::delete('delete from empleado where emp_cedula='.$id);
@@ -378,48 +403,129 @@ EOD;
     return view('employees_table',['employees' => $employees], ["permissions" => $permissions,"userEmail" => $userEmail,'message' => $message]);
 })->where('id', '[0-9]+');
 
-Route::get('/locations/delete/{id}',function ($id) {
 
+
+Route::get('/franchiseReg', function () {
+    $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
+    $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
     $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
-    return 'Got: '.$id;
-})->where('id', '[0-9]+');
 
-Route::get('/franchises/delete/{id}',function ($id) {
-
-    $permissions = Cookie::get('permissions');
-    $userEmail = Cookie::get('user-email');
-    // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
-    return 'Got: '.$id;
-})->where('id', '[0-9]+');
-
-Route::get('/clients', function () {
-    $query = <<<'EOD'
-    select cli_cedula, cli_nombre || ' ' || cli_apellido as cli_nom,
-        cli_email as cli_em, cli_f_nacimiento as cli_fn, lug_nombre as cli_lu,
-        cli_carnet as cli_car 
-    from cliente, lugar
-    where
-        cli_lugar = lug_codigo
-EOD;
-    $clients = DB::select($query);
-
-    $permissions = Cookie::get('permissions');
-    return view('clients_table',['clients' => $clients], ["permissions" => $permissions]);
+    return view('franchise_registration', ["permissions" => $permissions, 'countries' => $countries, 'states' => $states, 'add' => true] );
 });
 
-Route::get('/routes', function () {
+Route::post('/franchiseReg',function (){
+    $message = NULL;
+    if ($_POST['add'] != ''){
+        
+        $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phoneNumber'].'\'');
+        $franchise = DB::insert('insert into sucursal(suc_nombre, suc_email, suc_lugar) values(\''.$_POST['name'].'\',\''.$_POST['email'].'\','.$_POST['state'].')');
+        if (empty($phone)){
+            $franchise = DB::select('select suc_codigo cod from sucursal order by suc_codigo DESC limit 1');
+            $phone = DB::insert('insert into telefono(tel_numero,tel_sucursal) values(\''.$_POST['phoneNumber'].'\','.$franchise[0]->cod.')');
+            $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phoneNumber'].'\'');
+        }
+   
+        $message = 'Empleado agregado exitosamente.';
+    }
+    else {
+        $location = DB::select('select lug_codigo cod from lugar order by lug_codigo DESC limit 1');
+        $franchise = DB::update('update sucursal set suc_nombre = \''.$_POST['name'].'\' , suc_email = \''.$_POST['email'].'\', suc_lugar = '.$_POST['state'].' where suc_codigo = \''.$_POST['codigo'].'\' ');
+        $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phoneNumber'].'\'');
+        if (empty($phone)){
+            $phone = DB::insert('insert into telefono(tel_numero,tel_sucursal) values(\''.$_POST['phoneNumber'].'\',\''.$_POST['codigo'].'\' )');
+            $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phoneNumber'].'\'');
+        }
+        $message = 'Empleado actualizado exitosamente.';
+    }
+    $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
+    $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
+    $permissions = Cookie::get('permissions');
+    return view('franchise_registration', ["permissions" => $permissions, 'countries' => $countries, 'states' => $states, 'message' => $message] );
+});
+
+Route::get('/franchises/delete/{id}',function ($id) {
+    $del = DB::delete('delete from sucursal where suc_codigo='.$id);
+    $query = <<<'EOD'
+    select (select b.lug_nombre from lugar a, lugar b where s.suc_lugar = a.lug_codigo and a.lug_lugar = b.lug_codigo) estado,
+        s.suc_nombre nombre, s.suc_codigo codigo, tel_numero as tel, suc_email as em
+    from sucursal s, telefono
+    where tel_sucursal is not NULL and tel_sucursal = suc_codigo
+EOD;
+    $franchises = DB::select($query);
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    $message = 'sucursal eliminada';
+    $userEmail = Cookie::get('user-email');
+    return view('franchises_table',['franchises' => $franchises, 'permissions' => $permissions, 'userEmail' => $userEmail, 'message' => $message]);
+})->where('id', '[0-9]+');
+
+
+Route::get('/franchises/{id}',function ($id) {
+    $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
+    $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
+    $phone = DB::select('select * from telefono where tel_sucursal='.$id);
+    $franchise= DB::select('select * from sucursal where suc_codigo='.$id);
+    $permissions = Cookie::get('permissions');
+    return view('franchise_registration', ['permissions' => $permissions, 'countries' => $countries, 'states' => $states, 'franchise' =>$franchise, 'phone' => $phone] );
+})->where('id', '[0-9]+');
+
+
+Route::get('/routeReg', function () {
+    $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
+    $permissions = Cookie::get('permissions');
+
+    return view('route_registration', ["permissions" => $permissions, 'franchises' => $franchises, 'add' => true] );
+});
+
+Route::post('/routeReg',function (){
+    $message = NULL;
+    if ($_POST['add'] != ''){
+        $routes = DB::insert('insert into ruta(rut_suc_origen, rut_suc_destino, rut_duracion) values(\''.$_POST['sucursalO'].'\',\''.$_POST['sucursalD'].'\','.$_POST['duracion'].')');
+        $message = 'Ruta agregada exitosamente.';
+    }
+    else{
+        $routes = DB:: update('update ruta set rut_suc_origen = \''.$_POST['sucursalO'].'\', rut_suc_destino = \''.$_POST['sucursalO'].'\', rut_duracion = \''.$_POST['duracion'].'\' where rut_codigo = \''.$_POST['codigo'].'\'');
+        'Ruta actualizada exitosamente.';
+    }
+   
+    $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
+    $permissions = Cookie::get('permissions');
+    return view('route_registration', ["permissions" => $permissions, 'message' => $message, 'routes' => $routes, 'franchises' => $franchises] );
+});
+
+Route::get('/routes/delete/{id}',function ($id) {
+    $del = DB::delete('delete from ruta where rut_codigo='.$id);
     $query = <<<'EOD'
     select distinct rut_codigo as rut_c, s1.suc_nombre rut_o, s2.suc_nombre as rut_d, rut_duracion as rut_du,
     tip_costo as rut_cos
     from ruta, envio, paquete, tipo_envio, sucursal s1, sucursal s2
     where rut_codigo = env_ruta and env_codigo = paq_envio and paq_tipo_envio = tip_codigo and s1.suc_codigo = rut_suc_origen
-    and s2.suc_codigo = rut_suc_destino
-        
+    and s2.suc_codigo = rut_suc_destino order by rut_codigo DESC
 EOD;
     $routes = DB::select($query);
-
     $permissions = Cookie::get('permissions');
-    return view('routes_table',['routes' => $routes], ["permissions" => $permissions]);
-});
+    $message = 'sucursal eliminado';
+    return view('routes_table',['routes' => $routes, 'permissions' => $permissions, 'message' => $message]);
+})->where('id', '[0-9]+');
+
+Route::get('/routes/{id}',function ($id) {
+    $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
+    $routes= DB::select('select * from ruta where rut_codigo='.$id);
+    $permissions = Cookie::get('permissions');
+    return view('route_registration', ['routes' => $routes, 'franchises' =>$franchises, 'permissions' => $permissions] );
+})->where('id', '[0-9]+');
+
+Route::get('/users/delete/{id}',function ($id) {
+    $del = DB::delete('delete from usuario where usu_codigo='.$id);
+    $query = <<<'EOD'
+    select U.usu_codigo,usu_email,usu_password, rol_nombre
+    from usuario U, usu_rol UR, rol
+    where U.usu_codigo = UR.usu_usuario and rol_codigo = UR.usu_rol
+
+EOD;
+    $users = DB::select($query);
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    $message = 'sucursal eliminado';
+    return view('users_table',['users' => $users, 'permissions' => $permissions, 'userEmail' => $userEmail]);
+})->where('id', '[0-9]+');
