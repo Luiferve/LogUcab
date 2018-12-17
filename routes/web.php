@@ -281,7 +281,7 @@ Route::get('/users/{id}',function ($id) {
     $userEmail = Cookie::get('user-email');
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
-});
+})->where('id', '[0-9]+');
 
 Route::get('/employees/{id}',function ($id) {
 
@@ -289,6 +289,22 @@ Route::get('/employees/{id}',function ($id) {
     $userEmail = Cookie::get('user-email');
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
+})->where('id', '[0-9]+');
+
+Route::get('/employees/add',function () {
+    $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    return view('employee_registration',['permissions' => $permissions, 'userEmail' => $userEmail,'franchises' => $franchises]);
+});
+
+Route::post('/employees/add',function () {
+    $employee = DB::insert('insert into empleado(emp_cedula, emp_nombre, emp_apellido, emp_email_personal, emp_f_nacimiento, emp_f_ingreso, emp_num_hijos, emp_nivel_academico, emp_profesion, emp_lugar, emp_monto_base, emp_sucursal, emp_edo_civil) values ('.$_POST['cedula'].', \''.$_POST['firstName'].'\', \''.$_POST['lastName'].'\', \''.$_POST['email'].'\', \''.$_POST['fnac'].'\', \''.$_POST['fing'].'\', '.$_POST['hijos'].', \''.$_POST['academico'].'\', \''.$_POST['profesion'].'\', ?, '.$_POST['base'].', ?, \''.$_POST['civil'].'\')');
+
+    $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
+    $permissions = Cookie::get('permissions');
+    $userEmail = Cookie::get('user-email');
+    return view('employee_registration',['permissions' => $permissions, 'userEmail' => $userEmail,'franchises' => $franchises]);
 });
 
 Route::get('/locations/{id}',function ($id) {
@@ -297,7 +313,7 @@ Route::get('/locations/{id}',function ($id) {
     $userEmail = Cookie::get('user-email');
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
-});
+})->where('id', '[0-9]+');
 
 Route::get('/franchises/{id}',function ($id) {
 
@@ -305,7 +321,7 @@ Route::get('/franchises/{id}',function ($id) {
     $userEmail = Cookie::get('user-email');
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
-});
+})->where('id', '[0-9]+');
 
 Route::get('/users/delete/{id}',function ($id) {
 
@@ -313,7 +329,7 @@ Route::get('/users/delete/{id}',function ($id) {
     $userEmail = Cookie::get('user-email');
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
-});
+})->where('id', '[0-9]+');
 
 Route::get('/employees/delete/{id}',function ($id) {
 
@@ -321,7 +337,7 @@ Route::get('/employees/delete/{id}',function ($id) {
     $userEmail = Cookie::get('user-email');
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
-});
+})->where('id', '[0-9]+');
 
 Route::get('/locations/delete/{id}',function ($id) {
 
@@ -329,7 +345,7 @@ Route::get('/locations/delete/{id}',function ($id) {
     $userEmail = Cookie::get('user-email');
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
-});
+})->where('id', '[0-9]+');
 
 Route::get('/franchises/delete/{id}',function ($id) {
 
@@ -337,4 +353,4 @@ Route::get('/franchises/delete/{id}',function ($id) {
     $userEmail = Cookie::get('user-email');
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
-});
+})->where('id', '[0-9]+');

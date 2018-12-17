@@ -107,7 +107,7 @@
         <div class="datatables-area">
                 <div class="table-responsive container">
                     <div class="table-header">
-                        <button class="add-another btn">Add new employee</button>
+                        <button class="add-another btn"><a href="{{url('/employees/add')}}">Add new employee</a></button>
                     </div>
                     <table class="table table-bordered table-hover dt-responsive custom-table" id="employees-table">
                         <thead>
