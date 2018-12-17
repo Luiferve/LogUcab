@@ -44,7 +44,7 @@
 					<div class="sign-in-htm">
 						<div class="group">
 							<label for="user" class="label">Username</label>
-							<input id="user" type="email" class="input" name="email" required>
+							<input id="user" type="text" class="input" name="email" required>
 						</div>
 						<div class="group">
 							<label for="pass" class="label">Password</label>
