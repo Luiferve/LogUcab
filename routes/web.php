@@ -333,7 +333,7 @@ EOD;
     $message = 'Cliente Eliminado.';
 
     $permissions = Cookie::get('permissions');
-    return view('clients_table',['clients' => $clients], ["permissions" => $permissions, '$message' => $message]);
+    return view('clients_table',['clients' => $clients], ["permissions" => $permissions, 'message' => $message]);
 })->where('id', '[0-9]+');
 
 Route::get('/routes', function () {
