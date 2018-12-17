@@ -297,7 +297,11 @@
                 <div class="form-group">
                     <label for="phoneNumber" class="col-sm-3 control-label">Telefono* </label>
                     <div class="col-sm-9">
-                        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Telefono" class="form-control" required>
+                        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Telefono" class="form-control" required
+                        @if (isset($phone))
+                            value="{{$phone[0]->tel_numero}}"
+                        @endif
+                        >
                     </div>
                 </div>
                 <div class="form-group">
