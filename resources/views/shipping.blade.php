@@ -118,7 +118,7 @@
             @if (isset($message))
                 <div class="container" id="alert" style="margin-top: 2%;">
                     <div class="alert alert-success" role="alert">
-                        {{$message}}
+                        {{$message}} @if (isset($invoice)) <a href="{{url('/print/'.$invoice[1])}}" target="_blank">{{$invoice[0]}}</a> @endif
                     </div>
                 </div>
             @endif

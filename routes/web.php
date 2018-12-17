@@ -145,6 +145,7 @@ Route::post('/ship', function () {
     $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
     $employee = DB::select('select usu_empleado cod from usuario where usu_email=\''.$userEmail.'\'');
     $message = '';
+    $invoice = NULL;
     $completed = true;
 
     if ($_POST['receiverID'] == ''){
@@ -260,21 +261,22 @@ Route::post('/ship', function () {
             $shipment = DB::select('select env_codigo cod from envio order by env_codigo DESC limit 1');
             
             $package = DB::insert('insert into paquete(paq_peso, paq_ancho, paq_alto, paq_profundidad, paq_destinatario, paq_envio, paq_tipo_paquete, paq_tipo_envio) values ('.$_POST['peso'].', '.$_POST['ancho'].', '.$_POST['alto'].', '.$_POST['profundidad'].', '.$receiver[0]->cod.', '.$shipment[0]->cod.', '.$_POST['tipo'].', '.$_POST['tipo-envio'].')');
-            $message = 'Envio Realizado por Bs. '.$cost;
+            $message = 'Envio Realizado por Bs. '.$cost.'.';
+            $invoice = array('Ver Factura',$shipment[0]->cod);
             $_POST = NULL;
         }
     }
     
     $permissions = Cookie::get('permissions');
-    return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states,'franchises' => $franchises]);
+    return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states,'franchises' => $franchises, 'invoice' => $invoice]);
 });
 
-Route::get('/print',function (){
+Route::get('/print/{id}',function (){
 
     $permissions = Cookie::get('permissions');
     $userEmail = Cookie::get('user-email');
     return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
-});
+})->where('id', '[0-9]+');
 
 
 
@@ -285,7 +287,7 @@ Route::get('/locations/{id}',function ($id) {
     $userEmail = Cookie::get('user-email');
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
-});
+})->where('id', '[0-9]+');
 
 
 
