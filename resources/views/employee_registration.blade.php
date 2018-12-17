@@ -170,7 +170,12 @@
                 <div class="form-group">
                     <label for="nivelAcademico" class="col-sm-3 control-label">Nivel Academico*</label>
                     <div class="col-sm-9">
-                        <input type="text" id="academico" name="academico" placeholder="Nivel Academico" class="form-control" required>
+                    <select name="nivelAcademico" class="form-control" style="margin-bottom: 10px;" required>
+                        <option value="">Seleccione el Nivel Academico</option>
+                        <option value="Basica">Basica</option>
+                        <option value="Media">Media</option>
+                        <option value="Superior">Superior</option>
+                    </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -179,14 +184,19 @@
                         <input type="number" id="hijos" name="hijos" placeholder="Numero de hijos" class="form-control" required>
                     </div>
                 </div>
-                <select name="civil" class="form-control" style="margin-bottom: 10px;" required>
-                    <option value="">Seleccione el estado civil</option>
-                    <option value="Soltero/a">Soltero</option>
-                    <option value="Casado/a">Casado</option>
-                    <option value="Viudo/a">Viudo</option>
-                    <option value="Divorciado/a">Divorciado</option>
-                    <option value="Conyugue">Conyugue</option>
-                </select>
+                <div class="form-group">
+                    <label for="civil" class="col-sm-3 control-label">Estado civil*</label>
+                    <div class="col-sm-9">
+                        <select name="civil" class="form-control" style="margin-bottom: 10px;" required>
+                            <option value="">Seleccione el estado civil</option>
+                            <option value="Soltero/a">Soltero</option>
+                            <option value="Casado/a">Casado</option>
+                            <option value="Viudo/a">Viudo</option>
+                            <option value="Divorciado/a">Divorciado</option>
+                            <option value="Conyugue">Conyugue</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="birthDate" class="col-sm-3 control-label">Fecha de Nacimiento*</label>
                     <div class="col-sm-9">
@@ -199,16 +209,51 @@
                         <input type="date" id="ingrehDate" class="form-control" name="fing" required>
                     </div>
                 </div>
-                <select name="sucursal" class="form-control" style="margin-bottom: 10px;">
-                    <option value="">Seleccione una sucursal</option>
-                    @foreach ($franchises as $franchise)
-                        <option 
-                        @if (!empty($_POST) && $franchise->cod == $_POST['sucursal'])
-                        selected 
-                        @endif
-                        value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
-                    @endforeach
-                </select>
+                <div class="form-group">
+                    <label for="sucursal" class="col-sm-3 control-label">Sucursal*</label>
+                    <div class="col-sm-9">
+                        <select name="sucursal" class="form-control" style="margin-bottom: 10px;">
+                            <option value="">Seleccione una sucursal</option>
+                            @foreach ($franchises as $franchise)
+                                <option 
+                                @if (!empty($_POST) && $franchise->cod == $_POST['sucursal'])
+                                selected 
+                                @endif
+                                value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="pais" class="col-sm-3 control-label">Pais*</label>
+                    <div class="col-sm-9">
+                        <select name="country" class="form-control" style="margin-bottom: 10px;">
+                            <option value="">Seleccione el pais</option>
+                            @foreach ($countries as $country)
+                                <option 
+                                @if (!empty($_POST) && $country->cod == $_POST['country'])
+                                selected 
+                                @endif
+                                value="{{$country->cod}}">{{$country->nombre}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="estado" class="col-sm-3 control-label">Estado*</label>
+                    <div class="col-sm-9">
+                        <select name="state" class="form-control" style="margin-bottom: 10px;">
+                            <option value="">Seleccione el estado</option>
+                            @foreach ($states as $state)
+                                <option 
+                                @if (!empty($_POST) && $state->cod == $_POST['state'])
+                                selected 
+                                @endif
+                                value="{{$state->cod}}">{{$state->nombre}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="phoneNumber" class="col-sm-3 control-label">Telefono* </label>
                     <div class="col-sm-9">

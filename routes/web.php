@@ -292,19 +292,30 @@ Route::get('/employees/{id}',function ($id) {
 })->where('id', '[0-9]+');
 
 Route::get('/employees/add',function () {
+    $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
+    $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
     $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
     $permissions = Cookie::get('permissions');
     $userEmail = Cookie::get('user-email');
-    return view('employee_registration',['permissions' => $permissions, 'userEmail' => $userEmail,'franchises' => $franchises]);
+    return view('employee_registration',['permissions' => $permissions, 'userEmail' => $userEmail,'franchises' => $franchises,'countries' => $countries,'states' => $states]);
 });
 
 Route::post('/employees/add',function () {
-    $employee = DB::insert('insert into empleado(emp_cedula, emp_nombre, emp_apellido, emp_email_personal, emp_f_nacimiento, emp_f_ingreso, emp_num_hijos, emp_nivel_academico, emp_profesion, emp_lugar, emp_monto_base, emp_sucursal, emp_edo_civil) values ('.$_POST['cedula'].', \''.$_POST['firstName'].'\', \''.$_POST['lastName'].'\', \''.$_POST['email'].'\', \''.$_POST['fnac'].'\', \''.$_POST['fing'].'\', '.$_POST['hijos'].', \''.$_POST['academico'].'\', \''.$_POST['profesion'].'\', ?, '.$_POST['base'].', ?, \''.$_POST['civil'].'\')');
+    $location = DB::insert('insert into lugar(lug_nombre,lug_tipo,lug_lugar) values(\''.$_POST['direcc'].'\',\'Otro\','.$_POST['state'].')');
+    $location = DB::select('select lug_codigo cod from lugar order by lug_codigo DESC limit 1');
+    $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phoneNumber'].'\'');
+    $employee = DB::insert('insert into empleado(emp_cedula, emp_nombre, emp_apellido, emp_email_personal, emp_f_nacimiento, emp_f_ingreso, emp_num_hijos, emp_nivel_academico, emp_profesion, emp_lugar, emp_monto_base, emp_sucursal, emp_edo_civil) values ('.$_POST['cedula'].', \''.$_POST['firstName'].'\', \''.$_POST['lastName'].'\', \''.$_POST['email'].'\', \''.$_POST['fnac'].'\', \''.$_POST['fing'].'\', '.$_POST['hijos'].', \''.$_POST['academico'].'\', \''.$_POST['profesion'].'\', '.$location[0]->cod.', '.$_POST['base'].', '.$_POST['sucursal'].', \''.$_POST['civil'].'\')');
+    if (empty($phone)){
+        $phone = DB::insert('insert into telefono(tel_numero,tel_empleado) values(\''.$_POST['phoneNumber'].'\',\''.$_POST['cedula'].'\')');
+        $phone = DB::select('select tel_numero numero from telefono where tel_numero=\''.$_POST['phoneNumber'].'\'');
+    }
 
+    $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
+    $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
     $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
     $permissions = Cookie::get('permissions');
     $userEmail = Cookie::get('user-email');
-    return view('employee_registration',['permissions' => $permissions, 'userEmail' => $userEmail,'franchises' => $franchises]);
+    return view('employee_registration',['permissions' => $permissions, 'userEmail' => $userEmail,'franchises' => $franchises,'countries' => $countries,'states' => $states]);
 });
 
 Route::get('/locations/{id}',function ($id) {
