@@ -118,9 +118,8 @@
                     </div>
                 </div>
             @endif
-            <form class="form-horizontal" role="form"  method="POST" action="{{url('/routeReg')}}">
+            <form class="form-horizontal" role="form"  method="POST" action="{{url('/routes')}}">
                 @csrf
-                <input type="hidden" name="add" value="@if (isset($add))add @endif">
                 <input type="hidden" name="codigo" @if (isset($routes))
                             value="{{$routes[0]->rut_codigo}}"
                         @endif>
@@ -157,7 +156,11 @@
                 <div class="form-group">
                     <label for="duracion" class="col-sm-3 control-label">Duracion (en Horas)*</label>
                     <div class="col-sm-9">
-                        <input name = "duracion" type="text" id="duracion" placeholder="Duracion" class="form-control">
+                        <input name = "duracion" type="number" id="duracion" placeholder="Duracion" class="form-control"
+                        @if (isset($routes))
+                            value="{{$routes[0]->rut_duracion}}"
+                        @endif
+                        >
                     </div>
                 </div>
             
@@ -167,7 +170,7 @@
                         <span class="help-block">*Obligatorio</span>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+                <button type="submit" class="btn btn-primary btn-block">Registrar/Actualizar</button>
             </form> <!-- /form -->
         </div> <!-- ./container -->
 

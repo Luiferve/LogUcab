@@ -57,7 +57,7 @@
                 <nav class="navbar">
                     <div class="container">
                         <div class="navbar-header">
-                            <a href="{{url('/')}}" class="navbar-brand"><img src="img/logo.png" alt="logo"></a>
+                            <a href="{{url('/')}}" class="navbar-brand"><img src="/img/logo.png" alt="logo"></a>
                         </div>
                         <div class="search-and-language-bar pull-right">
                             <ul>
@@ -107,6 +107,13 @@
         </div>
 
         <div class="datatables-area">
+        @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
+                    </div>
+                </div>
+            @endif
                 <div class="table-responsive container">
 					<div class="table-header">
                         <button class="add-another btn" onclick="window.location='{{ url("/routeReg") }}'">Add new Route</button>
@@ -133,9 +140,9 @@
 									<td>
 										<div style="text-align: center">
                                         <a href="{{url('/routes/'.$route->rut_c)}}" class="edit_details" title="edit" >
-                                            <img src="http://i.imgur.com/DHma3ln.png" alt="Edit" width=20px></a>
+                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
                                         <a href="{{url('/routes/delete/'.$route->rut_c)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
-                                            <img src="http://i.imgur.com/HNUCXDU.png" alt="Delete" width=20px></a>
+                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
                                     	</div>
 									</td>
                                 </tr>

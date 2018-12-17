@@ -383,6 +383,24 @@ EOD;
     return view('routes_table',['routes' => $routes], ["permissions" => $permissions]);
 });
 
+Route::post('/routes', function () {
+    $route = DB::update('update ruta set rut_duracion='.$_POST['duracion'].', rut_suc_origen='.$_POST['sucursalO'].', rut_suc_destino='.$_POST['sucursalD'].' where rut_codigo='.$_POST['codigo']);
+    $message = 'Ruta actualizada exitosamente.';
+
+    $query = <<<'EOD'
+    select distinct rut_codigo as rut_c, s1.suc_nombre rut_o, s2.suc_nombre as rut_d, rut_duracion as rut_du,
+    tip_costo as rut_cos
+    from ruta, envio, paquete, tipo_envio, sucursal s1, sucursal s2
+    where rut_codigo = env_ruta and env_codigo = paq_envio and paq_tipo_envio = tip_codigo and s1.suc_codigo = rut_suc_origen
+    and s2.suc_codigo = rut_suc_destino order by rut_codigo DESC
+        
+EOD;
+    $routes = DB::select($query);
+
+    $permissions = Cookie::get('permissions');
+    return view('routes_table',['routes' => $routes], ["permissions" => $permissions,'message' => $message]);
+});
+
 Route::get('/employees/{id}',function ($id) {
     $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
