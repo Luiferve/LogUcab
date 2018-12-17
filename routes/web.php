@@ -354,3 +354,33 @@ Route::get('/franchises/delete/{id}',function ($id) {
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
 })->where('id', '[0-9]+');
+
+Route::get('/clients', function () {
+    $query = <<<'EOD'
+    select cli_cedula, cli_nombre || ' ' || cli_apellido as cli_nom,
+        cli_email as cli_em, cli_f_nacimiento as cli_fn, lug_nombre as cli_lu,
+        cli_carnet as cli_car 
+    from cliente, lugar
+    where
+        cli_lugar = lug_codigo
+EOD;
+    $clients = DB::select($query);
+
+    $permissions = Cookie::get('permissions');
+    return view('clients_table',['clients' => $clients], ["permissions" => $permissions]);
+});
+
+Route::get('/routes', function () {
+    $query = <<<'EOD'
+    select distinct rut_codigo as rut_c, s1.suc_nombre rut_o, s2.suc_nombre as rut_d, rut_duracion as rut_du,
+    tip_costo as rut_cos
+    from ruta, envio, paquete, tipo_envio, sucursal s1, sucursal s2
+    where rut_codigo = env_ruta and env_codigo = paq_envio and paq_tipo_envio = tip_codigo and s1.suc_codigo = rut_suc_origen
+    and s2.suc_codigo = rut_suc_destino
+        
+EOD;
+    $routes = DB::select($query);
+
+    $permissions = Cookie::get('permissions');
+    return view('routes_table',['routes' => $routes], ["permissions" => $permissions]);
+});
