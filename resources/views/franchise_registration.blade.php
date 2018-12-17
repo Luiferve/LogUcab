@@ -11,9 +11,9 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Franchises</title>
+    <title>LogUcab | Franchise Registration</title>
 
-    <!--====== FAVICON ICON =======-->
+     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
@@ -32,6 +32,7 @@
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
+    <link href="/regform.css" rel="stylesheet">
     <link href="/css/responsive.css" rel="stylesheet">
 
     <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -61,7 +62,7 @@
                         </div>
                         <div class="search-and-language-bar pull-right">
                             <ul>
-                                <li><a href="{{url('/login')}}"><i class="fa fa-user"></i></a></li>
+                                <li><a href="{{url('/login')}}"><i class="fa fa-user" @if ($permissions > 0) title="Login" @endif></i></a></li>
                                 @if ($permissions > 0)
                                 <li><a href="{{url('/logout')}}"><i class="fa" title="Logout"></i>X</a></li> 
                                 <!-- falta linkear el logout aqui -->
@@ -69,9 +70,10 @@
                                 <li class="search-box"><i class="fa fa-search"></i></li>
                                 <li class="select-language">
                                     <select name="#" id="#">
-                                    <option selected value="End">SPA</option>
-                                    <option value="End">ENG</option>
-                                    </select>
+                                    <option selected value="End">ENG</option>
+                                    <option value="ARA">ARA</option>
+                                    <option value="CHI">CHI</option>
+                                </select>
                                 </li>
                             </ul>
                             <form action="#" class="search-form">
@@ -82,10 +84,10 @@
                         <div id="main-nav" class="stellarnav">
                             <ul id="nav" class="nav navbar-nav">
                                 <li><a href="{{url('/')}}">home</a></li>
-                                <li><a href="about.html">about</a></li>
-                                <li><a href="service.html">Service</a></li>
-                                <li><a href="contact.html">Contact</a></li>
-                                @if (isset($permissions) && $permissions > 3)
+                                <li><a href="/about.html">about</a></li>
+                                <li><a href="/service.html">Service</a></li>
+                                <li><a href="/contact.html">Contact</a></li>
+                                
                                     <li><a href="#">Menu</a>
                                         <ul>
                                             <li><a href="{{url('/clients')}}">Clients</a></li>
@@ -95,55 +97,105 @@
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
                                             <li><a href="{{url('/routes')}}">Routes</a></li>
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
+                                            <li><a href="{{url('/franchiseReg')}}">Franchise Reg</a></li>
+
                                         </ul>
                                     </li>
-                                @endif
+                                
                             </ul>
                         </div>
                     </div>
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
-        </div>
 
-        <div class="datatables-area">
-                <div class="table-responsive container">
-                    <div class="table-header">
-                        <button class="add-another btn" onclick="window.location='{{ url("/franchiseReg") }}'">Add new franchise</button>
+    <div class="container" id="cont1">
+         @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
                     </div>
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
-                        <thead>
-                            <tr>
-                                <th>Estado</th>
-                                <th>Sucursal</th>
-                                <th>Telefono</th>
-                                <th>Email</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($franchises as $franchise)
-                                <tr>
-                                    <td>{{$franchise->estado}}</td>
-                                    <td>{{$franchise->nombre}}</td>
-                                    <td>{{$franchise->tel}}</td>
-                                    <td>{{$franchise->em}}</td>
-                                    <td>
-                                    <div style="text-align: center">
-                                        <a href="{{url('/franchises/'.$franchise->codigo)}}" class="edit_details" title="edit" >
-                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
-                                        <a href="{{url('/franchises/delete/'.$franchise->codigo)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
-                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
-                                    </div>
-                                    </td>
-                                </tr>
-                            @endforeach   
-                        </tbody>
-                    </table>
                 </div>
-        </div>
+            @endif
+            <form class="form-horizontal" role="form" method="POST" action="{{url('/franchiseReg')}}">
+                <div class="form-group">
+                    <label for="nombre" class="col-sm-3 control-label">Nombre*</label>
+                    <div class="col-sm-9">
+                        <input name="name" type="text" id="name" placeholder="Nombre de la Sucursal" class="form-control" autofocus required
+                        @if (isset($franchise))
+                            value="{{$franchise[0]->suc_nombre}}"
+                        @endif
+                        >
+                    </div>
+                </div>
+                @csrf
+                <input type="hidden" name="add" value="@if (isset($add))add @endif">
+                <input type="hidden" name="codigo" @if (isset($franchise))
+                            value="{{$franchise[0]->suc_codigo}}"
+                        @endif>
+                <div class="form-group">
+                    <label for="email" class="col-sm-3 control-label">E-mail*</label>
+                    <div class="col-sm-9">
+                        <input name = "email" type="text" id="email" placeholder="E-mail" class="form-control" autofocus required
+                        @if (isset($franchise))
+                            value="{{$franchise[0]->suc_email}}"
+                        @endif
+                        >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber" class="col-sm-3 control-label">Telefono* </label>
+                    <div class="col-sm-9">
+                        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Telefono" class="form-control" required
+                        @if (isset($phone))
+                            value="{{$phone[0]->tel_numero}}"
+                        @endif
+                        >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="pais" class="col-sm-3 control-label">Pais*</label>
+                    <div class="col-sm-9">
+                        <select name="country" class="form-control" style="margin-bottom: 10px;">
+                            <option value="">Seleccione el pais</option>
+                            @foreach ($countries as $country)
+                                <option 
+                                @if (isset($franchise) && $country->cod == $franchise[0]->suc_lugar)
+                                selected 
+                                @endif
+                                value="{{$country->cod}}">{{$country->nombre}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="estado" class="col-sm-3 control-label">Estado*</label>
+                    <div class="col-sm-9">
+                        <select name="state" class="form-control" style="margin-bottom: 10px;">
+                            <option value="">Seleccione el estado</option>
+                            @foreach ($states as $state)
+                                <option 
+                                @if (isset($franchise) && $state->cod == $franchise[0]->suc_lugar)
+                                selected 
+                                @endif
+                                value="{{$state->cod}}">{{$state->nombre}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            
+                 <!-- /.form-group -->
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <span class="help-block">*Obligatorio</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+            </form>    
+            </form> <!-- /form -->
+        </div> <!-- ./container -->
 
-        <!--====== SCRIPTS JS ======-->
+              <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
     <script src="js/vendor/bootstrap.min.js"></script>
 
@@ -167,7 +219,5 @@
 
 <!--=====  DATA TABLE =====-->
 <script>  
-    $(document).ready(function(){  
-            $('#users-table').DataTable();  
-    });  
+   
 </script> 
