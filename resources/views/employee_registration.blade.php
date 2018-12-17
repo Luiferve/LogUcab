@@ -144,34 +144,55 @@
             @endif
             <form class="form-horizontal" role="form" method="POST" action="{{url('/employees/add')}}">
                 @csrf
+                <input type="hidden" name="add" value="@if (isset($add))add @endif">
                 <div class="form-group">
                     <label for="firstName" class="col-sm-3 control-label">Nombre*</label>
                     <div class="col-sm-9">
-                        <input type="text" id="firstName" name="firstName" placeholder="Nombre" class="form-control" autofocus required>
+                        <input type="text" id="firstName" name="firstName" placeholder="Nombre" class="form-control" autofocus required
+                        @if (isset($employee))
+                            value="{{$employee[0]->emp_nombre}}"
+                        @endif
+                        >
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="lastName" class="col-sm-3 control-label">Apellido*</label>
                     <div class="col-sm-9">
-                        <input type="text" id="lastName" name="lastName" placeholder="Apellido" class="form-control" autofocus required>
+                        <input type="text" id="lastName" name="lastName" placeholder="Apellido" class="form-control" autofocus required
+                        @if (isset($employee))
+                            value="{{$employee[0]->emp_apellido}}"
+                        @endif
+                        >
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="id" class="col-sm-3 control-label">Cedula*</label>
                     <div class="col-sm-9">
-                        <input type="number" id="cedula" name="cedula" placeholder="Cedula" class="form-control" required>
+                        <input type="number" id="cedula" name="cedula" placeholder="Cedula" class="form-control" required
+                        @if (isset($employee))
+                            value="{{$employee[0]->emp_cedula}}"
+                        @endif
+                        >
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="email" class="col-sm-3 control-label">Email* </label>
                     <div class="col-sm-9">
-                        <input type="email" id="email" name="email" placeholder="Email" class="form-control" name= "email" required>
+                        <input type="email" id="email" name="email" placeholder="Email" class="form-control" name= "email" required
+                        @if (isset($employee))
+                            value="{{$employee[0]->emp_email_personal}}"
+                        @endif
+                        >
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="profesion" class="col-sm-3 control-label">Profesion*</label>
                     <div class="col-sm-9">
-                        <input type="text" id="profesion" name="profesion" placeholder="Profesion" class="form-control" required>
+                        <input type="text" id="profesion" name="profesion" placeholder="Profesion" class="form-control" required
+                        @if (isset($employee))
+                            value="{{$employee[0]->emp_profesion}}"
+                        @endif
+                        >
                     </div>
                 </div>
                 <div class="form-group">
@@ -188,7 +209,11 @@
                 <div class="form-group">
                     <label for="numeroHijos" class="col-sm-3 control-label">Numero de Hijos*</label>
                     <div class="col-sm-9">
-                        <input type="number" id="hijos" name="hijos" placeholder="Numero de hijos" class="form-control" required>
+                        <input type="number" id="hijos" name="hijos" placeholder="Numero de hijos" class="form-control" required
+                        @if (isset($employee))
+                            value="{{$employee[0]->emp_num_hijos}}"
+                        @endif
+                        >
                     </div>
                 </div>
                 <div class="form-group">
@@ -207,13 +232,21 @@
                 <div class="form-group">
                     <label for="birthDate" class="col-sm-3 control-label">Fecha de Nacimiento*</label>
                     <div class="col-sm-9">
-                        <input type="date" id="birthDate" class="form-control" name="fnac"required>
+                        <input type="date" id="birthDate" class="form-control" name="fnac"required
+                        @if (isset($employee))
+                            value="{{$employee[0]->emp_f_nacimiento}}"
+                        @endif
+                        >
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="ingreDate" class="col-sm-3 control-label">Fecha de Ingreso*</label>
                     <div class="col-sm-9">
-                        <input type="date" id="ingrehDate" class="form-control" name="fing" required>
+                        <input type="date" id="ingrehDate" class="form-control" name="fing" required
+                        @if (isset($employee))
+                            value="{{$employee[0]->emp_f_ingreso}}"
+                        @endif
+                        >
                     </div>
                 </div>
                 <div class="form-group">
@@ -223,7 +256,7 @@
                             <option value="">Seleccione una sucursal</option>
                             @foreach ($franchises as $franchise)
                                 <option 
-                                @if (!empty($_POST) && $franchise->cod == $_POST['sucursal'])
+                                @if (isset($employee) && $franchise->cod == $employee[0]->emp_sucursal)
                                 selected 
                                 @endif
                                 value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
@@ -238,7 +271,7 @@
                             <option value="">Seleccione el pais</option>
                             @foreach ($countries as $country)
                                 <option 
-                                @if (!empty($_POST) && $country->cod == $_POST['country'])
+                                @if (isset($employee) && $country->cod == $employee[0]->emp_lugar)
                                 selected 
                                 @endif
                                 value="{{$country->cod}}">{{$country->nombre}}</option>
@@ -253,7 +286,7 @@
                             <option value="">Seleccione el estado</option>
                             @foreach ($states as $state)
                                 <option 
-                                @if (!empty($_POST) && $state->cod == $_POST['state'])
+                                @if (isset($employee) && $state->cod == $employee[0]->emp_lugar)
                                 selected 
                                 @endif
                                 value="{{$state->cod}}">{{$state->nombre}}</option>
@@ -270,13 +303,21 @@
                 <div class="form-group">
                         <label for="Base" class="col-sm-3 control-label">Monto Base* </label>
                     <div class="col-sm-9">
-                        <input type="number" id="base" name="base" placeholder="Salario Diario en Bolivares" class="form-control" required>
+                        <input type="number" id="base" name="base" placeholder="Salario Diario en Bolivares" class="form-control" required
+                        @if (isset($employee))
+                            value="{{$employee[0]->emp_monto_base}}"
+                        @endif
+                        >
                     </div>
                 </div>
                 <div class="form-group">
                         <label for="lugar" class="col-sm-3 control-label">Zona de Residencia* </label>
                     <div class="col-sm-9">
-                        <input type="text" id="direcc" name="direcc" placeholder="Zona de Residencia" class="form-control" required> 
+                        <input type="text" id="direcc" name="direcc" placeholder="Zona de Residencia" class="form-control" required
+                        @if (isset($location))
+                            value="{{$location[0]->lug_nombre}}"
+                        @endif
+                        > 
                     </div>
                 </div>
                  <!-- /.form-group -->
