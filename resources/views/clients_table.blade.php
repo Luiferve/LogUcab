@@ -14,27 +14,27 @@
     <title>LogUcab | Clients</title>
 
     <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
+    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/animate.css">
-    <link rel="stylesheet" href="css/stellarnav.min.css">
-    <link rel="stylesheet" href="css/owl.carousel.css">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/stellarnav.min.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="text/javascript" src="js/DataTables-1.10.18/css/datatables.min.js"></script>
-    <script src="js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
-    <script src="js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
-    <script src="js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
+    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
+    <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
 
     <!--====== MAIN STYLESHEETS ======-->
-    <link href="style.css" rel="stylesheet">
-    <link href="css/responsive.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
 
-    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
 
@@ -69,9 +69,8 @@
                                 <li class="search-box"><i class="fa fa-search"></i></li>
                                 <li class="select-language">
                                     <select name="#" id="#">
-                                    <option selected value="End">ENG</option>
-                                    <option value="ARA">ARA</option>
-                                    <option value="CHI">CHI</option>
+                                    <option selected value="End">SPA</option>
+                                    <option value="End">ENG</option>
                                 </select>
                                 </li>
                             </ul>
@@ -89,12 +88,12 @@
                                 @if (isset($permissions) && $permissions > 3)
                                     <li><a href="#">Menu</a>
                                         <ul>
-                                            <li><a href="{{url('/clients')}}">Clients</a></li>
+                                            <li><a href="{{url('/clients')}}">Clients Table</a></li>
                                             <li><a href="{{url('/users')}}">Users Table</a></li>
                                             <li><a href="{{url('/employees')}}">Employees Table</a></li>
                                             <li><a href="{{url('/locations')}}">Locations Table</a></li>
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
-                                            <li><a href="{{url('/routes')}}">Routes</a></li>
+                                            <li><a href="{{url('/routes')}}">Routes Table</a></li>
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
                                         </ul>
                                     </li>
@@ -108,7 +107,17 @@
         </div>
 
         <div class="datatables-area">
+        @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
+                    </div>
+                </div>
+            @endif
                 <div class="table-responsive container">
+                    <div class="table-header">
+                        <button class="add-another btn"><a href="{{url('/routes/add')}}">Add new client</a></button>
+                    </div>
                     <table class="table table-bordered table-hover dt-responsive custom-table" id="clients-table">
                         <thead>
                             <tr>
@@ -118,6 +127,7 @@
                                 <th>Fecha de Nacimiento</th>
                                 <th>Direccion</th>
                                 <th>Carnet</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -126,9 +136,16 @@
                                     <td>{{$client->cli_cedula}}</td>
                                     <td>{{$client->cli_nom}}</td>
                                     <td>{{$client->cli_em}}</td>
-                                    <td>{{$client->cli_fn}}</td>
+                                    <td width=30px>{{$client->cli_fn}}</td>
                                     <td>{{$client->cli_lu}}</td>
                                     <td>{{$client->cli_car}}</td>
+                                    <td>
+                                        <div style="text-align: center">
+                                        <a href="{{url('/clients/'.$client->cli_cedula)}}" class="edit_details" title="edit" >
+                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
+                                        <a href="{{url('/clients/delete/'.$client->cli_cedula)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
+                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
+                                    </div>
                                 </tr>
                             @endforeach   
                         </tbody>
@@ -138,21 +155,21 @@
 
         <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="/js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
-    <script src="js/vendor/jquery.easing.1.3.js"></script>
-    <script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
-    <script src="js/vendor/jquery.appear.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/stellar.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/stellarnav.min.js"></script>
-    <script src="js/contact-form.js"></script>
-    <script src="js/jquery.sticky.js"></script>
+    <script src="/js/vendor/jquery.easing.1.3.js"></script>
+    <script src="/js/vendor/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/js/vendor/jquery.appear.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/stellar.js"></script>
+    <script src="/js/wow.min.js"></script>
+    <script src="/js/stellarnav.min.js"></script>
+    <script src="/js/contact-form.js"></script>
+    <script src="/js/jquery.sticky.js"></script>
 
     <!--===== ACTIVE JS =====-->
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
     
 </body>
 

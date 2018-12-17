@@ -88,10 +88,12 @@
                                 @if (isset($permissions) && $permissions > 3)
                                     <li><a href="#">Menu</a>
                                         <ul>
+                                            <li><a href="{{url('/clients')}}">Clients Table</a></li>
                                             <li><a href="{{url('/users')}}">Users Table</a></li>
                                             <li><a href="{{url('/employees')}}">Employees Table</a></li>
                                             <li><a href="{{url('/locations')}}">Locations Table</a></li>
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
+                                            <li><a href="{{url('/routes')}}">Routes Table</a></li>
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
                                         </ul>
                                     </li>
@@ -150,7 +152,7 @@
 
         <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="/js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
     <script src="/js/vendor/jquery.easing.1.3.js"></script>

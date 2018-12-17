@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Users</title>
+    <title>LogUcab | Routes Registration</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
@@ -32,6 +32,7 @@
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
+    <link href="/regform.css" rel="stylesheet">
     <link href="/css/responsive.css" rel="stylesheet">
 
     <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -61,7 +62,7 @@
                         </div>
                         <div class="search-and-language-bar pull-right">
                             <ul>
-                                <li><a href="{{url('/login')}}"><i class="fa fa-user"></i></a></li>
+                                <li><a href="{{url('/login')}}"><i class="fa fa-user" @if ($permissions > 0) title="Login" @endif></i></a></li>
                                 @if ($permissions > 0)
                                 <li><a href="{{url('/logout')}}"><i class="fa" title="Logout"></i>X</a></li> 
                                 <!-- falta linkear el logout aqui -->
@@ -71,7 +72,7 @@
                                     <select name="#" id="#">
                                     <option selected value="End">SPA</option>
                                     <option value="End">ENG</option>
-                                    </select>
+                                </select>
                                 </li>
                             </ul>
                             <form action="#" class="search-form">
@@ -104,42 +105,46 @@
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
-        </div>
 
-        <div class="datatables-area">
-                <div class="table-responsive container">
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
-                        <thead>
-                            <tr>
-                                <th>Codigo</th>
-                                <th>Email</th>
-                                <th>Password</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($users as $user)
-                                <tr>
-                                    <td>{{$user->usu_codigo}}</td>
-                                    <td>{{$user->usu_email}}</td>
-                                    <td>{{$user->usu_password}}</td>
-                                    <td>
-                                    <div style="text-align: center">
-                                        <a href="{{url('/users/'.$user->usu_codigo)}}" class="edit_details" title="edit" >
-                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
-                                        <a href="{{url('/users/delete/'.$user->usu_codigo)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
-                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
-                                    </div>
-                                    </td>
-                                </tr>
-                            @endforeach   
-                        </tbody>
-                    </table>
+    <div class="container" id="cont1">
+            @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
+                    </div>
                 </div>
-        </div>
-        
-        <!--====== SCRIPTS JS ======-->
-    <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
+            @endif
+            <form class="form-horizontal" role="form" method="POST" action="{{url('/routes/add')}}">
+                @csrf
+                <input type="hidden" name="add" value="@if (isset($add))add @endif">
+                <div class="form-group">
+                    <label for="sucursal" class="col-sm-3 control-label">Sucursal Origen*</label>
+                    <div class="col-sm-9">
+                        <select name="sucursal" class="form-control" style="margin-bottom: 10px;">
+                            <option value="">Seleccione una sucursal de origen</option>
+                            @foreach ($franchises as $franchise)
+                                <option 
+                                @if (isset($employee) && $franchise->cod == $employee[0]->emp_sucursal)
+                                selected 
+                                @endif
+                                value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>      
+                
+                 <!-- /.form-group -->
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <span class="help-block">*Obligatorio</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+            </form> <!-- /form -->
+        </div> <!-- ./container -->
+
+              <!--====== SCRIPTS JS ======-->
+    <!-- <script src="/js/vendor/jquery-1.12.4.min.js"></script> -->
     <script src="/js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
@@ -162,7 +167,5 @@
 
 <!--=====  DATA TABLE =====-->
 <script>  
-    $(document).ready(function(){  
-            $('#users-table').DataTable();  
-    });  
+   
 </script> 

@@ -1,8 +1,8 @@
 <html>
 <head>
-	<link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-	<script src="js/vendor/bootstrap.min.js"></script>
-	<script src="js/vendor/jquery-1.12.4.min.js"></script>
+	<link href="/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="/js/vendor/bootstrap.min.js"></script>
+	<script src="/js/vendor/jquery-1.12.4.min.js"></script>
 	<!------ Include the above in your HEAD tag ---------->
 </head>
 

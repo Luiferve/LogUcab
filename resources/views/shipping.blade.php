@@ -15,26 +15,26 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Home</title>
+    <title>LogUcab | Shipping</title>
 
     <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
+    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/animate.css">
-    <link rel="stylesheet" href="css/stellarnav.min.css">
-    <link rel="stylesheet" href="css/owl.carousel.css">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/stellarnav.min.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
     <!--====== MAIN STYLESHEETS ======-->
-    <link href="style.css" rel="stylesheet">
-    <link href="css/responsive.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
 
-    <script src="js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
-    <script src="js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
-    <script src="js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
-    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
+    <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
+    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
     <!--[if lt IE 9]>
         <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -65,7 +65,7 @@
                 <nav class="navbar">
                     <div class="container">
                         <div class="navbar-header">
-                            <a href="{{url('/')}}" class="navbar-brand"><img src="img/logo.png" alt="logo"></a>
+                            <a href="{{url('/')}}" class="navbar-brand"><img src="/img/logo.png" alt="logo"></a>
                         </div>
                         <div class="search-and-language-bar pull-right">
                             <ul>
@@ -95,10 +95,12 @@
                                 @if (isset($permissions) && $permissions > 3)
                                     <li><a href="#">Menu</a>
                                         <ul>
+                                            <li><a href="{{url('/clients')}}">Clients Table</a></li>
                                             <li><a href="{{url('/users')}}">Users Table</a></li>
                                             <li><a href="{{url('/employees')}}">Employees Table</a></li>
                                             <li><a href="{{url('/locations')}}">Locations Table</a></li>
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
+                                            <li><a href="{{url('/routes')}}">Routes Table</a></li>
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
                                         </ul>
                                     </li>
@@ -291,23 +293,23 @@
         </div>
 
         <!--====== SCRIPTS JS ======-->
-    <script src="js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="js/vendor/bootstrap.min.js"></script>
-    <script src="js/shipping-form.js"></script>
+    <script src="/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="/js/vendor/bootstrap.min.js"></script>
+    <script src="/js/shipping-form.js"></script>
 
     <!--====== PLUGINS JS ======-->
-    <script src="js/vendor/jquery.easing.1.3.js"></script>
-    <script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
-    <script src="js/vendor/jquery.appear.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/stellar.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/stellarnav.min.js"></script>
-    <script src="js/contact-form.js"></script>
-    <script src="js/jquery.sticky.js"></script>
+    <script src="/js/vendor/jquery.easing.1.3.js"></script>
+    <script src="/js/vendor/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/js/vendor/jquery.appear.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/stellar.js"></script>
+    <script src="/js/wow.min.js"></script>
+    <script src="/js/stellarnav.min.js"></script>
+    <script src="/js/contact-form.js"></script>
+    <script src="/js/jquery.sticky.js"></script>
 
     <!--===== ACTIVE JS =====-->
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
 
 </body>
 
