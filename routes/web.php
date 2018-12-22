@@ -293,9 +293,12 @@ Route::get('/print/{id}',function ($id){
         $cost = ($tipoP + $tipoE) * $package->paq_peso;
     }
 
+    $subtotal = $cost;
+    if ($sender->cli_vip != '') $subtotal = $cost * 0.9;
+
     $permissions = Cookie::get('permissions');
     $userEmail = Cookie::get('user-email');
-    return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail,'shipment' => $shipment, 'employee' => $employee, 'sender' => $sender,'receiver' => $receiver, 'package' => $package, 'payment' => $payment, 'origin' => $origin, 'destination' => $destination, 'cost' => $cost]);
+    return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail,'shipment' => $shipment, 'employee' => $employee, 'sender' => $sender,'receiver' => $receiver, 'package' => $package, 'payment' => $payment, 'origin' => $origin, 'destination' => $destination, 'cost' => $cost, 'subtotal' => $subtotal]);
 })->where('id', '[0-9]+');
 
 

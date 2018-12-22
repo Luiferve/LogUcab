@@ -40,7 +40,7 @@
 	    				<address>
 	    					<strong>Metodo de pago:</strong><br>
 							@if ($payment != NULL)
-	    					{{$payment->pag_tipo}} @if ($payment->pag_tipo != 'Efectivo') ending {{substr($payment->cre_tarjeta,11)}}{{substr($payment->deb_tarjeta,11)}}{{substr($payment->che_num_cheque,11)}} @endif <br>
+	    					{{$payment->pag_tipo}} @if ($payment->pag_tipo != 'Efectivo') termina en {{substr($payment->cre_tarjeta,11)}}{{substr($payment->deb_tarjeta,11)}}{{substr($payment->che_num_cheque,11)}} @endif <br>
 							@else
 							Pago en destino
 							@endif
@@ -87,15 +87,15 @@
 										<td class="thick-line"></td>
 										<td class="thick-line"></td>
 	    								<td class="thick-line"></td>
-	    								<td class="thick-line text-center"><strong>Subtotal</strong></td>
-	    								<td class="thick-line text-right">{{$cost}} Bs.S.</td>
+	    								<td class="thick-line text-center"><strong>Subtotal @if ($sender->cli_vip != '') (*VIP*) @endif</strong></td>
+	    								<td class="thick-line text-right">{{$subtotal}} Bs.S.</td>
 	    							</tr>
 	    							<tr>
 	    								<td class="no-line"></td>
 										<td class="no-line"></td>
 	    								<td class="no-line"></td>
 	    								<td class="no-line text-center"><strong>Total</strong></td>
-	    								<td class="no-line text-right">{{$cost}} Bs.S.</td>
+	    								<td class="no-line text-right">{{$subtotal}} Bs.S.</td>
 	    							</tr>
 	    						</tbody>
 	    					</table>
