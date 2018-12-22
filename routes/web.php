@@ -94,6 +94,8 @@ Route::post('/login', function () {
                     $code = $code[0]->m;
                 }
                 $users = DB::insert('insert into usuario (usu_codigo,usu_email,usu_password) values('.$code.'+1,\''.$_POST['email'].'\',\''.$_POST['password'].'\')');
+                $users = Db::select('select usu_codigo cod from usuario where usu_email=\''.$_POST['email'].'\'')[0];
+                $usu_rol = DB::insert('insert into usu_rol(usu_usuario,usu_rol) values('.$users->cod.',3)');
                 $message = 'Registro exitoso.';
             } else {
                 $message = 'El email ('.$_POST['email'].') ya esta registrado.';
