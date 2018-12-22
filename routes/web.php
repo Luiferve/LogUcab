@@ -275,15 +275,18 @@ Route::post('/ship', function () {
 
 Route::get('/print/{id}',function ($id){
     $shipment = DB::select('select * from envio where env_codigo='.$id)[0];
+    $origin = DB::select('select suc_nombre sucursal,a.lug_nombre municipio, b.lug_nombre estado from sucursal,lugar a, lugar b where suc_codigo='.$shipment->env_suc_origen.' and suc_lugar=a.lug_codigo and a.lug_lugar=b.lug_codigo')[0];
+    $destination = DB::select('select suc_nombre sucursal,a.lug_nombre municipio, b.lug_nombre estado from sucursal,lugar a, lugar b where suc_codigo='.$shipment->env_suc_destino.' and suc_lugar=a.lug_codigo and a.lug_lugar=b.lug_codigo')[0];
     $employee = DB::select('select * from empleado where emp_cedula='.$shipment->env_empleado)[0];
     $sender = DB::select('select *from cliente where cli_cedula='.$shipment->env_cliente)[0];
     $package = DB::select('select * from paquete where paq_envio='.$shipment->env_codigo)[0];
     $receiver = DB::select('select * from destinatario where des_codigo='.$package->paq_destinatario)[0];
-    $payment = DB::select('select * from pago where pag_codigo='.$shipment->env_pago)[0];
+    $payment = NULL;
+    if ($shipment->env_pago != '') $payment = DB::select('select * from pago where pag_codigo='.$shipment->env_pago)[0];
 
     $permissions = Cookie::get('permissions');
     $userEmail = Cookie::get('user-email');
-    return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail,'shipment' => $shipment, 'employee' => $employee, 'sender' => $sender,'receiver' => $receiver, 'package' => $package, 'payment' => $payment]);
+    return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail,'shipment' => $shipment, 'employee' => $employee, 'sender' => $sender,'receiver' => $receiver, 'package' => $package, 'payment' => $payment, 'origin' => $origin, 'destination' => $destination]);
 })->where('id', '[0-9]+');
 
 
