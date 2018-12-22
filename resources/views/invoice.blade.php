@@ -38,9 +38,9 @@
 	    		<div class="row">
 	    			<div class="col-xs-6">
 	    				<address>
-	    					<strong>Payment Method:</strong><br>
+	    					<strong>Metodo de pago:</strong><br>
 							@if ($payment != NULL)
-	    					{{$payment->pag_tipo}} @if ($payment->pag_tipo != 'Efectivo') ending {{$payment->cre_tarjeta}}{{$payment->deb_tarjeta}}{{$payment->che_num_cheque}} @endif <br>
+	    					{{$payment->pag_tipo}} @if ($payment->pag_tipo != 'Efectivo') ending {{substr($payment->cre_tarjeta,11)}}{{substr($payment->deb_tarjeta,11)}}{{substr($payment->che_num_cheque,11)}} @endif <br>
 							@else
 							Pago en destino
 							@endif
@@ -60,56 +60,42 @@
 	    	<div class="col-md-12">
 	    		<div class="panel panel-default">
 	    			<div class="panel-heading">
-	    				<h3 class="panel-title"><strong>Order summary</strong></h3>
+	    				<h3 class="panel-title"><strong>Detalle:</strong></h3>
 	    			</div>
 	    			<div class="panel-body">
 	    				<div class="table-responsive">
 	    					<table class="table table-condensed">
 	    						<thead>
 	                                <tr>
-	        							<td><strong>Item</strong></td>
-	        							<td class="text-center"><strong>Price</strong></td>
-	        							<td class="text-center"><strong>Quantity</strong></td>
-	        							<td class="text-right"><strong>Totals</strong></td>
+	        							<td><strong>Paquete</strong></td>
+	        							<td class="text-center"><strong>Peso</strong></td>
+	        							<td class="text-center"><strong>Volumen</strong></td>
+										<td class="text-center"><strong>Tipo Paquete</strong></td>
+	        							<td class="text-right"><strong>Precio</strong></td>
 	                                </tr>
 	    						</thead>
 	    						<tbody>
 	    							<!-- foreach ($order->lineItems as $line) or some such thing here -->
 	    							<tr>
-	    								<td>BS-200</td>
-	    								<td class="text-center">$10.99</td>
-	    								<td class="text-center">1</td>
-	    								<td class="text-right">$10.99</td>
-	    							</tr>
-	                                <tr>
-	        							<td>BS-400</td>
-	    								<td class="text-center">$20.00</td>
-	    								<td class="text-center">3</td>
-	    								<td class="text-right">$60.00</td>
-	    							</tr>
-	                                <tr>
-	            						<td>BS-1000</td>
-	    								<td class="text-center">$600.00</td>
-	    								<td class="text-center">1</td>
-	    								<td class="text-right">$600.00</td>
+	    								<td>{{$package->paq_guia}}</td>
+	    								<td class="text-center">{{$package->paq_peso}} Kg</td>
+	    								<td class="text-center">{{$package->paq_alto*$package->paq_ancho*$package->paq_profundidad}} cm3</td>
+										<td class="text-center">{{$package->tipo}}</td>
+	    								<td class="text-right">{{$cost}} Bs.S.</td>
 	    							</tr>
 	    							<tr>
-	    								<td class="thick-line"></td>
+										<td class="thick-line"></td>
+										<td class="thick-line"></td>
 	    								<td class="thick-line"></td>
 	    								<td class="thick-line text-center"><strong>Subtotal</strong></td>
-	    								<td class="thick-line text-right">$670.99</td>
+	    								<td class="thick-line text-right">{{$cost}} Bs.S.</td>
 	    							</tr>
 	    							<tr>
 	    								<td class="no-line"></td>
-	    								<td class="no-line"></td>
-	    								<td class="no-line text-center"><strong>Shipping</strong></td>
-	    								<td class="no-line text-right">$15</td>
-	    							</tr>
-	    							<tr>
-	    								<td class="no-line"></td>
+										<td class="no-line"></td>
 	    								<td class="no-line"></td>
 	    								<td class="no-line text-center"><strong>Total</strong></td>
-	    								<td class="no-line text-right">$685.99</td>
+	    								<td class="no-line text-right">{{$cost}} Bs.S.</td>
 	    							</tr>
 	    						</tbody>
 	    					</table>

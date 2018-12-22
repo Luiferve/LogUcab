@@ -279,14 +279,23 @@ Route::get('/print/{id}',function ($id){
     $destination = DB::select('select suc_nombre sucursal,a.lug_nombre municipio, b.lug_nombre estado from sucursal,lugar a, lugar b where suc_codigo='.$shipment->env_suc_destino.' and suc_lugar=a.lug_codigo and a.lug_lugar=b.lug_codigo')[0];
     $employee = DB::select('select * from empleado where emp_cedula='.$shipment->env_empleado)[0];
     $sender = DB::select('select *from cliente where cli_cedula='.$shipment->env_cliente)[0];
-    $package = DB::select('select * from paquete where paq_envio='.$shipment->env_codigo)[0];
+    $package = DB::select('select *,tip_tipo tipo from paquete,tipo_paquete where paq_tipo_paquete=tip_codigo and paq_envio='.$shipment->env_codigo)[0];
     $receiver = DB::select('select * from destinatario where des_codigo='.$package->paq_destinatario)[0];
     $payment = NULL;
     if ($shipment->env_pago != '') $payment = DB::select('select * from pago where pag_codigo='.$shipment->env_pago)[0];
 
+    $cost = 0;
+    $tipoE = DB:: select('select tip_costo from tipo_envio where tip_codigo='.$package->paq_tipo_envio)[0]->tip_costo;
+    $tipoP = DB::select('select tip_costo from tipo_paquete where tip_codigo='.$package->paq_tipo_paquete)[0]->tip_costo;
+    if ($package->paq_peso >= 10){
+        $cost = ($tipoP + $tipoE) * ($package->paq_alto * $package->paq_ancho * $package->paq_profundidad);
+    } else {
+        $cost = ($tipoP + $tipoE) * $package->paq_peso;
+    }
+
     $permissions = Cookie::get('permissions');
     $userEmail = Cookie::get('user-email');
-    return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail,'shipment' => $shipment, 'employee' => $employee, 'sender' => $sender,'receiver' => $receiver, 'package' => $package, 'payment' => $payment, 'origin' => $origin, 'destination' => $destination]);
+    return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail,'shipment' => $shipment, 'employee' => $employee, 'sender' => $sender,'receiver' => $receiver, 'package' => $package, 'payment' => $payment, 'origin' => $origin, 'destination' => $destination, 'cost' => $cost]);
 })->where('id', '[0-9]+');
 
 
