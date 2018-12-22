@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | CLient Modification</title>
+    <title>LogUcab | Client Modification</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
@@ -96,6 +96,7 @@
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
                                             <li><a href="{{url('/routes')}}">Routes Table</a></li>
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
+                                            <li><a href="{{url('/shipments')}}">Shipments Table</a></li>
                                         </ul>
                                     </li>
                                 @endif

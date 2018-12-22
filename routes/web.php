@@ -681,7 +681,19 @@ Route::post('/usuarioReg',function (){
     return view('user_registration', ["permissions" => $permissions, 'message' => $message, 'rol' => $rol] );
 });
 
+Route::get('/shipments', function (){
+    $shipments = DB::select('select e.*,(select suc_nombre from sucursal where e.env_suc_origen=suc_codigo) origen,(select suc_nombre from sucursal where e.env_suc_destino=suc_codigo) destino, (select paq_peso from paquete where paq_envio=e.env_codigo) peso,(select tip_tipo from tipo_paquete t,paquete p where t.tip_codigo=p.paq_tipo_paquete and p.paq_envio=e.env_codigo) tipo_paquete,(select tip_tipo from tipo_envio t,paquete p where t.tip_codigo=p.paq_tipo_envio and p.paq_envio=e.env_codigo) tipo_envio from envio e');
 
+    $permissions = Cookie::get('permissions');
+    return view('shipments_table', ["permissions" => $permissions, 'shipments' => $shipments] );
+});
 
+Route::get('/shipments/{id}', function ($id){
+    $shipment = DB::select('select * from envio where env_codigo='.$id)[0];
+    $package = DB::select('select p.*,(select paq_estatus_paquete status from paq_est where paq_paquete=p.paq_guia) from paquete p where p.paq_envio='.$id)[0];
+    $statuses = DB::select('select * from estatus_paquete');
+    $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
 
-
+    $permissions = Cookie::get('permissions');
+    return view('shipment_modification',['permissions' => $permissions, 'shipment' => $shipment, 'package' => $package, 'franchises' => $franchises, 'statuses' => $statuses]);
+})->where('id', '[0-9]+');

@@ -11,9 +11,9 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | User Update</title>
+    <title>LogUcab | Shipments</title>
 
-     <!--====== FAVICON ICON =======-->
+    <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
@@ -32,7 +32,6 @@
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
-    <link href="/regform.css" rel="stylesheet">
     <link href="/css/responsive.css" rel="stylesheet">
 
     <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -70,9 +69,8 @@
                                 <li class="search-box"><i class="fa fa-search"></i></li>
                                 <li class="select-language">
                                     <select name="#" id="#">
-                                    <option selected value="End">ENG</option>
-                                    <option value="ARA">ARA</option>
-                                    <option value="CHI">CHI</option>
+                                    <option selected value="End">SPA</option>
+                                    <option value="End">ENG</option>
                                 </select>
                                 </li>
                             </ul>
@@ -84,108 +82,101 @@
                         <div id="main-nav" class="stellarnav">
                             <ul id="nav" class="nav navbar-nav">
                                 <li><a href="{{url('/')}}">home</a></li>
-                                <li><a href="/about.html">about</a></li>
-                                <li><a href="/service.html">Service</a></li>
-                                <li><a href="/contact.html">Contact</a></li>
-                                
+                                <li><a href="about.html">about</a></li>
+                                <li><a href="service.html">Service</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                                @if (isset($permissions) && $permissions > 3)
                                     <li><a href="#">Menu</a>
                                         <ul>
-                                            <li><a href="{{url('/clients')}}">Clients</a></li>
+                                            <li><a href="{{url('/clients')}}">Clients Table</a></li>
                                             <li><a href="{{url('/users')}}">Users Table</a></li>
                                             <li><a href="{{url('/employees')}}">Employees Table</a></li>
                                             <li><a href="{{url('/locations')}}">Locations Table</a></li>
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
-                                            <li><a href="{{url('/routes')}}">Routes</a></li>
+                                            <li><a href="{{url('/routes')}}">Routes Table</a></li>
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
-                                            <li><a href="{{url('/franchiseReg')}}">Franchise Reg</a></li>
                                             <li><a href="{{url('/shipments')}}">Shipments Table</a></li>
-
                                         </ul>
                                     </li>
-                                
+                                @endif
                             </ul>
                         </div>
                     </div>
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
+        </div>
 
-    <div class="container" id="cont1">
-         @if (isset($message))
+        <div class="datatables-area">
+        @if (isset($message))
                 <div class="container" id="alert" style="margin-top: 2%;">
                     <div class="alert alert-success" role="alert">
                         {{$message}}
                     </div>
                 </div>
             @endif
-            <form class="form-horizontal" role="form" method="POST" action="{{url('/usuarioReg')}}">
-                @csrf
-                <input type="hidden" name="add" value="@if (isset($add))add @endif">
-                <input type="hidden" name="codigo" @if (isset($users))
-                            value="{{$users[0]->usu_codigo}}"
-                        @endif>
-                <div class="form-group">
-                    <label for="email" class="col-sm-3 control-label">E-mail*</label>
-                    <div class="col-sm-9">
-                        <input name = "email" type="text" id="email" placeholder="E-mail" class="form-control" autofocus required
-                        @if (isset($users))
-                            value="{{$users[0]->usu_email}}"
-                        @endif
-                        >
+                <div class="table-responsive container">
+                    <div class="table-header">
                     </div>
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Empleado</th>
+                                <th>Origen</th>
+                                <th>Destino</th>
+                                <th>Peso</th>
+                                <th>Tipo paquete</th>
+                                <th>Tipo envio</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($shipments as $shipment)
+                                <tr>
+                                    <td>{{$shipment->env_fecha}}</td>
+                                    <td>{{$shipment->env_cliente}}</td>
+                                    <td>{{$shipment->env_empleado}}</td>
+                                    <td>{{$shipment->origen}}</td>
+                                    <td>{{$shipment->destino}}</td>
+                                    <td width=30px>{{$shipment->peso}}</td>
+                                    <td>{{$shipment->tipo_paquete}}</td>
+                                    <td>{{$shipment->tipo_envio}}</td>
+                                    <td>
+                                        <div style="text-align: center">
+                                            <a href="{{url('/print/'.$shipment->env_codigo)}}" class="invoice_details"  title="invoice" style="padding-left: 20px;">
+                                                <img src="/img/invoice.png" alt="Invoice" width=20px></a>
+                                            <a href="{{url('/shipments/'.$shipment->env_codigo)}}" class="edit_details" title="edit" >
+                                                <img src="/img/edit.png" alt="Edit" width=20px></a>
+                                            <a href="{{url('/shipments/delete/'.$shipment->env_codigo)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
+                                                <img src="/img/delete.png" alt="Delete" width=20px></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach   
+                        </tbody>
+                    </table>
                 </div>
-                <div class="form-group">
-                    <label for="passwordr" class="col-sm-3 control-label">Password* </label>
-                    <div class="col-sm-9">
-                        <input name ="password" type="text" id="password"  placeholder="Password" class="form-control" required
-                        @if (isset($users))
-                            value="{{$users[0]->usu_password}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="pais" class="col-sm-3 control-label">Rol*</label>
-                    <div class="col-sm-9">
-                        <select name="country" class="form-control" style="margin-bottom: 10px;">
-                            <option value="">Seleccione el Rol</option>
-                            @foreach ($rol as $rol)
-                                <option 
-                                
-                                value="{{$rol->cod}}">{{$rol->nombre}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            
-                 <!-- /.form-group -->
-                <div class="form-group">
-                    <div class="col-sm-9 col-sm-offset-3">
-                        <span class="help-block">*Obligatorio</span>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Registrar</button>
-            </form>    
-            </form> <!-- /form -->
-        </div> <!-- ./container -->
+        </div>
 
-              <!--====== SCRIPTS JS ======-->
+        <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="/js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
-    <script src="js/vendor/jquery.easing.1.3.js"></script>
-    <script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
-    <script src="js/vendor/jquery.appear.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/stellar.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/stellarnav.min.js"></script>
-    <script src="js/contact-form.js"></script>
-    <script src="js/jquery.sticky.js"></script>
+    <script src="/js/vendor/jquery.easing.1.3.js"></script>
+    <script src="/js/vendor/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/js/vendor/jquery.appear.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/stellar.js"></script>
+    <script src="/js/wow.min.js"></script>
+    <script src="/js/stellarnav.min.js"></script>
+    <script src="/js/contact-form.js"></script>
+    <script src="/js/jquery.sticky.js"></script>
 
     <!--===== ACTIVE JS =====-->
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
     
 </body>
 
@@ -193,5 +184,7 @@
 
 <!--=====  DATA TABLE =====-->
 <script>  
-   
+    $(document).ready(function(){  
+            $('#clients-table').DataTable();  
+    });  
 </script> 

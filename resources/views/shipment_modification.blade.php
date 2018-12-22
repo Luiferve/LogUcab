@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | User Update</title>
+    <title>LogUcab | Shipment Modification</title>
 
      <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
@@ -99,7 +99,6 @@
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
                                             <li><a href="{{url('/franchiseReg')}}">Franchise Reg</a></li>
                                             <li><a href="{{url('/shipments')}}">Shipments Table</a></li>
-
                                         </ul>
                                     </li>
                                 
@@ -118,41 +117,72 @@
                     </div>
                 </div>
             @endif
-            <form class="form-horizontal" role="form" method="POST" action="{{url('/usuarioReg')}}">
+            <form class="form-horizontal" role="form" method="POST" action="{{url('/shipments/'.$shipment->env_codigo)}}">
+                <div class="form-group">
+                    <label for="cliente" class="col-sm-3 control-label">Cliente*</label>
+                    <div class="col-sm-9">
+                        <input name="cliente" type="text" id="cliente" placeholder="Cedula Cliente" class="form-control" autofocus required
+                        @if (isset($shipment))
+                            value="{{$shipment->env_cliente}}"
+                        @endif
+                        >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="empleado" class="col-sm-3 control-label">Empleado*</label>
+                    <div class="col-sm-9">
+                        <input name="empleado" type="text" id="empleado" placeholder="Cedula Empleado" class="form-control" autofocus required
+                        @if (isset($shipment))
+                            value="{{$shipment->env_empleado}}"
+                        @endif
+                        >
+                    </div>
+                </div>
                 @csrf
-                <input type="hidden" name="add" value="@if (isset($add))add @endif">
-                <input type="hidden" name="codigo" @if (isset($users))
-                            value="{{$users[0]->usu_codigo}}"
+                <input type="hidden" name="codigo" @if (isset($shipment))
+                            value="{{$shipment->env_codigo}}"
                         @endif>
                 <div class="form-group">
-                    <label for="email" class="col-sm-3 control-label">E-mail*</label>
+                    <label for="origen" class="col-sm-3 control-label">Origen*</label>
                     <div class="col-sm-9">
-                        <input name = "email" type="text" id="email" placeholder="E-mail" class="form-control" autofocus required
-                        @if (isset($users))
-                            value="{{$users[0]->usu_email}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="passwordr" class="col-sm-3 control-label">Password* </label>
-                    <div class="col-sm-9">
-                        <input name ="password" type="text" id="password"  placeholder="Password" class="form-control" required
-                        @if (isset($users))
-                            value="{{$users[0]->usu_password}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="pais" class="col-sm-3 control-label">Rol*</label>
-                    <div class="col-sm-9">
-                        <select name="country" class="form-control" style="margin-bottom: 10px;">
-                            <option value="">Seleccione el Rol</option>
-                            @foreach ($rol as $rol)
+                        <select name="origen" class="form-control" style="margin-bottom: 10px;">
+                            <option value="">Seleccione la sucursal de origen</option>
+                            @foreach ($franchises as $franchise)
                                 <option 
-                                
-                                value="{{$rol->cod}}">{{$rol->nombre}}</option>
+                                @if (isset($shipment) && $franchise->cod == $shipment->env_suc_origen)
+                                selected 
+                                @endif
+                                value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="destino" class="col-sm-3 control-label">Destino*</label>
+                    <div class="col-sm-9">
+                        <select name="destino" class="form-control" style="margin-bottom: 10px;">
+                            <option value="">Seleccione la sucursal de destino</option>
+                            @foreach ($franchises as $franchise)
+                                <option 
+                                @if (isset($shipment) && $franchise->cod == $shipment->env_suc_destino)
+                                selected 
+                                @endif
+                                value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="estatus" class="col-sm-3 control-label">Estatus*</label>
+                    <div class="col-sm-9">
+                        <select name="estatus" class="form-control" style="margin-bottom: 10px;">
+                            <option value="">Seleccione el estatus</option>
+                            @foreach ($statuses as $status)
+                                <option 
+                                @if (isset($shipment) && $package->status == $status->est_codigo)
+                                selected 
+                                @endif
+                                value="{{$status->est_codigo}}">{{$status->est_nombre}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -164,7 +194,7 @@
                         <span class="help-block">*Obligatorio</span>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+                <button type="submit" class="btn btn-primary btn-block">Modificar</button>
             </form>    
             </form> <!-- /form -->
         </div> <!-- ./container -->

@@ -96,6 +96,7 @@
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
                                             <li><a href="{{url('/routes')}}">Routes Table</a></li>
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
+                                            <li><a href="{{url('/shipments')}}">Shipments Table</a></li>
                                         </ul>
                                     </li>
                                 @endif
