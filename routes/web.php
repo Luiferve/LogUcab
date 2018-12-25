@@ -690,10 +690,32 @@ Route::get('/shipments', function (){
 
 Route::get('/shipments/{id}', function ($id){
     $shipment = DB::select('select * from envio where env_codigo='.$id)[0];
-    $package = DB::select('select p.*,(select paq_estatus_paquete status from paq_est where paq_paquete=p.paq_guia) from paquete p where p.paq_envio='.$id)[0];
+    $package = DB::select('select p.*,(select paq_estatus_paquete status from paq_est where paq_paquete=p.paq_guia) status from paquete p where p.paq_envio='.$id)[0];
     $statuses = DB::select('select * from estatus_paquete');
     $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
 
     $permissions = Cookie::get('permissions');
     return view('shipment_modification',['permissions' => $permissions, 'shipment' => $shipment, 'package' => $package, 'franchises' => $franchises, 'statuses' => $statuses]);
+})->where('id', '[0-9]+');
+
+Route::post('/shipments/{id}', function ($id){
+    $shipment = DB::update('update envio set env_cliente='.$_POST['cliente'].', env_empleado='.$_POST['empleado'].', env_suc_origen='.$_POST['origen'].', env_suc_destino='.$_POST['destino'].'	where env_codigo='.$id);
+    $package = DB::update('update paquete set paq_peso='.$_POST['peso'].', paq_ancho='.$_POST['ancho'].', paq_alto='.$_POST['alto'].', paq_profundidad='.$_POST['profundidad'].' where paq_guia='.$_POST['paqcodigo']);
+    $status = DB::update('update paq_est set paq_fecha=\''.date('d/m/Y').'\', paq_estatus_paquete='.$_POST['estatus'].' where paq_paquete='.$_POST['paqcodigo']);
+
+    $shipments = DB::select('select e.*,(select suc_nombre from sucursal where e.env_suc_origen=suc_codigo) origen,(select suc_nombre from sucursal where e.env_suc_destino=suc_codigo) destino, (select paq_peso from paquete where paq_envio=e.env_codigo) peso,(select tip_tipo from tipo_paquete t,paquete p where t.tip_codigo=p.paq_tipo_paquete and p.paq_envio=e.env_codigo) tipo_paquete,(select tip_tipo from tipo_envio t,paquete p where t.tip_codigo=p.paq_tipo_envio and p.paq_envio=e.env_codigo) tipo_envio from envio e');
+
+    $permissions = Cookie::get('permissions');
+    $message = 'Envio actualizado exitosamente';
+    return view('shipments_table', ["permissions" => $permissions, 'shipments' => $shipments, 'message' => $message] );
+})->where('id', '[0-9]+');
+
+Route::get('/shipments/delete/{id}', function ($id){
+    $shipment = DB::delete('delete from envio where env_codigo='.$id);
+    
+    $shipments = DB::select('select e.*,(select suc_nombre from sucursal where e.env_suc_origen=suc_codigo) origen,(select suc_nombre from sucursal where e.env_suc_destino=suc_codigo) destino, (select paq_peso from paquete where paq_envio=e.env_codigo) peso,(select tip_tipo from tipo_paquete t,paquete p where t.tip_codigo=p.paq_tipo_paquete and p.paq_envio=e.env_codigo) tipo_paquete,(select tip_tipo from tipo_envio t,paquete p where t.tip_codigo=p.paq_tipo_envio and p.paq_envio=e.env_codigo) tipo_envio from envio e');
+
+    $permissions = Cookie::get('permissions');
+    $message = 'Envio eliminado exitosamente';
+    return view('shipments_table', ["permissions" => $permissions, 'shipments' => $shipments, 'message' => $message] );
 })->where('id', '[0-9]+');

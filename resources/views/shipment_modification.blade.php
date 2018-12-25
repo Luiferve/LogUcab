@@ -142,6 +142,9 @@
                 <input type="hidden" name="codigo" @if (isset($shipment))
                             value="{{$shipment->env_codigo}}"
                         @endif>
+                <input type="hidden" name="paqcodigo" @if (isset($package))
+                    value="{{$package->paq_guia}}"
+                @endif>
                 <div class="form-group">
                     <label for="origen" class="col-sm-3 control-label">Origen*</label>
                     <div class="col-sm-9">
@@ -185,6 +188,46 @@
                                 value="{{$status->est_codigo}}">{{$status->est_nombre}}</option>
                             @endforeach
                         </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="peso" class="col-sm-3 control-label">Peso*</label>
+                    <div class="col-sm-9">
+                        <input name="peso" type="number" id="peso" placeholder="Peso" class="form-control" autofocus required
+                        @if (isset($package))
+                            value="{{$package->paq_peso}}"
+                        @endif
+                        >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="alto" class="col-sm-3 control-label">Alto*</label>
+                    <div class="col-sm-9">
+                        <input name="alto" type="number" id="alto" placeholder="Alto" class="form-control" autofocus required
+                        @if (isset($package))
+                            value="{{$package->paq_alto}}"
+                        @endif
+                        >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ancho" class="col-sm-3 control-label">Ancho*</label>
+                    <div class="col-sm-9">
+                        <input name="ancho" type="number" id="ancho" placeholder="Ancho" class="form-control" autofocus required
+                        @if (isset($package))
+                            value="{{$package->paq_ancho}}"
+                        @endif
+                        >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="profundidad" class="col-sm-3 control-label">Profundidad*</label>
+                    <div class="col-sm-9">
+                        <input name="profundidad" type="number" id="profundidad" placeholder="Profundidad" class="form-control" autofocus required
+                        @if (isset($package))
+                            value="{{$package->paq_profundidad}}"
+                        @endif
+                        >
                     </div>
                 </div>
             
