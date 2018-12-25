@@ -735,11 +735,30 @@ Route::get('/packages', function () {
     return view('packages_table', ["permissions" => $permissions,'packages' => $packages] );
 });
 
+Route::post('/packages', function () {
+    $package = DB::update('update paquete set paq_peso='.$_POST['peso'].', paq_ancho='.$_POST['ancho'].', paq_alto='.$_POST['alto'].', paq_profundidad='.$_POST['profundidad'].' where paq_guia='.$_POST['paqcodigo']);
+    $status = DB::update('update paq_est set paq_fecha=\''.date('d/m/Y').'\', paq_estatus_paquete='.$_POST['estatus'].' where paq_paquete='.$_POST['paqcodigo']);
+
+    $packages = DB::select('select p.*,e.est_nombre estatus from paquete p,paq_est pe, estatus_paquete e where p.paq_guia=pe.paq_paquete and pe.paq_estatus_paquete=e.est_codigo');
+
+    $permissions = Cookie::get('permissions');
+    $message = 'Paquete modificado exitosamente';
+    return view('packages_table', ["permissions" => $permissions,'packages' => $packages, 'message' => $message] );
+});
+
 Route::get('/packages/delete/{id}', function ($id) {
     $package = DB::delete('delete from paquete where paq_guia='.$id);
-    $packages = DB::select('select p.*,e.est_nombre estatus from paquete p,paq_est pe, estatus_paquete e where p.paq_guia=pe.paq_paquete and pe.paq_estatus_paquete=e.est_codigo');
+    $packages = DB::select('select p.*,e.est_nombre estatus from paquete p,paq_est pe, estºatus_paquete e where p.paq_guia=pe.paq_paquete and pe.paq_estatus_paquete=e.est_codigo');
 
     $permissions = Cookie::get('permissions');
     $message = 'Paquete eliminado exitosamente.';
     return view('packages_table', ["permissions" => $permissions,'packages' => $packages, 'message' => $message] );
+})->where('id', '[0-9]+');
+
+Route::get('/packages/{id}',function ($id) {
+    $package = DB::select('select p.*,(select paq_estatus_paquete from paq_est where paq_paquete=p.paq_guia) status from paquete p where p.paq_guia='.$id)[0];
+    $statuses = DB::select('select * from estatus_paquete');
+
+    $permissions = Cookie::get('permissions');
+    return view('package_registration', ["permissions" => $permissions,'package' => $package, 'statuses' => $statuses] );
 })->where('id', '[0-9]+');
