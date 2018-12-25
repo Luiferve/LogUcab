@@ -99,6 +99,7 @@
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
                                             <li><a href="{{url('/franchiseReg')}}">Franchise Reg</a></li>
                                             <li><a href="{{url('/shipments')}}">Shipments Table</a></li>
+                                            <li><a href="{{url('/packages')}}">Packages Table</a></li>
                                         </ul>
                                     </li>
                                     <li><a href="#">Reports</a>
