@@ -114,6 +114,13 @@
         </div>
 
         <div class="datatables-area">
+        @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
+                    </div>
+                </div>
+            @endif
                 <div class="table-responsive container">
                     <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
                         <thead>

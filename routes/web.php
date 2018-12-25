@@ -734,3 +734,12 @@ Route::get('/packages', function () {
     $permissions = Cookie::get('permissions');
     return view('packages_table', ["permissions" => $permissions,'packages' => $packages] );
 });
+
+Route::get('/packages/delete/{id}', function ($id) {
+    $package = DB::delete('delete from paquete where paq_guia='.$id);
+    $packages = DB::select('select p.*,e.est_nombre estatus from paquete p,paq_est pe, estatus_paquete e where p.paq_guia=pe.paq_paquete and pe.paq_estatus_paquete=e.est_codigo');
+
+    $permissions = Cookie::get('permissions');
+    $message = 'Paquete eliminado exitosamente.';
+    return view('packages_table', ["permissions" => $permissions,'packages' => $packages, 'message' => $message] );
+})->where('id', '[0-9]+');
