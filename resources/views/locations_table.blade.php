@@ -97,6 +97,11 @@
                                             <li><a href="{{url('/shipments')}}">Shipments Table</a></li>
                                         </ul>
                                     </li>
+                                    <li><a href="#">Reports</a>
+                                        <ul>
+                                            <li><a href="{{url('/report/omsrp')}}">Office with most send & received packages</a></li>
+                                        </ul>
+                                    </li>
                                 @endif
                             </ul>
                         </div>
