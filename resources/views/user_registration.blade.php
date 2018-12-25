@@ -104,7 +104,7 @@
                                     </li>
                                     <li><a href="#">Reports</a>
                                         <ul>
-                                            <li><a href="{{url('/report/omsrp')}}">Office with most send & received packages</a></li>
+                                            <li><a href="{{url('/report/omsrp')}}">Office with most sended & received packages</a></li>
                                         </ul>
                                     </li>
                                 

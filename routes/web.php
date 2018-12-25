@@ -719,3 +719,11 @@ Route::get('/shipments/delete/{id}', function ($id){
     $message = 'Envio eliminado exitosamente';
     return view('shipments_table', ["permissions" => $permissions, 'shipments' => $shipments, 'message' => $message] );
 })->where('id', '[0-9]+');
+
+Route::get('/report/omsrp', function () {
+    $sended = DB::select('select count(e.*) count,s.suc_nombre nombre from envio e,sucursal s where e.env_suc_origen=s.suc_codigo group by nombre order by count(*) DESC limit 1')[0];
+    $received = DB::select('select count(e.*) count,s.suc_nombre nombre from envio e,sucursal s where e.env_suc_destino=s.suc_codigo group by nombre order by count(*) DESC limit 1')[0];
+
+    $permissions = Cookie::get('permissions');
+    return view('omsrp', ["permissions" => $permissions, "sended" => $sended, "received" => $received] );
+});

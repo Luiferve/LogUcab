@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Employees</title>
+    <title>LogUcab | Office with most sended and received packages</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
@@ -25,7 +25,7 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
@@ -88,12 +88,12 @@
                                 @if (isset($permissions) && $permissions > 3)
                                     <li><a href="#">Menu</a>
                                         <ul>
-                                            <li><a href="{{url('/clients')}}">Clients Table</a></li>
+                                            <li><a href="{{url('/clients')}}">Clients</a></li>
                                             <li><a href="{{url('/users')}}">Users Table</a></li>
                                             <li><a href="{{url('/employees')}}">Employees Table</a></li>
                                             <li><a href="{{url('/locations')}}">Locations Table</a></li>
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
-                                            <li><a href="{{url('/routes')}}">Routes Table</a></li>
+                                            <li><a href="{{url('/routes')}}">Routes</a></li>
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
                                             <li><a href="{{url('/shipments')}}">Shipments Table</a></li>
                                         </ul>
@@ -113,52 +113,21 @@
         </div>
 
         <div class="datatables-area">
-        @if (isset($message))
-                <div class="container" id="alert" style="margin-top: 2%;">
-                    <div class="alert alert-success" role="alert">
-                        {{$message}}
-                    </div>
-                </div>
-            @endif
-                <div class="table-responsive container">
-                    <div class="table-header">
-                        <button class="add-another btn"><a href="{{url('/employees/add')}}">Add new employee</a></button>
-                    </div>
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="employees-table">
-                        <thead>
-                            <tr>
-                                <th>Cedula</th>
-                                <th>Nombre y Apellido</th>
-                                <th>Email personal</th>
-                                <th>Email corporativo</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($employees as $employee)
-                                <tr>
-                                    <td>{{$employee->emp_cedula}}</td>
-                                    <td>{{$employee->emp_nombre}}</td>
-                                    <td>{{$employee->emp_ep}}</td>
-                                    <td>{{$employee->emp_ec}}</td>
-                                    <td>
-                                    <div style="text-align: center">
-                                        <a href="{{url('/employees/'.$employee->emp_cedula)}}" class="edit_details" title="edit" >
-                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
-                                        <a href="{{url('/employees/delete/'.$employee->emp_cedula)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
-                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
-                                    </div>
-                                    </td>
-                                </tr>
-                            @endforeach   
-                        </tbody>
-                    </table>
-                </div>
+            <div id="sended" class="container alert alert-info" style="margin-top: 2%;">
+            Office with most shipments SENDED<br>
+            Name: {{$sended->nombre}}<br>
+            Shipments: {{$sended->count}} 
+            </div>
+            <div id="received" class="container alert alert-info" style="margin-top: 2%;">
+            Office with most shipments RECEIVED<br>
+            Name: {{$received->nombre}}<br>
+            Shipments: {{$received->count}}
+            </div>
         </div>
-
+        
         <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="/js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
     <script src="/js/vendor/jquery.easing.1.3.js"></script>
@@ -177,10 +146,3 @@
 </body>
 
 </html>
-
-<!--=====  DATA TABLE =====-->
-<script>  
-    $(document).ready(function(){  
-            $('#employees-table').DataTable();  
-    });  
-</script> 
