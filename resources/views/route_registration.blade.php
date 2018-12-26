@@ -130,6 +130,13 @@
                             value="{{$routes[0]->rut_codigo}}"
                         @endif>
                 <div class="form-group">
+                <input type="hidden" name="add" value=
+                @if (isset($add))
+                    "add"
+                @else
+                    ""
+                @endif
+                >
                     <label for="sucursal" class="col-sm-3 control-label">Sucursal de Origen*</label>
                     <div class="col-sm-9">
                         <select name="sucursalO" class="form-control" style="margin-bottom: 10px;">

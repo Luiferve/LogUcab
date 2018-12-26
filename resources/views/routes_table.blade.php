@@ -132,7 +132,6 @@
                                 <th>Sucursal Origen</th>
                                 <th>Sucursal Destino</th>
                                 <th>Duracion (Horas)</th>
-                                <th>Costo</th>
 								<th></th>
                             </tr>
                         </thead>
@@ -143,7 +142,6 @@
                                     <td>{{$route->rut_o}}</td>
                                     <td>{{$route->rut_d}}</td>
                                     <td>{{$route->rut_du}}</td>
-                                    <td>{{$route->rut_cos}}</td>
 									<td>
 										<div style="text-align: center">
                                         <a href="{{url('/routes/'.$route->rut_c)}}" class="edit_details" title="edit" >

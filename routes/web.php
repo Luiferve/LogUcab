@@ -394,11 +394,9 @@ EOD;
 
 Route::get('/routes', function () {
     $query = <<<'EOD'
-    select distinct rut_codigo as rut_c, s1.suc_nombre rut_o, s2.suc_nombre as rut_d, rut_duracion as rut_du,
-    tip_costo as rut_cos
-    from ruta, envio, paquete, tipo_envio, sucursal s1, sucursal s2
-    where rut_codigo = env_ruta and env_codigo = paq_envio and paq_tipo_envio = tip_codigo and s1.suc_codigo = rut_suc_origen
-    and s2.suc_codigo = rut_suc_destino order by rut_codigo DESC
+    select rut_codigo rut_c, s1.suc_nombre rut_o, s2.suc_nombre rut_d, rut_duracion rut_du
+    from ruta, sucursal s1, sucursal s2
+    where rut_suc_origen=s1.suc_codigo and rut_suc_destino=s2.suc_codigo 
         
 EOD;
     $routes = DB::select($query);
@@ -408,15 +406,23 @@ EOD;
 });
 
 Route::post('/routes', function () {
-    $route = DB::update('update ruta set rut_duracion='.$_POST['duracion'].', rut_suc_origen='.$_POST['sucursalO'].', rut_suc_destino='.$_POST['sucursalD'].' where rut_codigo='.$_POST['codigo']);
-    $message = 'Ruta actualizada exitosamente.';
+    $message = NULL;
+    if ($_POST['add'] != ''){
+        $routes = DB::insert('insert into ruta(rut_suc_origen, rut_suc_destino, rut_duracion,rut_med_transporte) values(\''.$_POST['sucursalO'].'\',\''.$_POST['sucursalD'].'\','.$_POST['duracion'].',2)');
+        $message = 'Ruta agregada exitosamente.';
+    }
+    else{
+        $routes = DB:: update('update ruta set rut_suc_origen = \''.$_POST['sucursalO'].'\', rut_suc_destino = \''.$_POST['sucursalO'].'\', rut_duracion = \''.$_POST['duracion'].'\' where rut_codigo = '.$_POST['codigo']);
+        $message = 'Ruta actualizada exitosamente.';
+    }
+
+    // $route = DB::update('update ruta set rut_duracion='.$_POST['duracion'].', rut_suc_origen='.$_POST['sucursalO'].', rut_suc_destino='.$_POST['sucursalD'].' where rut_codigo='.$_POST['codigo']);
+    // $message = 'Ruta actualizada exitosamente.';
 
     $query = <<<'EOD'
-    select distinct rut_codigo as rut_c, s1.suc_nombre rut_o, s2.suc_nombre as rut_d, rut_duracion as rut_du,
-    tip_costo as rut_cos
-    from ruta, envio, paquete, tipo_envio, sucursal s1, sucursal s2
-    where rut_codigo = env_ruta and env_codigo = paq_envio and paq_tipo_envio = tip_codigo and s1.suc_codigo = rut_suc_origen
-    and s2.suc_codigo = rut_suc_destino order by rut_codigo DESC
+    select rut_codigo rut_c, s1.suc_nombre rut_o, s2.suc_nombre rut_d, rut_duracion rut_du
+    from ruta, sucursal s1, sucursal s2
+    where rut_suc_origen=s1.suc_codigo and rut_suc_destino=s2.suc_codigo 
         
 EOD;
     $routes = DB::select($query);
@@ -587,15 +593,13 @@ Route::post('/routeReg',function (){
 Route::get('/routes/delete/{id}',function ($id) {
     $del = DB::delete('delete from ruta where rut_codigo='.$id);
     $query = <<<'EOD'
-    select distinct rut_codigo as rut_c, s1.suc_nombre rut_o, s2.suc_nombre as rut_d, rut_duracion as rut_du,
-    tip_costo as rut_cos
-    from ruta, envio, paquete, tipo_envio, sucursal s1, sucursal s2
-    where rut_codigo = env_ruta and env_codigo = paq_envio and paq_tipo_envio = tip_codigo and s1.suc_codigo = rut_suc_origen
-    and s2.suc_codigo = rut_suc_destino order by rut_codigo DESC
+    select rut_codigo rut_c, s1.suc_nombre rut_o, s2.suc_nombre rut_d, rut_duracion rut_du
+    from ruta, sucursal s1, sucursal s2
+    where rut_suc_origen=s1.suc_codigo and rut_suc_destino=s2.suc_codigo 
 EOD;
     $routes = DB::select($query);
     $permissions = Cookie::get('permissions');
-    $message = 'sucursal eliminado';
+    $message = 'Ruta eliminada exitosamente.';
     return view('routes_table',['routes' => $routes, 'permissions' => $permissions, 'message' => $message]);
 })->where('id', '[0-9]+');
 
@@ -631,7 +635,7 @@ Route::post('/routeReg',function (){
     }
     else{
         $routes = DB:: update('update ruta set rut_suc_origen = \''.$_POST['sucursalO'].'\', rut_suc_destino = \''.$_POST['sucursalD'].'\', rut_duracion = \''.$_POST['duracion'].'\' where rut_codigo = \''.$_POST['codigo'].'\'');
-        'Ruta actualizada exitosamente.';
+        $message = 'Ruta actualizada exitosamente.';
     }
    
     $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
