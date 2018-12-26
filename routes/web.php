@@ -574,22 +574,6 @@ Route::get('/routeReg', function () {
     return view('route_registration', ["permissions" => $permissions, 'franchises' => $franchises, 'add' => true] );
 });
 
-Route::post('/routeReg',function (){
-    $message = NULL;
-    if ($_POST['add'] != ''){
-        $routes = DB::insert('insert into ruta(rut_suc_origen, rut_suc_destino, rut_duracion) values(\''.$_POST['sucursalO'].'\',\''.$_POST['sucursalD'].'\','.$_POST['duracion'].')');
-        $message = 'Ruta agregada exitosamente.';
-    }
-    else{
-        $routes = DB:: update('update ruta set rut_suc_origen = \''.$_POST['sucursalO'].'\', rut_suc_destino = \''.$_POST['sucursalO'].'\', rut_duracion = \''.$_POST['duracion'].'\' where rut_codigo = \''.$_POST['codigo'].'\'');
-        'Ruta actualizada exitosamente.';
-    }
-   
-    $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
-    $permissions = Cookie::get('permissions');
-    return view('route_registration', ["permissions" => $permissions, 'message' => $message, 'routes' => $routes, 'franchises' => $franchises] );
-});
-
 Route::get('/routes/delete/{id}',function ($id) {
     $del = DB::delete('delete from ruta where rut_codigo='.$id);
     $query = <<<'EOD'
