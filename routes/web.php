@@ -716,6 +716,14 @@ Route::get('/report/omsrp', function () {
     return view('omsrp', ["permissions" => $permissions, "sended" => $sended, "received" => $received] );
 });
 
+Route::get('/report/mlur', function() {
+    $most = DB::select('select env_ruta cod,count(*) uses, s1.suc_nombre o, s2.suc_nombre d from envio, ruta r,sucursal s1, sucursal s2 where env_ruta=r.rut_codigo and r.rut_suc_origen=s1.suc_codigo and r.rut_suc_destino=s2.suc_codigo group by env_ruta, s1.suc_nombre,s2.suc_nombre order by count(*) desc limit 1')[0];
+    $least = DB::select('select env_ruta cod,count(*) uses, s1.suc_nombre o, s2.suc_nombre d from envio, ruta r,sucursal s1, sucursal s2 where env_ruta=r.rut_codigo and r.rut_suc_origen=s1.suc_codigo and r.rut_suc_destino=s2.suc_codigo group by env_ruta, s1.suc_nombre,s2.suc_nombre order by count(*) asc limit 1')[0];
+
+    $permissions = Cookie::get('permissions');
+    return view('mlur', ["permissions" => $permissions, "most" => $most, "least" => $least] );
+});
+
 Route::get('/packages', function () {
     $packages = DB::select('select p.*,e.est_nombre estatus from paquete p,paq_est pe, estatus_paquete e where p.paq_guia=pe.paq_paquete and pe.paq_estatus_paquete=e.est_codigo');
 

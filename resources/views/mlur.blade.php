@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Route Registration</title>
+    <title>LogUcab | Most & Least used routes</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
@@ -25,15 +25,13 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
 
-
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
-    <link href="/regform.css" rel="stylesheet">
     <link href="/css/responsive.css" rel="stylesheet">
 
     <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -63,7 +61,7 @@
                         </div>
                         <div class="search-and-language-bar pull-right">
                             <ul>
-                                <li><a href="{{url('/login')}}"><i class="fa fa-user" @if ($permissions > 0) title="Login" @endif></i></a></li>
+                                <li><a href="{{url('/login')}}"><i class="fa fa-user"></i></a></li>
                                 @if ($permissions > 0)
                                 <li><a href="{{url('/logout')}}"><i class="fa" title="Logout"></i>X</a></li> 
                                 <!-- falta linkear el logout aqui -->
@@ -71,10 +69,9 @@
                                 <li class="search-box"><i class="fa fa-search"></i></li>
                                 <li class="select-language">
                                     <select name="#" id="#">
-                                    <option selected value="End">ENG</option>
-                                    <option value="ARA">ARA</option>
-                                    <option value="CHI">CHI</option>
-                                </select>
+                                    <option selected value="End">SPA</option>
+                                    <option value="End">ENG</option>
+                                    </select>
                                 </li>
                             </ul>
                             <form action="#" class="search-form">
@@ -98,7 +95,6 @@
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
                                             <li><a href="{{url('/routes')}}">Routes</a></li>
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
-                                            <li><a href="{{url('/franchiseReg')}}">Franchise Reg</a></li>
                                             <li><a href="{{url('/shipments')}}">Shipments Table</a></li>
                                             <li><a href="{{url('/packages')}}">Packages Table</a></li>
                                         </ul>
@@ -116,101 +112,43 @@
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
+        </div>
 
-    <div class="container" id="cont1">
-        @if (isset($message))
-                <div class="container" id="alert" style="margin-top: 2%;">
-                    <div class="alert alert-success" role="alert">
-                        {{$message}}
-                    </div>
-                </div>
-            @endif
-            <form class="form-horizontal" role="form"  method="POST" action="{{url('/routes')}}">
-                @csrf
-                <input type="hidden" name="codigo" @if (isset($routes))
-                            value="{{$routes[0]->rut_codigo}}"
-                        @endif>
-                <div class="form-group">
-                <input type="hidden" name="add" value=
-                @if (isset($add))
-                    "add"
-                @else
-                    ""
-                @endif
-                >
-                    <label for="sucursal" class="col-sm-3 control-label">Sucursal de Origen*</label>
-                    <div class="col-sm-9">
-                        <select name="sucursalO" class="form-control" style="margin-bottom: 10px;">
-                            <option value="">Seleccione una Sucursal</option>
-                            @foreach ($franchises as $franchise)
-                                <option 
-                                @if (isset($routes) && isset($routes) && $franchise->cod == $routes[0]->rut_suc_origen)
-                                selected 
-                                @endif
-                                value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="sucursal" class="col-sm-3 control-label">Sucursal de Destino*</label>
-                    <div class="col-sm-9">
-                        <select name="sucursalD" class="form-control" style="margin-bottom: 10px;">
-                            <option value="">Seleccione una sucursal</option>
-                            @foreach ($franchises as $franchise)
-                                <option 
-                                @if (isset($routes) && isset($routes) && $franchise->cod == $routes[0]->rut_suc_destino)
-                                selected 
-                                @endif
-                                value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="duracion" class="col-sm-3 control-label">Duracion (en Horas)*</label>
-                    <div class="col-sm-9">
-                        <input name = "duracion" type="number" id="duracion" placeholder="Duracion" class="form-control"
-                        @if (isset($routes))
-                            value="{{$routes[0]->rut_duracion}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-            
-                 <!-- /.form-group -->
-                <div class="form-group">
-                    <div class="col-sm-9 col-sm-offset-3">
-                        <span class="help-block">*Obligatorio</span>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Registrar/Actualizar</button>
-            </form> <!-- /form -->
-        </div> <!-- ./container -->
-
-              <!--====== SCRIPTS JS ======-->
+        <div class="datatables-area">
+        <div id="most" class="container alert alert-info" style="margin-top: 2%;">
+            Most used route<br>
+            Route #: {{$most->cod}}<br>
+            Origin: {{$most->o}}<br>
+            Destination: {{$most->d}}<br>
+            Uses: {{$most->uses}}
+            </div>
+            <div id="least" class="container alert alert-info" style="margin-top: 2%;">
+            Least used route<br>
+            Route #: {{$least->cod}}<br>
+            Origin: {{$least->o}}<br>
+            Destination: {{$least->d}}<br>
+            Uses: {{$least->uses}}
+            </div>
+        </div>
+        
+        <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
     <script src="js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
-    <script src="js/vendor/jquery.easing.1.3.js"></script>
-    <script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
-    <script src="js/vendor/jquery.appear.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/stellar.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/stellarnav.min.js"></script>
-    <script src="js/contact-form.js"></script>
-    <script src="js/jquery.sticky.js"></script>
+    <script src="/js/vendor/jquery.easing.1.3.js"></script>
+    <script src="/js/vendor/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/js/vendor/jquery.appear.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/stellar.js"></script>
+    <script src="/js/wow.min.js"></script>
+    <script src="/js/stellarnav.min.js"></script>
+    <script src="/js/contact-form.js"></script>
+    <script src="/js/jquery.sticky.js"></script>
 
     <!--===== ACTIVE JS =====-->
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
     
 </body>
 
 </html>
-
-<!--=====  DATA TABLE =====-->
-<script>  
-   
-</script> 
