@@ -152,9 +152,9 @@
                                     <td>{{$shipment->tipo_envio}}</td>
                                     <td>
                                         <div style="text-align: center">
-                                            <a href="{{url('/print/'.$shipment->env_codigo)}}" class="invoice_details"  title="invoice" style="padding-left: 20px;">
+                                            <a href="{{url('/print/'.$shipment->env_codigo)}}" class="invoice_details"  title="invoice">
                                                 <img src="/img/invoice.png" alt="Invoice" width=20px></a>
-                                            <a href="{{url('/shipments/'.$shipment->env_codigo)}}" class="edit_details" title="edit" >
+                                            <a href="{{url('/shipments/'.$shipment->env_codigo)}}" class="edit_details" title="edit" style="padding-left: 20px;">
                                                 <img src="/img/edit.png" alt="Edit" width=20px></a>
                                             <a href="{{url('/shipments/delete/'.$shipment->env_codigo)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
                                                 <img src="/img/delete.png" alt="Delete" width=20px></a>
