@@ -156,11 +156,13 @@
                 <div class="form-group">
                     <label for="pais" class="col-sm-3 control-label">Rol*</label>
                     <div class="col-sm-9">
-                        <select name="country" class="form-control" style="margin-bottom: 10px;">
+                        <select name="rol" class="form-control" style="margin-bottom: 10px;">
                             <option value="">Seleccione el Rol</option>
                             @foreach ($rol as $rol)
                                 <option 
-                                
+                                @if (isset($users) && $rol->cod == $users[0]->rol_codigo)
+                                selected
+                                @endif
                                 value="{{$rol->cod}}">{{$rol->nombre}}</option>
                             @endforeach
                         </select>

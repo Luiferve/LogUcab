@@ -666,10 +666,9 @@ Route::get('/users/{id}',function ($id) {
 
 
 Route::post('/usuarioReg',function (){
-    $message = NULL;
-        $message = 'Usuario agregado exitosamente.';
-        $users = DB:: update('update usuario set usu_email= \''.$_POST['email'].'\', usu_password = \''.$_POST['password'].'\'  where usu_codigo = \''.$_POST['codigo'].'\'');
-        'Ruta actualizada exitosamente.';
+    $users = DB::update('update usuario set usu_email= \''.$_POST['email'].'\', usu_password = \''.$_POST['password'].'\'  where usu_codigo ='.$_POST['codigo']);
+    $rol = DB::update('update usu_rol set usu_rol='.$_POST['rol'].' where usu_usuario='.$_POST['codigo']);
+    $message = 'Usuario actualizado exitosamente.';
     
     $rol = DB::select('select rol_codigo cod, rol_nombre nombre from rol');
     $permissions = json_decode(Cookie::get('permissions'));
