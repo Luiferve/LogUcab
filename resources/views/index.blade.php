@@ -63,7 +63,7 @@
                 <nav class="navbar">
                     <div class="container">
                         <div class="navbar-header">
-                            <a href="{{url('/')}}" class="navbar-brand"><img src="img/logo.png" alt="logo"></a>
+                            <a href="{{url('/')}}" class="navbar-brand"><img src="/img/logo.png" alt="logo"></a>
                         </div>
                         <div class="search-and-language-bar pull-right">
                             <ul>
@@ -106,6 +106,8 @@
                                             <li><a href="{{url('/packages')}}">Packages Table</a></li>
                                         </ul>
                                     </li>
+                                @endif
+                                @if (isset($permissions) && in_array(1,$permissions))
                                     <li><a href="#">Reports</a>
                                         <ul>
                                             <li><a href="{{url('/report/omsrp')}}">Office with most sended & received packages</a></li>

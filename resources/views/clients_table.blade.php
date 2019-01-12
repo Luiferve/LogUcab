@@ -86,7 +86,7 @@
                                 <li><a href="about.html">about</a></li>
                                 <li><a href="service.html">Service</a></li>
                                 <li><a href="contact.html">Contact</a></li>
-                                @if (isset($permissions) && $permissions > 3)
+                                @if (isset($permissions) && in_array(4,$permissions))
                                     <li><a href="#">Menu</a>
                                         <ul>
                                             <li><a href="{{url('/clients')}}">Clients Table</a></li>
@@ -100,6 +100,8 @@
                                             <li><a href="{{url('/packages')}}">Packages Table</a></li>
                                         </ul>
                                     </li>
+                                @endif
+                                @if (isset($permissions) && in_array(1,$permissions))
                                     <li><a href="#">Reports</a>
                                         <ul>
                                             <li><a href="{{url('/report/omsrp')}}">Office with most sended & received packages</a></li>

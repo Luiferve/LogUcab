@@ -70,9 +70,8 @@
                                 <li class="search-box"><i class="fa fa-search"></i></li>
                                 <li class="select-language">
                                     <select name="#" id="#">
-                                    <option selected value="End">ENG</option>
-                                    <option value="ARA">ARA</option>
-                                    <option value="CHI">CHI</option>
+                                    <option selected value="End">SPA</option>
+                                    <option value="End">ENG</option>
                                 </select>
                                 </li>
                             </ul>
@@ -87,20 +86,22 @@
                                 <li><a href="about.html">about</a></li>
                                 <li><a href="service.html">Service</a></li>
                                 <li><a href="contact.html">Contact</a></li>
-                                @if (isset($permissions) && $permissions > 3)
+                                @if (isset($permissions) && in_array(4,$permissions))
                                     <li><a href="#">Menu</a>
                                         <ul>
-                                            <li><a href="{{url('/clients')}}">Clients</a></li>
+                                            <li><a href="{{url('/clients')}}">Clients Table</a></li>
                                             <li><a href="{{url('/users')}}">Users Table</a></li>
                                             <li><a href="{{url('/employees')}}">Employees Table</a></li>
                                             <li><a href="{{url('/locations')}}">Locations Table</a></li>
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
-                                            <li><a href="{{url('/routes')}}">Routes</a></li>
+                                            <li><a href="{{url('/routes')}}">Routes Table</a></li>
                                             <li><a href="{{url('/ship')}}">Ship Package</a></li>
                                             <li><a href="{{url('/shipments')}}">Shipments Table</a></li>
                                             <li><a href="{{url('/packages')}}">Packages Table</a></li>
                                         </ul>
                                     </li>
+                                @endif
+                                @if (isset($permissions) && in_array(1,$permissions))
                                     <li><a href="#">Reports</a>
                                         <ul>
                                             <li><a href="{{url('/report/omsrp')}}">Office with most sended & received packages</a></li>
@@ -113,6 +114,7 @@
                     </div>
                 </nav>
             </div>
+            <!--END MAINMENU AREA END-->
         </div>
 
         <div class="datatables-area">
