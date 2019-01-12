@@ -70,7 +70,7 @@
                                 @if (empty($permissions))
                                 <li><a href="{{url('/login')}}"><i class="fa fa-user" title="Login" ></i></a></li>
                                 @endif
-                                @if (!empty($permissions)
+                                @if (!empty($permissions))
                                 <li><a href="{{url('/logout')}}"><i class="fa" title="Logout"></i>X</a></li>
                                 @endif
                                 <li class="search-box"><i class="fa fa-search"></i></li>
@@ -92,7 +92,7 @@
                                 <li><a href="about.html">about</a></li>
                                 <li><a href="service.html">Service</a></li>
                                 <li><a href="contact.html">Contact</a></li>
-                                @if (isset($permissions) && $permissions > 3)
+                                @if (isset($permissions) && in_array(4,$permissions))
                                     <li><a href="#">Menu</a>
                                         <ul>
                                             <li><a href="{{url('/clients')}}">Clients Table</a></li>

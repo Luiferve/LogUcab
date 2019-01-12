@@ -66,7 +66,7 @@
                                 @if (empty($permissions))
                                 <li><a href="{{url('/login')}}"><i class="fa fa-user" title="Login" ></i></a></li>
                                 @endif
-                                @if (!empty($permissions)
+                                @if (!empty($permissions))
                                 <li><a href="{{url('/logout')}}"><i class="fa" title="Logout"></i>X</a></li>
                                 @endif
                                 <li class="search-box"><i class="fa fa-search"></i></li>
