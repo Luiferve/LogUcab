@@ -150,11 +150,15 @@
                                     <td>{{$route->rut_du}}</td>
 									<td>
 										<div style="text-align: center">
+                                        @if (in_array(2,$permissions))
                                         <a href="{{url('/routes/'.$route->rut_c)}}" class="edit_details" title="edit" >
                                             <img src="/img/edit.png" alt="Edit" width=20px></a>
+                                        @endif
+                                        @if (in_array(3,$permissions))                                        
                                         <a href="{{url('/routes/delete/'.$route->rut_c)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
                                             <img src="/img/delete.png" alt="Delete" width=20px></a>
-                                    	</div>
+                                    	@endif
+                                        </div>
 									</td>
                                 </tr>
                             @endforeach   

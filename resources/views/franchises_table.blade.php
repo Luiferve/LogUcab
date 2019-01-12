@@ -143,10 +143,14 @@
                                     <td>{{$franchise->em}}</td>
                                     <td>
                                     <div style="text-align: center">
+                                        @if (in_array(2,$permissions))
                                         <a href="{{url('/franchises/'.$franchise->codigo)}}" class="edit_details" title="edit" >
                                             <img src="/img/edit.png" alt="Edit" width=20px></a>
+                                        @endif
+                                        @if (in_array(3,$permissions))
                                         <a href="{{url('/franchises/delete/'.$franchise->codigo)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
                                             <img src="/img/delete.png" alt="Delete" width=20px></a>
+                                        @endif
                                     </div>
                                     </td>
                                 </tr>
