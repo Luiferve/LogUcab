@@ -90,15 +90,17 @@
                                 @if (isset($permissions) && in_array(4,$permissions))
                                     <li><a href="#">Menu</a>
                                         <ul>
-                                            <li><a href="{{url('/clients')}}">Clients Table</a></li>
+                                            <li><a href="{{url('/shipments')}}">Shipments Table</a></li>
+                                            @if (in_array(1,$permissions))
+                                            <li><a href="{{url('/ship')}}">Ship Package</a></li>
                                             <li><a href="{{url('/users')}}">Users Table</a></li>
+                                            <li><a href="{{url('/clients')}}">Clients Table</a></li>
                                             <li><a href="{{url('/employees')}}">Employees Table</a></li>
+                                            <li><a href="{{url('/packages')}}">Packages Table</a></li>
                                             <li><a href="{{url('/locations')}}">Locations Table</a></li>
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
                                             <li><a href="{{url('/routes')}}">Routes Table</a></li>
-                                            <li><a href="{{url('/ship')}}">Ship Package</a></li>
-                                            <li><a href="{{url('/shipments')}}">Shipments Table</a></li>
-                                            <li><a href="{{url('/packages')}}">Packages Table</a></li>
+                                            @endif
                                         </ul>
                                     </li>
                                 @endif
