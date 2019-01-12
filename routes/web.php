@@ -131,7 +131,7 @@ Route::get('/logout', function () {
     Cookie::forget('permissions');
     Cookie::forget('user-email');
 
-    return view('index',['permissions' => 0]);
+    return view('index',['permissions' => NULL]);
 });
 
 Route::get('/ship', function () {
