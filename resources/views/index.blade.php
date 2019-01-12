@@ -15,7 +15,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Home</title>
+    <title>LogUcab | Home {{var_dump($permissions)}}</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
@@ -67,10 +67,11 @@
                         </div>
                         <div class="search-and-language-bar pull-right">
                             <ul>
-                                <li><a href="{{url('/login')}}"><i class="fa fa-user" @if ($permissions > 0) title="Login" @endif></i></a></li>
-                                @if ($permissions > 0)
-                                <li><a href="{{url('/logout')}}"><i class="fa" title="Logout"></i>X</a></li> 
-                                <!-- falta linkear el logout aqui -->
+                                @if (empty($permissions))
+                                <li><a href="{{url('/login')}}"><i class="fa fa-user" title="Login" ></i></a></li>
+                                @endif
+                                @if (!empty($permissions)
+                                <li><a href="{{url('/logout')}}"><i class="fa" title="Logout"></i>X</a></li>
                                 @endif
                                 <li class="search-box"><i class="fa fa-search"></i></li>
                                 <li class="select-language">

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
 
     return view('index', ["permissions" => $permissions,"userEmail" => $userEmail]);
@@ -29,7 +29,7 @@ Route::get('/franchises', function () {
 EOD;
     $franchises = DB::select($query);
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     return view('franchises_table',['franchises' => $franchises], ["permissions" => $permissions,"userEmail" => $userEmail]);
 });
@@ -45,7 +45,7 @@ Route::get('/locations', function () {
 EOD;
     $locations = DB::select($query);
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     return view('locations_table',['locations' => $locations], ["permissions" => $permissions,"userEmail" => $userEmail]);
 });
@@ -58,7 +58,7 @@ Route::get('/users', function () {
 EOD;
     $users = DB::select($query);
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     return view('users_table',['users' => $users], ["permissions" => $permissions,"userEmail" => $userEmail]);
 });
@@ -71,7 +71,7 @@ Route::get('/employees', function () {
 EOD;
     $employees = DB::select($query);
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     return view('employees_table',['employees' => $employees], ["permissions" => $permissions,"userEmail" => $userEmail]);
 });
@@ -110,8 +110,15 @@ Route::post('/login', function () {
             $message = 'Datos erroneos.';
         } else {
             $message = 'Bienvenido '.$_POST['email'].'.';
+            
+            $permissions = DB::select('select p.rol_privilegio pri from usuario u ,usu_rol r ,rol_pri p where u.usu_email=\''.$_POST['email'].'\' and u.usu_codigo=r.usu_usuario and r.usu_rol=p.rol_rol');
+            $p = array();
 
-            Cookie::queue('permissions', 4, 45000);
+            foreach ($permissions as $i){
+                $p[]=$i->pri;
+            }
+
+            Cookie::queue('permissions', json_encode($p), 45000);
             Cookie::queue('user-email',$_POST['email'],45000);
             $redirect = true;
         }
@@ -133,7 +140,7 @@ Route::get('/ship', function () {
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
     $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
     
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types, 'countries' => $countries, 'states' => $states,'franchises' => $franchises]);
 });
@@ -269,7 +276,7 @@ Route::post('/ship', function () {
         }
     }
     
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states,'franchises' => $franchises, 'invoice' => $invoice]);
 });
 
@@ -296,7 +303,7 @@ Route::get('/print/{id}',function ($id){
     $subtotal = $cost;
     if ($sender->cli_vip != '') $subtotal = $cost * 0.9;
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail,'shipment' => $shipment, 'employee' => $employee, 'sender' => $sender,'receiver' => $receiver, 'package' => $package, 'payment' => $payment, 'origin' => $origin, 'destination' => $destination, 'cost' => $cost, 'subtotal' => $subtotal]);
 })->where('id', '[0-9]+');
@@ -306,7 +313,7 @@ Route::get('/print/{id}',function ($id){
 
 Route::get('/locations/{id}',function ($id) {
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
@@ -315,7 +322,7 @@ Route::get('/locations/{id}',function ($id) {
 
 
 Route::get('/locations/delete/{id}',function ($id) {
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     // return view('invoice',['permissions' => $permissions, 'userEmail' => $userEmail]);
     return 'Got: '.$id;
@@ -333,7 +340,7 @@ Route::get('/clients', function () {
 EOD;
     $clients = DB::select($query);
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('clients_table',['clients' => $clients], ["permissions" => $permissions]);
 });
 
@@ -343,7 +350,7 @@ Route::get('/clients/{id}', function ($id) {
     $location = DB::select('select * from lugar where lug_codigo='.$client[0]->cli_lugar);    
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('client_registration',['client' => $client, 'phone' => $phone, 'location' => $location, 'states' => $states], ["permissions" => $permissions]);
 })->where('id', '[0-9]+');
 
@@ -371,7 +378,7 @@ Route::post('/clients', function () {
 EOD;
     $clients = DB::select($query);
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('clients_table', ["permissions" => $permissions, 'message' => $message,'clients' => $clients]);
 });
 
@@ -388,7 +395,7 @@ EOD;
     $clients = DB::select($query);
     $message = 'Cliente Eliminado.';
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('clients_table',['clients' => $clients], ["permissions" => $permissions, 'message' => $message]);
 })->where('id', '[0-9]+');
 
@@ -401,7 +408,7 @@ Route::get('/routes', function () {
 EOD;
     $routes = DB::select($query);
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('routes_table',['routes' => $routes], ["permissions" => $permissions]);
 });
 
@@ -427,7 +434,7 @@ Route::post('/routes', function () {
 EOD;
     $routes = DB::select($query);
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('routes_table',['routes' => $routes], ["permissions" => $permissions,'message' => $message]);
 });
 
@@ -439,7 +446,7 @@ Route::get('/employees/{id}',function ($id) {
     $employee = DB::select('select * from empleado where emp_cedula='.$id);
     $location = DB::select('select * from lugar where lug_codigo='.$employee[0]->emp_lugar);
     $phone = DB::select('select * from telefono where tel_empleado='.$id);
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     return view('employee_registration',['permissions' => $permissions, 'userEmail' => $userEmail,'franchises' => $franchises,'countries' => $countries,'states' => $states,'employee' => $employee,'location' => $location,'phone' => $phone]);
 })->where('id', '[0-9]+');
@@ -448,7 +455,7 @@ Route::get('/employees/add',function () {
     $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
     $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     return view('employee_registration',['permissions' => $permissions, 'userEmail' => $userEmail,'franchises' => $franchises,'countries' => $countries,'states' => $states,'add' => true]);
 });
@@ -481,7 +488,7 @@ Route::post('/employees/add',function () {
     $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
     $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     return view('employee_registration',['permissions' => $permissions, 'userEmail' => $userEmail,'franchises' => $franchises,'countries' => $countries,'states' => $states,'message' => $message]);
 });
@@ -494,7 +501,7 @@ Route::get('/employees/delete/{id}',function ($id) {
     from empleado
 EOD;
     $employees = DB::select($query);
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     $message = 'Empleado eliminado';
     return view('employees_table',['employees' => $employees], ["permissions" => $permissions,"userEmail" => $userEmail,'message' => $message]);
@@ -505,7 +512,7 @@ EOD;
 Route::get('/franchiseReg', function () {
     $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
 
     return view('franchise_registration', ["permissions" => $permissions, 'countries' => $countries, 'states' => $states, 'add' => true] );
 });
@@ -536,7 +543,7 @@ Route::post('/franchiseReg',function (){
     }
     $countries = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Pais\'');
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('franchise_registration', ["permissions" => $permissions, 'countries' => $countries, 'states' => $states, 'message' => $message] );
 });
 
@@ -549,7 +556,7 @@ Route::get('/franchises/delete/{id}',function ($id) {
     where tel_sucursal is not NULL and tel_sucursal = suc_codigo
 EOD;
     $franchises = DB::select($query);
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     $message = 'sucursal eliminada';
     $userEmail = Cookie::get('user-email');
@@ -562,14 +569,14 @@ Route::get('/franchises/{id}',function ($id) {
     $states = DB::select('select lug_codigo cod, lug_nombre nombre from lugar where lug_tipo=\'Estado\'');
     $phone = DB::select('select * from telefono where tel_sucursal='.$id);
     $franchise= DB::select('select * from sucursal where suc_codigo='.$id);
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('franchise_registration', ['permissions' => $permissions, 'countries' => $countries, 'states' => $states, 'franchise' =>$franchise, 'phone' => $phone] );
 })->where('id', '[0-9]+');
 
 
 Route::get('/routeReg', function () {
     $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
 
     return view('route_registration', ["permissions" => $permissions, 'franchises' => $franchises, 'add' => true] );
 });
@@ -582,7 +589,7 @@ Route::get('/routes/delete/{id}',function ($id) {
     where rut_suc_origen=s1.suc_codigo and rut_suc_destino=s2.suc_codigo 
 EOD;
     $routes = DB::select($query);
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $message = 'Ruta eliminada exitosamente.';
     return view('routes_table',['routes' => $routes, 'permissions' => $permissions, 'message' => $message]);
 })->where('id', '[0-9]+');
@@ -590,7 +597,7 @@ EOD;
 Route::get('/routes/{id}',function ($id) {
     $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
     $routes= DB::select('select * from ruta where rut_codigo='.$id);
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('route_registration', ['routes' => $routes, 'franchises' =>$franchises, 'permissions' => $permissions] );
 })->where('id', '[0-9]+');
 
@@ -603,7 +610,7 @@ Route::get('/users/delete/{id}',function ($id) {
 
 EOD;
     $users = DB::select($query);
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     $message = 'sucursal eliminado';
     return view('users_table',['users' => $users, 'permissions' => $permissions, 'userEmail' => $userEmail]);
@@ -623,13 +630,13 @@ Route::post('/routeReg',function (){
     }
    
     $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('route_registration', ["permissions" => $permissions, 'message' => $message, 'franchises' => $franchises] );
 });
 
 Route::get('/usuario', function () {
     $rol = DB::select('select rol_codigo cod, rol_nombre nombre from rol');
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
 
     return view('user_registration', ["permissions" => $permissions, 'rol' => $rol, 'add' => true] );
 });
@@ -643,7 +650,7 @@ Route::get('/users/delete/{id}',function ($id) {
 
 EOD;
     $users = DB::select($query);
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     $message = 'sucursal eliminado';
     return view('users_table',['users' => $users, 'permissions' => $permissions, 'userEmail' => $userEmail]);
@@ -652,7 +659,7 @@ EOD;
 Route::get('/users/{id}',function ($id) {
     $users= DB::select('select U.*, rol_codigo  from usuario U ,rol, usu_rol UR where U.usu_codigo = UR.usu_usuario and UR.usu_rol = rol_codigo and U.usu_codigo='.$id);
     $rol = DB::select('select rol_codigo cod, rol_nombre nombre from rol');
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $userEmail = Cookie::get('user-email');
     return view('user_registration',['users' => $users, 'rol' => $rol, 'permissions' => $permissions, 'userEmail' => $userEmail]);
 })->where('id', '[0-9]+');
@@ -665,14 +672,14 @@ Route::post('/usuarioReg',function (){
         'Ruta actualizada exitosamente.';
     
     $rol = DB::select('select rol_codigo cod, rol_nombre nombre from rol');
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('user_registration', ["permissions" => $permissions, 'message' => $message, 'rol' => $rol] );
 });
 
 Route::get('/shipments', function (){
     $shipments = DB::select('select e.*,(select suc_nombre from sucursal where e.env_suc_origen=suc_codigo) origen,(select suc_nombre from sucursal where e.env_suc_destino=suc_codigo) destino, (select paq_peso from paquete where paq_envio=e.env_codigo) peso,(select tip_tipo from tipo_paquete t,paquete p where t.tip_codigo=p.paq_tipo_paquete and p.paq_envio=e.env_codigo) tipo_paquete,(select tip_tipo from tipo_envio t,paquete p where t.tip_codigo=p.paq_tipo_envio and p.paq_envio=e.env_codigo) tipo_envio from envio e');
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('shipments_table', ["permissions" => $permissions, 'shipments' => $shipments] );
 });
 
@@ -682,7 +689,7 @@ Route::get('/shipments/{id}', function ($id){
     $statuses = DB::select('select * from estatus_paquete');
     $franchises = DB::select('select suc_codigo cod, suc_nombre nombre from sucursal');
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('shipment_modification',['permissions' => $permissions, 'shipment' => $shipment, 'package' => $package, 'franchises' => $franchises, 'statuses' => $statuses]);
 })->where('id', '[0-9]+');
 
@@ -693,7 +700,7 @@ Route::post('/shipments/{id}', function ($id){
 
     $shipments = DB::select('select e.*,(select suc_nombre from sucursal where e.env_suc_origen=suc_codigo) origen,(select suc_nombre from sucursal where e.env_suc_destino=suc_codigo) destino, (select paq_peso from paquete where paq_envio=e.env_codigo) peso,(select tip_tipo from tipo_paquete t,paquete p where t.tip_codigo=p.paq_tipo_paquete and p.paq_envio=e.env_codigo) tipo_paquete,(select tip_tipo from tipo_envio t,paquete p where t.tip_codigo=p.paq_tipo_envio and p.paq_envio=e.env_codigo) tipo_envio from envio e');
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $message = 'Envio actualizado exitosamente';
     return view('shipments_table', ["permissions" => $permissions, 'shipments' => $shipments, 'message' => $message] );
 })->where('id', '[0-9]+');
@@ -703,7 +710,7 @@ Route::get('/shipments/delete/{id}', function ($id){
     
     $shipments = DB::select('select e.*,(select suc_nombre from sucursal where e.env_suc_origen=suc_codigo) origen,(select suc_nombre from sucursal where e.env_suc_destino=suc_codigo) destino, (select paq_peso from paquete where paq_envio=e.env_codigo) peso,(select tip_tipo from tipo_paquete t,paquete p where t.tip_codigo=p.paq_tipo_paquete and p.paq_envio=e.env_codigo) tipo_paquete,(select tip_tipo from tipo_envio t,paquete p where t.tip_codigo=p.paq_tipo_envio and p.paq_envio=e.env_codigo) tipo_envio from envio e');
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $message = 'Envio eliminado exitosamente';
     return view('shipments_table', ["permissions" => $permissions, 'shipments' => $shipments, 'message' => $message] );
 })->where('id', '[0-9]+');
@@ -712,7 +719,7 @@ Route::get('/report/omsrp', function () {
     $sended = DB::select('select count(e.*) count,s.suc_nombre nombre from envio e,sucursal s where e.env_suc_origen=s.suc_codigo group by nombre order by count(*) DESC limit 1')[0];
     $received = DB::select('select count(e.*) count,s.suc_nombre nombre from envio e,sucursal s where e.env_suc_destino=s.suc_codigo group by nombre order by count(*) DESC limit 1')[0];
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('omsrp', ["permissions" => $permissions, "sended" => $sended, "received" => $received] );
 });
 
@@ -720,14 +727,14 @@ Route::get('/report/mlur', function() {
     $most = DB::select('select env_ruta cod,count(*) uses, s1.suc_nombre o, s2.suc_nombre d from envio, ruta r,sucursal s1, sucursal s2 where env_ruta=r.rut_codigo and r.rut_suc_origen=s1.suc_codigo and r.rut_suc_destino=s2.suc_codigo group by env_ruta, s1.suc_nombre,s2.suc_nombre order by count(*) desc limit 1')[0];
     $least = DB::select('select env_ruta cod,count(*) uses, s1.suc_nombre o, s2.suc_nombre d from envio, ruta r,sucursal s1, sucursal s2 where env_ruta=r.rut_codigo and r.rut_suc_origen=s1.suc_codigo and r.rut_suc_destino=s2.suc_codigo group by env_ruta, s1.suc_nombre,s2.suc_nombre order by count(*) asc limit 1')[0];
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('mlur', ["permissions" => $permissions, "most" => $most, "least" => $least] );
 });
 
 Route::get('/packages', function () {
     $packages = DB::select('select p.*,e.est_nombre estatus from paquete p,paq_est pe, estatus_paquete e where p.paq_guia=pe.paq_paquete and pe.paq_estatus_paquete=e.est_codigo');
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('packages_table', ["permissions" => $permissions,'packages' => $packages] );
 });
 
@@ -737,7 +744,7 @@ Route::post('/packages', function () {
 
     $packages = DB::select('select p.*,e.est_nombre estatus from paquete p,paq_est pe, estatus_paquete e where p.paq_guia=pe.paq_paquete and pe.paq_estatus_paquete=e.est_codigo');
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $message = 'Paquete modificado exitosamente';
     return view('packages_table', ["permissions" => $permissions,'packages' => $packages, 'message' => $message] );
 });
@@ -746,7 +753,7 @@ Route::get('/packages/delete/{id}', function ($id) {
     $package = DB::delete('delete from paquete where paq_guia='.$id);
     $packages = DB::select('select p.*,e.est_nombre estatus from paquete p,paq_est pe, estºatus_paquete e where p.paq_guia=pe.paq_paquete and pe.paq_estatus_paquete=e.est_codigo');
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     $message = 'Paquete eliminado exitosamente.';
     return view('packages_table', ["permissions" => $permissions,'packages' => $packages, 'message' => $message] );
 })->where('id', '[0-9]+');
@@ -755,6 +762,6 @@ Route::get('/packages/{id}',function ($id) {
     $package = DB::select('select p.*,(select paq_estatus_paquete from paq_est where paq_paquete=p.paq_guia) status from paquete p where p.paq_guia='.$id)[0];
     $statuses = DB::select('select * from estatus_paquete');
 
-    $permissions = Cookie::get('permissions');
+    $permissions = json_decode(Cookie::get('permissions'));
     return view('package_registration', ["permissions" => $permissions,'package' => $package, 'statuses' => $statuses] );
 })->where('id', '[0-9]+');
