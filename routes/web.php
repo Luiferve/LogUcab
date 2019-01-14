@@ -859,6 +859,7 @@ Route::get('/roles/{id}', function($id) {
         $perm[] = $p->pri;
     }
 
+    audit(2,'Consulta rol ('.$id.')');
     return view('roles_reg', ["permissions" => $permissions, 'rol' => $rol, 'perm' => $perm] );
 })->where('id', '[0-9]+');
 
