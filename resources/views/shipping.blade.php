@@ -107,6 +107,7 @@
                                             <li><a href="{{url('/locations')}}">Locations Table</a></li>
                                             <li><a href="{{url('/franchises')}}">Franchises Table</a></li>
                                             <li><a href="{{url('/routes')}}">Routes Table</a></li>
+                                            <li><a href="{{url('/roles')}}">Roles Table</a></li>
                                             @endif
                                         </ul>
                                     </li>

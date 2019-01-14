@@ -840,6 +840,32 @@ Route::post('/attendance', function (){
     return view('attendance', ["permissions" => $permissions, 'message' => $message] );
 });
 
+Route::get('/roles', function() {
+    $roles = DB::select('select rol_codigo cod, rol_nombre nombre from rol');
+
+    audit(2,'Tabla de roles');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('roles', ["permissions" => $permissions, 'roles' => $roles] );
+});
+
+Route::get('/roles/{id}', function() {
+    $rol = DB::select('select * from rol where rol_codigo='.$id);
+
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('roles', ["permissions" => $permissions, 'rol' => $rol, 'message' => $message] );
+});
+
+Route::get('/roles/delete/{id}', function($id) {
+    $rol = DB::delete('delete from rol where rol_codigo='.$id);
+    $message = 'Rol eliminado satisfactoriamente';
+
+    $roles = DB::select('select rol_codigo cod, rol_nombre nombre from rol');
+
+    audit(4,'Rol eliminado');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('roles', ["permissions" => $permissions, 'roles' => $roles, 'message' => $message] );
+})->where('id', '[0-9]+');
+
 
 
 function audit ($aid,$description,$uname = ''){
