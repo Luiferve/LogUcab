@@ -114,6 +114,9 @@
                                         </ul>
                                     </li>
                                 @endif
+                                @if (isset($permissions) && in_array(3,$permissions))
+                                    <li><a href="{{url('/attendance')}}">Attendance</a></li>
+                                @endif
                             </ul>
                         </div>
                     </div>

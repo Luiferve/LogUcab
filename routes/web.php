@@ -816,6 +816,28 @@ Route::get('/logs', function (){
     return view('logs', ["permissions" => $permissions, 'logs' => $logs] );
 });
 
+Route::get('/attendance', function () {
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('attendance', ["permissions" => $permissions] );
+});
+
+Route::post('/attendance', function (){
+    $employee = DB::select('select * from empleado where emp_cedula='.$_POST['cedula']);
+    $message = NULL;
+
+    if (empty($employee)){
+        $message = 'El empleado no esta registrado en el sistema';
+    } else {
+        //TODO:
+        $attendance = DB::insert('insert into asistencia(asi_fecha, asi_emp_codigo, asi_emp_zon_codigo, asi_emp_zona_empleado, asi_emp_zona_zona, asi_emp_zona_sucursal, asi_emp_horario) values (CURRENT_DATE, '.$employee[0]->emp_codigo.', ?, ?, ?, ?, ?);');
+
+        $message = 'Asistencia marcada';
+        audit(1,'Asistencia marcada (Empleado: '.$_POST['cedula'].')');
+    }
+
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('attendance', ["permissions" => $permissions, 'message' => $message] );
+});
 
 
 

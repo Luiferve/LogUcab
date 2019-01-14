@@ -11,9 +11,9 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Locations</title>
+    <title>LogUcab | Attendance</title>
 
-    <!--====== FAVICON ICON =======-->
+     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
@@ -32,6 +32,7 @@
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
+    <link href="/regform.css" rel="stylesheet">
     <link href="/css/responsive.css" rel="stylesheet">
 
     <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -123,66 +124,52 @@
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
-        </div>
 
-        <div class="datatables-area">
-                <div class="table-responsive container">
-                    <div class="table-header">
-                        <button class="add-another btn">Add new location</button>
+    <div class="container" id="cont1">
+         @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
                     </div>
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
-                        <thead>
-                            <tr>
-                                <th>Pais</th>
-                                <th>Estado</th>
-                                <th>Municipio</th>
-                                <th>Parroquia</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($locations as $location)
-                                <tr>
-                                    <td>{{$location->pais}}</td>
-                                    <td>{{$location->estado}}</td>
-                                    <td>{{$location->municipio}}</td>
-                                    <td>{{$location->parroquia}}</td>
-                                    <td>
-                                        <div style="text-align: center">
-                                        @if (in_array(2,$permissions))
-                                        <a href="{{url('/locations/'.$location->codigo)}}" class="edit_details" title="edit" >
-                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
-                                        @endif
-                                        @if (in_array(3,$permissions))
-                                        <a href="{{url('/locations/delete/'.$location->codigo)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
-                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
-                                        @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach   
-                        </tbody>
-                    </table>
                 </div>
-        </div>
+            @endif
+            <form class="form-horizontal" role="form" method="POST" action="{{url('/attendance')}}">
+                <div class="form-group">
+                    <label for="cedula" class="col-sm-3 control-label">Cedula*</label>
+                    <div class="col-sm-9">
+                        <input name="cedula" type="number" id="cedula" placeholder="Cedula" class="form-control" autofocus required>
+                    </div>
+                </div>
+                @csrf
+            
+                 <!-- /.form-group -->
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <span class="help-block">*Obligatorio</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Marcar asistencia</button>
+            </form>    
+            </form> <!-- /form -->
+        </div> <!-- ./container -->
 
-        <!--====== SCRIPTS JS ======-->
+              <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="/js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
-    <script src="/js/vendor/jquery.easing.1.3.js"></script>
-    <script src="/js/vendor/jquery-migrate-1.2.1.min.js"></script>
-    <script src="/js/vendor/jquery.appear.js"></script>
-    <script src="/js/owl.carousel.min.js"></script>
-    <script src="/js/stellar.js"></script>
-    <script src="/js/wow.min.js"></script>
-    <script src="/js/stellarnav.min.js"></script>
-    <script src="/js/contact-form.js"></script>
-    <script src="/js/jquery.sticky.js"></script>
+    <script src="js/vendor/jquery.easing.1.3.js"></script>
+    <script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/vendor/jquery.appear.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/stellar.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/stellarnav.min.js"></script>
+    <script src="js/contact-form.js"></script>
+    <script src="js/jquery.sticky.js"></script>
 
     <!--===== ACTIVE JS =====-->
-    <script src="/js/main.js"></script>
+    <script src="js/main.js"></script>
     
 </body>
 
@@ -190,7 +177,5 @@
 
 <!--=====  DATA TABLE =====-->
 <script>  
-    $(document).ready(function(){  
-            $('#users-table').DataTable();  
-    });  
+   
 </script> 
