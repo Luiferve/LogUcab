@@ -811,6 +811,7 @@ Route::get('/packages/{id}',function ($id) {
 Route::get('/logs', function (){
     $logs = DB::select('select aud_codigo cod, aud_descripcion des, aud_fecha fecha, usu_email use,acc_nombre acc from auditoria,usuario,accion where aud_usuario=usu_codigo and aud_accion=acc_codigo');
 
+    audit(2,'Auditorias');
     $permissions = json_decode(Cookie::get('permissions'));
     return view('logs', ["permissions" => $permissions, 'logs' => $logs] );
 });
@@ -824,5 +825,5 @@ function audit ($aid,$description,$uname = ''){
     }
     
     $uid = DB::select('select usu_codigo cod from usuario where usu_email=\''.$uname.'\'')[0]->cod;
-    $log = DB::insert('insert into auditoria (aud_usuario,aud_accion,aud_descripcion,aud_fecha) values ('.$uid.','.$aid.',\''.$description.'\',\''.date('d/m/Y H:i:s').'\')');
+    $log = DB::insert('insert into auditoria (aud_usuario,aud_accion,aud_descripcion,aud_fecha) values ('.$uid.','.$aid.',\''.$description.'\',CURRENT_TIMESTAMP)');
 };
