@@ -829,7 +829,8 @@ Route::post('/attendance', function (){
         $message = 'El empleado no esta registrado en el sistema';
     } else {
         //TODO:
-        $attendance = DB::insert('insert into asistencia(asi_fecha, asi_emp_codigo, asi_emp_zon_codigo, asi_emp_zona_empleado, asi_emp_zona_zona, asi_emp_zona_sucursal, asi_emp_horario) values (CURRENT_DATE, '.$employee[0]->emp_codigo.', ?, ?, ?, ?, ?);');
+        $emp_zon_hor = DB::select('select * from emp_zon_hor where emp_zona_empleado='.$_POST['cedula'])[0];
+        $attendance = DB::insert('insert into asistencia(asi_fecha, asi_emp_codigo, asi_emp_zon_codigo, asi_emp_zona_empleado, asi_emp_zona_zona, asi_emp_zona_sucursal, asi_emp_horario) values (CURRENT_DATE, '.$emp_zon_hor->emp_codigo.', '.$emp_zon_hor->emp_zon_codigo.', '.$emp_zon_hor->emp_zona_empleado.', '.$emp_zon_hor->emp_zona_zona.', '.$emp_zon_hor->emp_zona_sucursal.', '.date('N').');');
 
         $message = 'Asistencia marcada';
         audit(1,'Asistencia marcada (Empleado: '.$_POST['cedula'].')');
