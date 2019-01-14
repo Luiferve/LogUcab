@@ -13,7 +13,7 @@
     <!--====== TITLE TAG ======-->
     <title>LogUcab | Roles</title>
 
-    <!--====== FAVICON ICON =======-->
+     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
@@ -32,6 +32,7 @@
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
+    <link href="/regform.css" rel="stylesheet">
     <link href="/css/responsive.css" rel="stylesheet">
 
     <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -124,69 +125,81 @@
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
-        </div>
 
-        <div class="datatables-area">
-        @if (isset($message))
+    <div class="container" id="cont1">
+         @if (isset($message))
                 <div class="container" id="alert" style="margin-top: 2%;">
                     <div class="alert alert-success" role="alert">
                         {{$message}}
                     </div>
                 </div>
             @endif
-                <div class="table-responsive container">
-                    <div class="table-header">
-                        <button class="add-another btn"><a href="{{url('/employees/add')}}">Add new role</a></button>
+            <form class="form-horizontal" role="form" method="POST" action="{{url('/roles')}}@if(isset($rol))/{{$rol->rol_codigo}}@else/0 @endif">
+                <div class="form-group">
+                    <label for="nombre" class="col-sm-3 control-label">Nombre*</label>
+                    <div class="col-sm-9">
+                        <input name="nombre" type="text" id="nombre" placeholder="Nombre" class="form-control" autofocus required
+                        @if (isset($rol))
+                            value={{$rol->rol_nombre}}
+                        @endif
+                        >
                     </div>
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="employees-table">
-                        <thead>
-                            <tr>
-                                <th>Codigo</th>
-                                <th>Nombre</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($roles as $role)
-                                <tr>
-                                    <td>{{$role->cod}}</td>
-                                    <td>{{$role->nombre}}</td>
-                                    <td>
-                                    <div style="text-align: center">
-                                        @if (in_array(2,$permissions))
-                                        <a href="{{url('/roles/'.$role->cod)}}" class="edit_details" title="edit" >
-                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
-                                        @endif
-                                        @if (in_array(3,$permissions))
-                                        <a href="{{url('/roles/delete/'.$role->cod)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
-                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
-                                        @endif
-                                    </div>
-                                    </td>
-                                </tr>
-                            @endforeach   
-                        </tbody>
-                    </table>
                 </div>
-        </div>
+                <div class="form-group">
+                    <label for="permisos" class="col-sm-3 control-label">Permisos</label>
+                    <div class="col-sm-9">
+                    <input type="checkbox" name="agregar" value=1
+                    @if (isset($perm) && in_array(1,$perm))
+                        checked
+                    @endif
+                    > Agregar<br>
+                    <input type="checkbox" name="modificar" value=2
+                    @if (isset($perm) && in_array(2,$perm))
+                        checked
+                    @endif
+                    > Modificar<br>
+                    <input type="checkbox" name="eliminar" value=3
+                    @if (isset($perm) && in_array(3,$perm))
+                        checked
+                    @endif
+                    > Eliminar<br>
+                    <input type="checkbox" name="consultar" value=4
+                    @if (isset($perm) && in_array(4,$perm))
+                        checked
+                    @endif
+                    > Consultar<br>
+                    </div>
+                </div>
+                @csrf
+            
+                 <!-- /.form-group -->
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <span class="help-block">*Obligatorio</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
+            </form>    
+            </form> <!-- /form -->
+        </div> <!-- ./container -->
 
-        <!--====== SCRIPTS JS ======-->
+              <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="/js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
-    <script src="/js/vendor/jquery.easing.1.3.js"></script>
-    <script src="/js/vendor/jquery-migrate-1.2.1.min.js"></script>
-    <script src="/js/vendor/jquery.appear.js"></script>
-    <script src="/js/owl.carousel.min.js"></script>
-    <script src="/js/stellar.js"></script>
-    <script src="/js/wow.min.js"></script>
-    <script src="/js/stellarnav.min.js"></script>
-    <script src="/js/contact-form.js"></script>
-    <script src="/js/jquery.sticky.js"></script>
+    <script src="js/vendor/jquery.easing.1.3.js"></script>
+    <script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/vendor/jquery.appear.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/stellar.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/stellarnav.min.js"></script>
+    <script src="js/contact-form.js"></script>
+    <script src="js/jquery.sticky.js"></script>
 
     <!--===== ACTIVE JS =====-->
-    <script src="/js/main.js"></script>
+    <script src="js/main.js"></script>
     
 </body>
 
@@ -194,7 +207,5 @@
 
 <!--=====  DATA TABLE =====-->
 <script>  
-    $(document).ready(function(){  
-            $('#employees-table').DataTable();  
-    });  
+   
 </script> 

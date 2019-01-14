@@ -848,12 +848,85 @@ Route::get('/roles', function() {
     return view('roles', ["permissions" => $permissions, 'roles' => $roles] );
 });
 
-Route::get('/roles/{id}', function() {
-    $rol = DB::select('select * from rol where rol_codigo='.$id);
+Route::get('/roles/{id}', function($id) {
+    $permissions = json_decode(Cookie::get('permissions'));
+    if ($id == 0) return view('roles_reg', ["permissions" => $permissions]);
+
+    $rol = DB::select('select * from rol where rol_codigo='.$id)[0];
+    $p = DB::select('select rol_privilegio pri from rol_pri where rol_rol='.$id);
+    $perm = array();
+    foreach ($p as $p){
+        $perm[] = $p->pri;
+    }
+
+    return view('roles_reg', ["permissions" => $permissions, 'rol' => $rol, 'perm' => $perm] );
+})->where('id', '[0-9]+');
+
+Route::post('/roles/{id}', function($id) {
+    $message = NULL;
+    if ($id == 0){
+        $rol = DB::insert('insert into rol (rol_nombre) values (\''.$_POST['nombre'].'\')');
+        $rol = DB::select('select * from rol where rol_nombre=\''.$_POST['nombre'].'\'')[0];
+
+        if (array_key_exists('agregar',$_POST)){
+            $pri = DB::insert('insert into rol_pri (rol_rol,rol_privilegio) values ('.$rol->rol_codigo.',1)');
+        }
+        if (array_key_exists('modificar',$_POST)){
+            $pri = DB::insert('insert into rol_pri (rol_rol,rol_privilegio) values ('.$rol->rol_codigo.',2)');
+        }
+        if (array_key_exists('eliminar',$_POST)){
+            $pri = DB::insert('insert into rol_pri (rol_rol,rol_privilegio) values ('.$rol->rol_codigo.',3)');
+        }
+        if (array_key_exists('consultar',$_POST)){
+            $pri = DB::insert('insert into rol_pri (rol_rol,rol_privilegio) values ('.$rol->rol_codigo.',4)');
+        }
+
+        $message = 'Nuevo rol creado';
+        audit(1,'Nuevo rol ('.$rol->rol_codigo.')');
+    } else {
+        $rol = DB::update('update rol set rol_nombre=\''.$_POST['nombre'].'\' where rol_codigo='.$id);
+        $rol = DB::select('select * from rol where rol_nombre=\''.$_POST['nombre'].'\'')[0];
+
+        if (array_key_exists('agregar',$_POST)){
+            $pri = DB::select('select * from rol_pri where rol_rol='.$rol->rol_codigo.' and rol_privilegio=1');
+            if (empty($pri)){
+                $pri = DB::insert('insert into rol_pri (rol_rol,rol_privilegio) values ('.$rol->rol_codigo.',1)');
+            }
+        } else {
+            $pri = DB::delete('delete from rol_pri where rol_rol='.$rol->rol_codigo.' and rol_privilegio=1');
+        }
+        if (array_key_exists('modificar',$_POST)){
+            $pri = DB::select('select * from rol_pri where rol_rol='.$rol->rol_codigo.' and rol_privilegio=2');
+            if (empty($pri)){
+                $pri = DB::insert('insert into rol_pri (rol_rol,rol_privilegio) values ('.$rol->rol_codigo.',2)');
+            }
+        } else {
+            $pri = DB::delete('delete from rol_pri where rol_rol='.$rol->rol_codigo.' and rol_privilegio=2');
+        }
+        if (array_key_exists('eliminar',$_POST)){
+            $pri = DB::select('select * from rol_pri where rol_rol='.$rol->rol_codigo.' and rol_privilegio=3');
+            if (empty($pri)){
+                $pri = DB::insert('insert into rol_pri (rol_rol,rol_privilegio) values ('.$rol->rol_codigo.',3)');
+            }
+        } else {
+            $pri = DB::delete('delete from rol_pri where rol_rol='.$rol->rol_codigo.' and rol_privilegio=3');
+        }
+        if (array_key_exists('consultar',$_POST)){
+            $pri = DB::select('select * from rol_pri where rol_rol='.$rol->rol_codigo.' and rol_privilegio=4');
+            if (empty($pri)){
+                $pri = DB::insert('insert into rol_pri (rol_rol,rol_privilegio) values ('.$rol->rol_codigo.',4)');
+            }
+        } else {
+            $pri = DB::delete('delete from rol_pri where rol_rol='.$rol->rol_codigo.' and rol_privilegio=4');
+        }
+
+        $message = 'Rol modificado exitosamente';
+        audit(3,'Rol modificado ('.$rol->rol_codigo.')');
+    }
 
     $permissions = json_decode(Cookie::get('permissions'));
-    return view('roles', ["permissions" => $permissions, 'rol' => $rol, 'message' => $message] );
-});
+    return view('roles_reg', ["permissions" => $permissions, 'message' => $message] );
+})->where('id', '[0-9]+');
 
 Route::get('/roles/delete/{id}', function($id) {
     $rol = DB::delete('delete from rol where rol_codigo='.$id);
