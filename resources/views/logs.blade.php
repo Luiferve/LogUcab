@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Users</title>
+    <title>LogUcab | Logs</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
@@ -127,32 +127,21 @@
                     <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
                         <thead>
                             <tr>
+                                <th>Fecha</th>
                                 <th>Codigo</th>
-                                <th>Email</th>
-                                <th>Password</th>
-                                <th>Rol</th>
-                                <th></th>
+                                <th>Usuario</th>
+                                <th>Accion</th>
+                                <th>Descripcion</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
+                            @foreach ($logs as $log)
                                 <tr>
-                                    <td>{{$user->usu_codigo}}</td>
-                                    <td>{{$user->usu_email}}</td>
-                                    <td>{{$user->usu_password}}</td>
-                                    <td>{{$user->rol_nombre}}</td>
-                                    <td>
-                                    <div style="text-align: center">
-                                        @if (in_array(2,$permissions))
-                                        <a href="{{url('/users/'.$user->usu_codigo)}}" class="edit_details" title="edit" >
-                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
-                                        @endif
-                                        @if (in_array(3,$permissions))
-                                        <a href="{{url('/users/delete/'.$user->usu_codigo)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
-                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
-                                        @endif
-                                    </div>
-                                    </td>
+                                    <td>{{$log->fecha}}</td>
+                                    <td>{{$log->cod}}</td>
+                                    <td>{{$log->use}}</td>
+                                    <td>{{$log->acc}}</td>
+                                    <td>{{$log->des}}</td>
                                 </tr>
                             @endforeach   
                         </tbody>

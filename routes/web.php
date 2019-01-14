@@ -808,6 +808,16 @@ Route::get('/packages/{id}',function ($id) {
     return view('package_registration', ["permissions" => $permissions,'package' => $package, 'statuses' => $statuses] );
 })->where('id', '[0-9]+');
 
+Route::get('/logs', function (){
+    $logs = DB::select('select aud_codigo cod, aud_descripcion des, aud_fecha fecha, usu_email use,acc_nombre acc from auditoria,usuario,accion where aud_usuario=usu_codigo and aud_accion=acc_codigo');
+
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('logs', ["permissions" => $permissions, 'logs' => $logs] );
+});
+
+
+
+
 function audit ($aid,$description,$uname = ''){
     if ($uname == ''){
         $uname = Cookie::get('user-email');

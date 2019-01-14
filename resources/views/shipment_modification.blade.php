@@ -107,6 +107,9 @@
                                 @if (isset($permissions) && in_array(1,$permissions))
                                     <li><a href="#">Reports</a>
                                         <ul>
+                                            @if (in_array(3,$permissions))
+                                            <li><a href="{{url('/logs')}}">Logs</a></li>
+                                            @endif
                                             <li><a href="{{url('/report/omsrp')}}">Office with most sended & received packages</a></li>
                                             <li><a href="{{url('/report/mlur')}}">Most & Least used routes</a></li>
                                         </ul>
