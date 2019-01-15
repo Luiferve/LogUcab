@@ -972,6 +972,14 @@ Route::get('/report/frequent', function() {
     return view('frequent', ["permissions" => $permissions,'clients' => $clients] );
 });
 
+Route::get('/report/most-send', function() {
+    $offices = DB::select('select suc_nombre sucursal, cli_cedula cedula, cli_nombre || \' \' ||cli_apellido nombre, count(p.*) paquetes from cliente, envio, sucursal,paquete p where cli_cedula=env_cliente and p.paq_envio=env_codigo and env_suc_origen=suc_codigo group by suc_nombre, cli_cedula, cli_nombre || \' \' ||cli_apellido');
+
+    audit(2,'Reporte Listado de Clientes que Registran Mas Paquetes por Oficina');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('mostsend', ["permissions" => $permissions,'offices' => $offices] );
+});
+
 Route::get('/vehicles', function() {
     //TODO: configure the options (delete and edit)
     $vehicles = DB::select('select med_codigo,med_tipo,med_placa,suc_nombre from medio_transporte,flota,sucursal where med_flota=flo_codigo and flo_sucursal=suc_codigo');
