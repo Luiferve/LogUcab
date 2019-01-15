@@ -956,7 +956,13 @@ Route::get('/report/avg-weight', function() {
     return view('avg_weight', ["permissions" => $permissions,'franchises' => $franchises] );
 });
 
+Route::get('/vehicles', function() {
+    $vehicles = DB::select('select med_codigo,med_tipo,med_placa,suc_nombre from medio_transporte,flota,sucursal where med_flota=flo_codigo and flo_sucursal=suc_codigo');
 
+    audit(2,'Tabla de vehiculos');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('vehicles', ["permissions" => $permissions,'vehicles' => $vehicles] );
+});
 
 
 

@@ -11,10 +11,10 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | User Update</title>
+    <title>LogUcab | Vehicles</title>
 
-     <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
+    <!--====== FAVICON ICON =======-->
+    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
     <link rel="stylesheet" href="/css/normalize.css">
@@ -25,17 +25,16 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
-    <link href="/regform.css" rel="stylesheet">
-    <link href="/css/responsive.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
 
-    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
 
@@ -128,69 +127,45 @@
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
+        </div>
 
-    <div class="container" id="cont1">
-         @if (isset($message))
-                <div class="container" id="alert" style="margin-top: 2%;">
-                    <div class="alert alert-success" role="alert">
-                        {{$message}}
-                    </div>
+        <div class="datatables-area">
+                <div class="table-responsive container">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Placa</th>
+                                <th>Oficina BASE</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($vehicles as $veh)
+                                <tr>
+                                    <td>{{$veh->med_tipo}}</td>
+                                    <td>{{$veh->med_placa}}</td>
+                                    <td>{{$veh->suc_nombre}}</td>
+                                    <td>
+                                    <div style="text-align: center">
+                                        @if (in_array(2,$permissions))
+                                        <a href="{{url('/vehicles/'.$veh->med_codigo)}}" class="edit_details" title="edit" >
+                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
+                                        @endif
+                                        @if (in_array(3,$permissions))
+                                        <a href="{{url('/vehicles/delete/'.$veh->usu_codigo)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
+                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
+                                        @endif
+                                    </div>
+                                    </td>
+                                </tr>
+                            @endforeach   
+                        </tbody>
+                    </table>
                 </div>
-            @endif
-            <form class="form-horizontal" role="form" method="POST" action="{{url('/usuarioReg')}}">
-                @csrf
-                <input type="hidden" name="add" value="@if (isset($add))add @endif">
-                <input type="hidden" name="codigo" @if (isset($users))
-                            value="{{$users[0]->usu_codigo}}"
-                        @endif>
-                <div class="form-group">
-                    <label for="email" class="col-sm-3 control-label">E-mail*</label>
-                    <div class="col-sm-9">
-                        <input name = "email" type="text" id="email" placeholder="E-mail" class="form-control" autofocus required
-                        @if (isset($users))
-                            value="{{$users[0]->usu_email}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="passwordr" class="col-sm-3 control-label">Password* </label>
-                    <div class="col-sm-9">
-                        <input name ="password" type="text" id="password"  placeholder="Password" class="form-control" required
-                        @if (isset($users))
-                            value="{{$users[0]->usu_password}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="pais" class="col-sm-3 control-label">Rol*</label>
-                    <div class="col-sm-9">
-                        <select name="rol" class="form-control" style="margin-bottom: 10px;">
-                            <option value="">Seleccione el Rol</option>
-                            @foreach ($rol as $rol)
-                                <option 
-                                @if (isset($users) && $rol->cod == $users[0]->rol_codigo)
-                                selected
-                                @endif
-                                value="{{$rol->cod}}">{{$rol->nombre}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            
-                 <!-- /.form-group -->
-                <div class="form-group">
-                    <div class="col-sm-9 col-sm-offset-3">
-                        <span class="help-block">*Obligatorio</span>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Registrar</button>
-            </form>    
-            </form> <!-- /form -->
-        </div> <!-- ./container -->
-
-              <!--====== SCRIPTS JS ======-->
+        </div>
+        
+        <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
     <script src="js/vendor/bootstrap.min.js"></script>
 
@@ -214,5 +189,7 @@
 
 <!--=====  DATA TABLE =====-->
 <script>  
-   
+    $(document).ready(function(){  
+            $('#users-table').DataTable();  
+    });  
 </script> 
