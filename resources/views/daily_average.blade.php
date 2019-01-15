@@ -11,10 +11,10 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Office with most sended and received packages</title>
+    <title>LogUcab | Average of Daily Packages by Office</title>
 
     <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
+    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
     <link rel="stylesheet" href="/css/normalize.css">
@@ -32,9 +32,9 @@
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
-    <link href="/css/responsive.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
 
-    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
 
@@ -134,16 +134,24 @@
         </div>
 
         <div class="datatables-area">
-            <div id="sended" class="container alert alert-info" style="margin-top: 2%;">
-            Office with most shipments SENDED<br>
-            Name: {{$sended->nombre}}<br>
-            Shipments: {{$sended->count}} 
-            </div>
-            <div id="received" class="container alert alert-info" style="margin-top: 2%;">
-            Office with most shipments RECEIVED<br>
-            Name: {{$received->nombre}}<br>
-            Shipments: {{$received->count}}
-            </div>
+                <div class="table-responsive container">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
+                        <thead>
+                            <tr>
+                                <th>Sucursal</th>
+                                <th>Promedio de paquetes diario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($offices as $ofi)
+                                <tr>
+                                    <td>{{$ofi->sucursal}}</td>
+                                    <td>{{$ofi->promedio}}</td>
+                                </tr>
+                            @endforeach   
+                        </tbody>
+                    </table>
+                </div>
         </div>
         
         <!--====== SCRIPTS JS ======-->
@@ -151,19 +159,26 @@
     <script src="js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
-    <script src="/js/vendor/jquery.easing.1.3.js"></script>
-    <script src="/js/vendor/jquery-migrate-1.2.1.min.js"></script>
-    <script src="/js/vendor/jquery.appear.js"></script>
-    <script src="/js/owl.carousel.min.js"></script>
-    <script src="/js/stellar.js"></script>
-    <script src="/js/wow.min.js"></script>
-    <script src="/js/stellarnav.min.js"></script>
-    <script src="/js/contact-form.js"></script>
-    <script src="/js/jquery.sticky.js"></script>
+    <script src="js/vendor/jquery.easing.1.3.js"></script>
+    <script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/vendor/jquery.appear.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/stellar.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/stellarnav.min.js"></script>
+    <script src="js/contact-form.js"></script>
+    <script src="js/jquery.sticky.js"></script>
 
     <!--===== ACTIVE JS =====-->
-    <script src="/js/main.js"></script>
+    <script src="js/main.js"></script>
     
 </body>
 
 </html>
+
+<!--=====  DATA TABLE =====-->
+<script>  
+    $(document).ready(function(){  
+            $('#users-table').DataTable();  
+    });  
+</script> 

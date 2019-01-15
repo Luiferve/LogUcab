@@ -980,6 +980,14 @@ Route::get('/report/most-send', function() {
     return view('mostsend', ["permissions" => $permissions,'offices' => $offices] );
 });
 
+Route::get('/report/daily-average', function(){
+    $offices = DB::select('select sucursal,avg(paquetes) promedio from (select env_fecha,suc_nombre sucursal,count(p.*) paquetes from sucursal,envio, paquete p where suc_codigo=env_suc_origen and env_codigo=paq_envio group by env_fecha,suc_nombre order by suc_nombre,env_fecha) as tabla group by sucursal');
+
+    audit(2,'Reporte Promedio de Paquetes Diario por Oficina');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('daily_average', ["permissions" => $permissions,'offices' => $offices] );
+});
+
 Route::get('/vehicles', function() {
     //TODO: configure the options (delete and edit)
     $vehicles = DB::select('select med_codigo,med_tipo,med_placa,suc_nombre from medio_transporte,flota,sucursal where med_flota=flo_codigo and flo_sucursal=suc_codigo');
