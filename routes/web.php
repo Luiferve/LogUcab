@@ -948,6 +948,14 @@ Route::get('/report/port-franchises', function() {
     return view('port', ["permissions" => $permissions] );
 });
 
+Route::get('/report/avg-weight', function() {
+    $franchises = DB::select('select suc_nombre nombre, avg(paq_peso) avg from envio,paquete,sucursal where paq_envio=env_codigo and env_suc_origen=suc_codigo group by suc_nombre');
+
+    audit(2,'Reporte Peso promedio de los paquetes enviados por oficina');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('avg_weight', ["permissions" => $permissions,'franchises' => $franchises] );
+});
+
 
 
 
