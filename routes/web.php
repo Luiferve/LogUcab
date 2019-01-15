@@ -956,7 +956,16 @@ Route::get('/report/avg-weight', function() {
     return view('avg_weight', ["permissions" => $permissions,'franchises' => $franchises] );
 });
 
+Route::get('/report/airplanes', function(){
+    $airplanes = DB::select('select * from medio_transporte where med_tipo=\'Avion\'');
+
+    audit(2,'Reporte Listado de Aviones y sus caracteristicas');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('airplanes', ["permissions" => $permissions,'airplanes' => $airplanes] );
+});
+
 Route::get('/vehicles', function() {
+    //TODO: configure the options (delete and edit)
     $vehicles = DB::select('select med_codigo,med_tipo,med_placa,suc_nombre from medio_transporte,flota,sucursal where med_flota=flo_codigo and flo_sucursal=suc_codigo');
 
     audit(2,'Tabla de vehiculos');
