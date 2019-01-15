@@ -828,7 +828,6 @@ Route::post('/attendance', function (){
     if (empty($employee)){
         $message = 'El empleado no esta registrado en el sistema';
     } else {
-        //TODO:
         $emp_zon_hor = DB::select('select * from emp_zon_hor where emp_zona_empleado='.$_POST['cedula'])[0];
         $attendance = DB::insert('insert into asistencia(asi_fecha, asi_emp_codigo, asi_emp_zon_codigo, asi_emp_zona_empleado, asi_emp_zona_zona, asi_emp_zona_sucursal, asi_emp_horario) values (CURRENT_DATE, '.$emp_zon_hor->emp_codigo.', '.$emp_zon_hor->emp_zon_codigo.', '.$emp_zon_hor->emp_zona_empleado.', '.$emp_zon_hor->emp_zona_zona.', '.$emp_zon_hor->emp_zona_sucursal.', '.date('N').');');
 
@@ -939,6 +938,19 @@ Route::get('/roles/delete/{id}', function($id) {
     $permissions = json_decode(Cookie::get('permissions'));
     return view('roles', ["permissions" => $permissions, 'roles' => $roles, 'message' => $message] );
 })->where('id', '[0-9]+');
+
+Route::get('/report/port-franchises', function() {
+    //TODO:
+    $franchises = DB::select('select aer_codigo cod,suc_codigo from aeropuerto,sucursal where aer_sucursal=suc_codigo union select pue_codigo cod,suc_codigo from puerto,sucursal where pue_sucursal=suc_codigo');
+
+    audit(2,'Reporte Sucursales en Puertos y Aeropuertos');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('port', ["permissions" => $permissions] );
+});
+
+
+
+
 
 
 
