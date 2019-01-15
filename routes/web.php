@@ -964,6 +964,14 @@ Route::get('/report/airplanes', function(){
     return view('airplanes', ["permissions" => $permissions,'airplanes' => $airplanes] );
 });
 
+Route::get('/report/frequent', function() {
+    $clients = DB::select('select cli_cedula cedula,cli_nombre || \' \' || cli_apellido nombre, count(p.*) paquetes from cliente c,envio e,paquete p where env_cliente=cli_cedula and paq_envio=env_codigo and env_fecha between current_date-30 and current_date group by cli_cedula,cli_nombre having count(p.*)>5');
+
+    audit(2,'Reporte Listado de Clientes Frecuentes');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('frequent', ["permissions" => $permissions,'clients' => $clients] );
+});
+
 Route::get('/vehicles', function() {
     //TODO: configure the options (delete and edit)
     $vehicles = DB::select('select med_codigo,med_tipo,med_placa,suc_nombre from medio_transporte,flota,sucursal where med_flota=flo_codigo and flo_sucursal=suc_codigo');

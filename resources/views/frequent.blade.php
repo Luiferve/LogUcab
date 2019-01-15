@@ -11,10 +11,10 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Franchise Registration</title>
+    <title>LogUcab | Frequent Clients</title>
 
-     <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
+    <!--====== FAVICON ICON =======-->
+    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
     <link rel="stylesheet" href="/css/normalize.css">
@@ -25,17 +25,16 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
-    <link href="/regform.css" rel="stylesheet">
-    <link href="/css/responsive.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
 
-    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
 
@@ -130,94 +129,32 @@
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
+        </div>
 
-    <div class="container" id="cont1">
-         @if (isset($message))
-                <div class="container" id="alert" style="margin-top: 2%;">
-                    <div class="alert alert-success" role="alert">
-                        {{$message}}
-                    </div>
+        <div class="datatables-area">
+                <div class="table-responsive container">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
+                        <thead>
+                            <tr>
+                                <th>Cedula</th>
+                                <th>Nombre</th>
+                                <th>Paquetes enviados</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($clients as $cli)
+                                <tr>
+                                    <td>{{$cli->cedula}}</td>
+                                    <td>{{$cli->nombre}}</td>
+                                    <td>{{$cli->paquetes}}</td>
+                                </tr>
+                            @endforeach   
+                        </tbody>
+                    </table>
                 </div>
-            @endif
-            <form class="form-horizontal" role="form" method="POST" action="{{url('/franchiseReg')}}">
-                <div class="form-group">
-                    <label for="nombre" class="col-sm-3 control-label">Nombre*</label>
-                    <div class="col-sm-9">
-                        <input name="name" type="text" id="name" placeholder="Nombre de la Sucursal" class="form-control" autofocus required
-                        @if (isset($franchise))
-                            value="{{$franchise[0]->suc_nombre}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-                @csrf
-                <input type="hidden" name="add" value="@if (isset($add))add @endif">
-                <input type="hidden" name="codigo" @if (isset($franchise))
-                            value="{{$franchise[0]->suc_codigo}}"
-                        @endif>
-                <div class="form-group">
-                    <label for="email" class="col-sm-3 control-label">E-mail*</label>
-                    <div class="col-sm-9">
-                        <input name = "email" type="text" id="email" placeholder="E-mail" class="form-control" autofocus required
-                        @if (isset($franchise))
-                            value="{{$franchise[0]->suc_email}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="phoneNumber" class="col-sm-3 control-label">Telefono* </label>
-                    <div class="col-sm-9">
-                        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Telefono" class="form-control" required
-                        @if (isset($phone))
-                            value="{{$phone[0]->tel_numero}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="pais" class="col-sm-3 control-label">Pais*</label>
-                    <div class="col-sm-9">
-                        <select name="country" class="form-control" style="margin-bottom: 10px;">
-                            <option value="">Seleccione el pais</option>
-                            @foreach ($countries as $country)
-                                <option 
-                                @if (isset($franchise) && $country->cod == $franchise[0]->suc_lugar)
-                                selected 
-                                @endif
-                                value="{{$country->cod}}">{{$country->nombre}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="estado" class="col-sm-3 control-label">Estado*</label>
-                    <div class="col-sm-9">
-                        <select name="state" class="form-control" style="margin-bottom: 10px;">
-                            <option value="">Seleccione el estado</option>
-                            @foreach ($states as $state)
-                                <option 
-                                @if (isset($franchise) && $state->cod == $franchise[0]->suc_lugar)
-                                selected 
-                                @endif
-                                value="{{$state->cod}}">{{$state->nombre}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            
-                 <!-- /.form-group -->
-                <div class="form-group">
-                    <div class="col-sm-9 col-sm-offset-3">
-                        <span class="help-block">*Obligatorio</span>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Registrar</button>
-            </form>    
-            </form> <!-- /form -->
-        </div> <!-- ./container -->
-
-              <!--====== SCRIPTS JS ======-->
+        </div>
+        
+        <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
     <script src="js/vendor/bootstrap.min.js"></script>
 
@@ -241,5 +178,7 @@
 
 <!--=====  DATA TABLE =====-->
 <script>  
-   
+    $(document).ready(function(){  
+            $('#users-table').DataTable();  
+    });  
 </script> 
