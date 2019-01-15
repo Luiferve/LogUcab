@@ -153,7 +153,7 @@
                                             <img src="/img/edit.png" alt="Edit" width=20px></a>
                                         @endif
                                         @if (in_array(3,$permissions))
-                                        <a href="{{url('/vehicles/delete/'.$veh->usu_codigo)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
+                                        <a href="{{url('/vehicles/delete/'.$veh->med_codigo)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
                                             <img src="/img/delete.png" alt="Delete" width=20px></a>
                                         @endif
                                     </div>
