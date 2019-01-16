@@ -1000,7 +1000,7 @@ Route::get('/report/best-month', function(){
     return view('best_month', ["permissions" => $permissions,'month' => $month] );
 });
 
-Route::get('/report/average-stay', function() {
+Route::get('/report/avg-stay', function() {
     $zones = DB::select('select suc_nombre,paq_zona_codigo,avg(paq_f_salida-paq_f_entrada) estadia from paq_zon,sucursal where paq_zona_sucursal=suc_codigo and paq_f_salida is not NULL group by paq_zona_codigo,suc_nombre order by paq_zona_codigo');
 
     audit(2,'Reporte Promedio de Estancia de paquetes por Zona de Oficina');
