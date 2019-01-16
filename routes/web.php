@@ -944,8 +944,7 @@ Route::get('/roles/delete/{id}', function($id) {
 })->where('id', '[0-9]+');
 
 Route::get('/report/port-franchises', function() {
-    //TODO:missing tables (aeropuerto y puerto)
-    $franchises = DB::select('select aer_codigo cod,suc_codigo from aeropuerto,sucursal where aer_sucursal=suc_codigo union select pue_codigo cod,suc_codigo from puerto,sucursal where pue_sucursal=suc_codigo');
+    $franchises = DB::select('select aer_codigo cod,suc_nombre from aeropuerto,sucursal where aer_sucursal=suc_codigo union select pue_codigo cod,suc_nombre from puerto,sucursal where pue_sucursal=suc_codigo');
 
     audit(2,'Reporte Sucursales en Puertos y Aeropuertos');
     $permissions = json_decode(Cookie::get('permissions'));
