@@ -239,10 +239,10 @@ Route::post('/ship', function () {
         }
 
 
-        $route = DB::select('select rut_codigo cod from ruta where rut_suc_origen='.$_POST['origen'].' and rut_suc_destino='.$_POST['destino']);
+        $route = DB::select('select rut_codigo cod,rut_duracion from ruta where rut_suc_origen='.$_POST['origen'].' and rut_suc_destino='.$_POST['destino']);
         if (empty($route)){
             $route = DB::insert('insert into ruta(rut_duracion, rut_suc_origen, rut_suc_destino, rut_med_transporte) values('.rand(20,120).', '.$_POST['origen'].', '.$_POST['destino'].', 2)');
-            $route = DB::select('select rut_codigo cod from ruta where rut_suc_origen='.$_POST['origen'].' and rut_suc_destino='.$_POST['destino']);
+            $route = DB::select('select rut_codigo cod,rut_duracion from ruta where rut_suc_origen='.$_POST['origen'].' and rut_suc_destino='.$_POST['destino']);
         }
 
         if ($message == ''){
@@ -279,7 +279,7 @@ Route::post('/ship', function () {
             $shipment = DB::insert('insert into envio(env_fecha, env_cliente, env_empleado, env_suc_origen, env_suc_destino, env_ruta, env_pago) values (\''.date('d/m/Y').'\', '.$sender[0]->cedula.', '.$employee[0]->cod.', '.$_POST['origen'].', '.$_POST['destino'].', '.$route[0]->cod.', '.$payment.')');
             $shipment = DB::select('select env_codigo cod from envio order by env_codigo DESC limit 1');
             
-            $package = DB::insert('insert into paquete(paq_peso, paq_ancho, paq_alto, paq_profundidad, paq_destinatario, paq_envio, paq_tipo_paquete, paq_tipo_envio) values ('.$_POST['peso'].', '.$_POST['ancho'].', '.$_POST['alto'].', '.$_POST['profundidad'].', '.$receiver[0]->cod.', '.$shipment[0]->cod.', '.$_POST['tipo'].', '.$_POST['tipo-envio'].')');
+            $package = DB::insert('insert into paquete(paq_peso, paq_ancho, paq_alto, paq_profundidad, paq_destinatario, paq_envio, paq_tipo_paquete, paq_tipo_envio,paq_eta) values ('.$_POST['peso'].', '.$_POST['ancho'].', '.$_POST['alto'].', '.$_POST['profundidad'].', '.$receiver[0]->cod.', '.$shipment[0]->cod.', '.$_POST['tipo'].', '.$_POST['tipo-envio'].',current_date + make_interval(hours := '.$route[0]->rut_duracion.'))');
             $package = DB::select('select paq_guia from paquete where paq_envio='.$shipment[0]->cod);
             $status = DB::insert('insert into paq_est (paq_fecha,paq_estatus_paquete,paq_paquete) values(current_date,1,'.$package[0]->paq_guia.')');
             $message = 'Envio Realizado por Bs. '.$cost.'.';
