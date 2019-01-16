@@ -158,7 +158,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($sevices as $ser)
+                            @foreach ($services as $ser)
                                 <tr>
                                     <td>{{$ser->ser_codigo}}</td>
                                     <td>{{$ser->ser_nombre}}</td>
