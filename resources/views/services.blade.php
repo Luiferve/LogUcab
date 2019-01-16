@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Clients Who Send the Most by Office</title>
+    <title>LogUcab | Services Table</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
@@ -152,19 +152,17 @@
                     <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
                         <thead>
                             <tr>
-                                <th>Sucursal</th>
-                                <th>Cedula</th>
-                                <th>Nombre</th>
-                                <th>Paquetes</th>
+                                <th>Codigo Servicio</th>
+                                <th>Nombre Servicio</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($offices as $ofi)
+                            @foreach ($sevices as $ser)
                                 <tr>
-                                    <td>{{$ofi->sucursal}}</td>
-                                    <td>{{$ofi->cedula}}</td>
-                                    <td>{{$ofi->nombre}}</td>
-                                    <td>{{$ofi->paquetes}}</td>
+                                    <td>{{$ser->ser_codigo}}</td>
+                                    <td>{{$ser->ser_nombre}}</td>
+                                    <td></td>
                                 </tr>
                             @endforeach   
                         </tbody>

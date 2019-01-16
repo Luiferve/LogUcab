@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Clients Who Send the Most by Office</title>
+    <title>LogUcab | Services by Office</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
@@ -153,18 +153,16 @@
                         <thead>
                             <tr>
                                 <th>Sucursal</th>
-                                <th>Cedula</th>
-                                <th>Nombre</th>
-                                <th>Paquetes</th>
+                                <th>Codigo Servicio</th>
+                                <th>Nombre Servicio</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($offices as $ofi)
+                            @foreach ($sevices as $ser)
                                 <tr>
-                                    <td>{{$ofi->sucursal}}</td>
-                                    <td>{{$ofi->cedula}}</td>
-                                    <td>{{$ofi->nombre}}</td>
-                                    <td>{{$ofi->paquetes}}</td>
+                                    <td>{{$ser->suc_nombre}}</td>
+                                    <td>{{$ser->ser_codigo}}</td>
+                                    <td>{{$ser->ser_nombre}}</td>
                                 </tr>
                             @endforeach   
                         </tbody>

@@ -1112,6 +1112,23 @@ Route::get('/ports', function(){
     return view('ports', ["permissions" => $permissions, 'ports' => $ports]);
 });
 
+Route::get('/services', function(){
+    //TODO: missing delete and edit functions
+    $services = DB::select('select * from servicio');
+    
+    audit(2,'Tabla de servicios');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('services', ["permissions" => $permissions, 'services' => $services]);
+});
+
+Route::get('/report/services', function(){
+    $services = DB::select('select suc_nombre,ser_codigo,ser_nombre from suc_ser r, servicio ser, sucursal suc where suc_sucursal=suc.suc_codigo and suc_servicio=ser_codigo');
+
+    audit(2,'Reporte Listado de servicios por oficina');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('services_office', ["permissions" => $permissions, 'services' => $services]);
+});
+
 
 
 
