@@ -11,10 +11,10 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Routes Registration</title>
+    <title>LogUcab | Average Package Stay by Zone</title>
 
     <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
+    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
     <link rel="stylesheet" href="/css/normalize.css">
@@ -25,17 +25,16 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
-    <link href="/regform.css" rel="stylesheet">
-    <link href="/css/responsive.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
 
-    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
 
@@ -134,61 +133,48 @@
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
+        </div>
 
-    <div class="container" id="cont1">
-            @if (isset($message))
-                <div class="container" id="alert" style="margin-top: 2%;">
-                    <div class="alert alert-success" role="alert">
-                        {{$message}}
-                    </div>
+        <div class="datatables-area">
+                <div class="table-responsive container">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
+                        <thead>
+                            <tr>
+                                <th>Codigo Zona</th>
+                                <th>Sucursal</th>
+                                <th>Promedio Estadia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($zones as $zone)
+                                <tr>
+                                    <td>{{$zone->paq_zona_codigo}}</td>
+                                    <td>{{$zone->suc_nombre}}</td>
+                                    <td>{{$zone->estadia}}</td>
+                                </tr>
+                            @endforeach   
+                        </tbody>
+                    </table>
                 </div>
-            @endif
-            <form class="form-horizontal" role="form" method="POST" action="{{url('/routes/add')}}">
-                @csrf
-                <input type="hidden" name="add" value="@if (isset($add))add @endif">
-                <div class="form-group">
-                    <label for="sucursal" class="col-sm-3 control-label">Sucursal Origen*</label>
-                    <div class="col-sm-9">
-                        <select name="sucursal" class="form-control" style="margin-bottom: 10px;">
-                            <option value="">Seleccione una sucursal de origen</option>
-                            @foreach ($franchises as $franchise)
-                                <option 
-                                @if (isset($employee) && $franchise->cod == $employee[0]->emp_sucursal)
-                                selected 
-                                @endif
-                                value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>      
-                
-                 <!-- /.form-group -->
-                <div class="form-group">
-                    <div class="col-sm-9 col-sm-offset-3">
-                        <span class="help-block">*Obligatorio</span>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Registrar</button>
-            </form> <!-- /form -->
-        </div> <!-- ./container -->
-
-              <!--====== SCRIPTS JS ======-->
-    <!-- <script src="/js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="/js/vendor/bootstrap.min.js"></script>
+        </div>
+        
+        <!--====== SCRIPTS JS ======-->
+    <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
+    <script src="js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
-    <script src="/js/vendor/jquery.easing.1.3.js"></script>
-    <script src="/js/vendor/jquery-migrate-1.2.1.min.js"></script>
-    <script src="/js/vendor/jquery.appear.js"></script>
-    <script src="/js/owl.carousel.min.js"></script>
-    <script src="/js/stellar.js"></script>
-    <script src="/js/wow.min.js"></script>
-    <script src="/js/stellarnav.min.js"></script>
-    <script src="/js/contact-form.js"></script>
-    <script src="/js/jquery.sticky.js"></script>
+    <script src="js/vendor/jquery.easing.1.3.js"></script>
+    <script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/vendor/jquery.appear.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/stellar.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/stellarnav.min.js"></script>
+    <script src="js/contact-form.js"></script>
+    <script src="js/jquery.sticky.js"></script>
 
     <!--===== ACTIVE JS =====-->
-    <script src="/js/main.js"></script>
+    <script src="js/main.js"></script>
     
 </body>
 
@@ -196,5 +182,7 @@
 
 <!--=====  DATA TABLE =====-->
 <script>  
-   
+    $(document).ready(function(){  
+            $('#users-table').DataTable();  
+    });  
 </script> 

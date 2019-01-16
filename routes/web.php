@@ -998,6 +998,14 @@ Route::get('/report/best-month', function(){
     return view('best_month', ["permissions" => $permissions,'month' => $month] );
 });
 
+Route::get('/report/average-stay', function() {
+    $zones = DB::select('select suc_nombre,paq_zona_codigo,avg(paq_f_salida-paq_f_entrada) estadia from paq_zon,sucursal where paq_zona_sucursal=suc_codigo and paq_f_salida is not NULL group by paq_zona_codigo,suc_nombre order by paq_zona_codigo');
+
+    audit(2,'Reporte Promedio de Estancia de paquetes por Zona de Oficina');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('avg_stay', ["permissions" => $permissions,'zones' => $zones] );
+});
+
 Route::get('/vehicles', function() {
     //TODO: configure the options (delete and edit)
     $vehicles = DB::select('select med_codigo,med_tipo,med_placa,suc_nombre from medio_transporte,flota,sucursal where med_flota=flo_codigo and flo_sucursal=suc_codigo');
