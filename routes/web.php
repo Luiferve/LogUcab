@@ -1017,6 +1017,14 @@ Route::get('/vehicles', function() {
     return view('vehicles', ["permissions" => $permissions,'vehicles' => $vehicles] );
 });
 
+Route::get('/report/international', function(){
+    $offices = DB::select('select suc_codigo,suc_nombre, pais.lug_nombre from sucursal s, lugar mun,lugar est, lugar pais where suc_lugar=mun.lug_codigo and mun.lug_lugar=est.lug_codigo and est.lug_lugar=pais.lug_codigo and pais.Lug_nombre!=\'VENEZUELA\'');
+
+    audit(2,'Reporte Sucursales Internacionales');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('international', ["permissions" => $permissions,'offices' => $offices] );
+});
+
 
 
 
