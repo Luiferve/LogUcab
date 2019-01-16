@@ -1087,7 +1087,13 @@ Route::get('/report/active-employees', function(){
     return view('active_employees', ["permissions" => $permissions, 'employees' => $employees]);
 });
 
+Route::get('/report/most-used-transport', function(){
+    $transport = DB::select('select med_tipo ,count(M.*) from medio_transporte as M, envio, ruta where env_ruta = rut_codigo and rut_med_transporte = med_codigo group by (med_tipo) order by count(M.*) desc limit 1;')[0];
 
+    audit(2,'Reporte de medio de transporte mas utilizado');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('most_used_transport', ["permissions" => $permissions, 'transport' => $transport]);
+});
 
 
 function audit ($aid,$description,$uname = ''){
