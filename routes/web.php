@@ -1042,8 +1042,17 @@ Route::get('/report/pack-period', function(){
 Route::post('/report/pack-period', function(){
     $packages = DB::select('select tip_tipo,suc_nombre,paq_guia from tipo_paquete,sucursal,envio,paquete where paq_envio=env_codigo and env_suc_origen=suc_codigo and paq_tipo_paquete=tip_codigo and env_fecha between \''.$_POST['inicio'].'\' and \''.$_POST['fin'].'\'');
 
+    audit(2,'Reporte Lista de paquetes por clasificacion y oficina por periodo de tiempo');
     $permissions = json_decode(Cookie::get('permissions'));
     return view('pack_period', ["permissions" => $permissions, 'packages' => $packages,'post' => $_POST]);
+});
+
+Route::get('/report/offices-location', function(){
+    $offices = DB::select('select p.lug_nombre pais,e.lug_nombre estado, m.lug_nombre municipio, suc_nombre from sucursal,lugar p,lugar m, lugar e where suc_lugar=m.lug_codigo and m.lug_lugar=e.lug_codigo and e.lug_lugar=p.lug_codigo');
+
+    audit(2,'Reporte Lista de oficinas indicando region,estado,pais');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('offices_location', ["permissions" => $permissions, 'offices' => $offices]);
 });
 
 
