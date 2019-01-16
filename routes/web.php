@@ -1034,6 +1034,18 @@ Route::get('/zones', function() {
     return view('zones', ["permissions" => $permissions,'zones' => $zones] );
 });
 
+Route::get('/report/pack-period', function(){
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('pack_period', ["permissions" => $permissions]);
+});
+
+Route::post('/report/pack-period', function(){
+    $packages = DB::select('select tip_tipo,suc_nombre,paq_guia from tipo_paquete,sucursal,envio,paquete where paq_envio=env_codigo and env_suc_origen=suc_codigo and paq_tipo_paquete=tip_codigo and env_fecha between \''.$_POST['inicio'].'\' and \''.$_POST['fin'].'\'');
+
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('pack_period', ["permissions" => $permissions, 'packages' => $packages,'post' => $_POST]);
+});
+
 
 
 

@@ -125,6 +125,7 @@
                                             <li><a href="{{url('/report/best-month')}}">Month with Most Shipments</a></li>
                                             <li><a href="{{url('/report/avg-stay')}}">Average Package Stay by Zone</a></li>
                                             <li><a href="{{url('/report/international')}}">International Franchises</a></li>
+                                            <li><a href="{{url('/report/pack-period')}}">Package Information by Period</a></li>
                                         </ul>
                                     </li>
                                 @endif
