@@ -813,7 +813,7 @@ Route::get('/packages/{id}',function ($id) {
 })->where('id', '[0-9]+');
 
 Route::get('/logs', function (){
-    $logs = DB::select('select aud_codigo cod, aud_descripcion des, aud_fecha fecha, usu_email use,acc_nombre acc from auditoria,usuario,accion where aud_usuario=usu_codigo and aud_accion=acc_codigo');
+    $logs = DB::select('select aud_codigo cod, aud_descripcion des, aud_fecha fecha, usu_email use,acc_nombre acc,rol_nombre rol from auditoria,usuario,accion,rol where aud_usuario=usu_codigo and aud_accion=acc_codigo and aud_rol=rol_codigo');
 
     audit(2,'Auditorias');
     $permissions = json_decode(Cookie::get('permissions'));
@@ -1058,14 +1058,13 @@ Route::get('/report/offices-location', function(){
 
 
 
-
 function audit ($aid,$description,$uname = ''){
     if ($uname == ''){
         $uname = Cookie::get('user-email');
     }
     
     $uid = DB::select('select usu_codigo cod from usuario where usu_email=\''.$uname.'\'')[0]->cod;
-    $log = DB::insert('insert into auditoria (aud_usuario,aud_accion,aud_descripcion,aud_fecha) values ('.$uid.','.$aid.',\''.$description.'\',CURRENT_TIMESTAMP)');
+    $log = DB::insert('insert into auditoria (aud_usuario,aud_accion,aud_descripcion,aud_fecha,aud_rol) values ('.$uid.','.$aid.',\''.$description.'\',CURRENT_TIMESTAMP,(select usu_rol from usu_rol where usu_usuario='.$uid.'))');
 };
 
 function updateVIP (){

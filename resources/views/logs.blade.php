@@ -148,6 +148,7 @@
                                 <th>Codigo</th>
                                 <th>Usuario</th>
                                 <th>Accion</th>
+                                <th>Rol</th>
                                 <th>Descripcion</th>
                             </tr>
                         </thead>
@@ -158,6 +159,7 @@
                                     <td>{{$log->cod}}</td>
                                     <td>{{$log->use}}</td>
                                     <td>{{$log->acc}}</td>
+                                    <td>{{$log->rol}}</td>
                                     <td>{{$log->des}}</td>
                                 </tr>
                             @endforeach   
