@@ -1025,6 +1025,15 @@ Route::get('/report/international', function(){
     return view('international', ["permissions" => $permissions,'offices' => $offices] );
 });
 
+Route::get('/zones', function() {
+    //TODO: missing delete and edit function
+    $zones = DB::select('select est.lug_nombre estado,suc_nombre,zon_codigo,zon_tamano,zon_tipo from sucursal,zona,lugar mun,lugar est where suc_codigo=zon_sucursal and suc_lugar=mun.lug_codigo and mun.lug_lugar=est.lug_codigo');
+
+    audit(2,'Tabla de zonas');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('zones', ["permissions" => $permissions,'zones' => $zones] );
+});
+
 
 
 

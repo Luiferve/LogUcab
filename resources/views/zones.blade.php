@@ -11,10 +11,10 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Users</title>
+    <title>LogUcab | Zones</title>
 
     <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
+    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
     <link rel="stylesheet" href="/css/normalize.css">
@@ -25,16 +25,16 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
-    <link href="css/responsive.css" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
 
-    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
 
@@ -138,32 +138,44 @@
         </div>
 
         <div class="datatables-area">
+        @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
+                    </div>
+                </div>
+            @endif
                 <div class="table-responsive container">
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
+                    <div class="table-header">
+                        <button class="add-another btn"><a href="{{url('/employees/add')}}">Add new employee</a></button>
+                    </div>
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="employees-table">
                         <thead>
                             <tr>
-                                <th>Codigo</th>
-                                <th>Email</th>
-                                <th>Password</th>
-                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th>Sucursal</th>
+                                <th>Codigo Zona</th>
+                                <th>Tamaño</th>
+                                <th>Tipo</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
+                            @foreach ($zones as $zone)
                                 <tr>
-                                    <td>{{$user->usu_codigo}}</td>
-                                    <td>{{$user->usu_email}}</td>
-                                    <td>{{$user->usu_password}}</td>
-                                    <td>{{$user->rol_nombre}}</td>
+                                    <td>{{$zone->estado}}</td>
+                                    <td>{{$zone->suc_nombre}}</td>
+                                    <td>{{$zone->zon_codigo}}</td>
+                                    <td>{{$zone->zon_tamano}}</td>
+                                    <td>{{$zone->zon_tipo}}</td>
                                     <td>
                                     <div style="text-align: center">
                                         @if (in_array(2,$permissions))
-                                        <a href="{{url('/users/'.$user->usu_codigo)}}" class="edit_details" title="edit" >
+                                        <a href="{{url('/zones/'.$zone->zon_codigo)}}" class="edit_details" title="edit" >
                                             <img src="/img/edit.png" alt="Edit" width=20px></a>
                                         @endif
                                         @if (in_array(3,$permissions))
-                                        <a href="{{url('/users/delete/'.$user->usu_codigo)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
+                                        <a href="{{url('/zones/delete/'.$zone->zon_codigo)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
                                             <img src="/img/delete.png" alt="Delete" width=20px></a>
                                         @endif
                                     </div>
@@ -174,24 +186,24 @@
                     </table>
                 </div>
         </div>
-        
+
         <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="/js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
-    <script src="js/vendor/jquery.easing.1.3.js"></script>
-    <script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
-    <script src="js/vendor/jquery.appear.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/stellar.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/stellarnav.min.js"></script>
-    <script src="js/contact-form.js"></script>
-    <script src="js/jquery.sticky.js"></script>
+    <script src="/js/vendor/jquery.easing.1.3.js"></script>
+    <script src="/js/vendor/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/js/vendor/jquery.appear.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/stellar.js"></script>
+    <script src="/js/wow.min.js"></script>
+    <script src="/js/stellarnav.min.js"></script>
+    <script src="/js/contact-form.js"></script>
+    <script src="/js/jquery.sticky.js"></script>
 
     <!--===== ACTIVE JS =====-->
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
     
 </body>
 
@@ -200,6 +212,6 @@
 <!--=====  DATA TABLE =====-->
 <script>  
     $(document).ready(function(){  
-            $('#users-table').DataTable();  
+            $('#employees-table').DataTable();  
     });  
 </script> 
