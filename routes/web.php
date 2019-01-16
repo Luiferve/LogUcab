@@ -1129,6 +1129,22 @@ Route::get('/report/services', function(){
     return view('services_office', ["permissions" => $permissions, 'services' => $services]);
 });
 
+Route::get('/report/workshop', function(){
+    $workshops = DB::select('select lug_nombre,t.* from lugar,taller t where lug_codigo=tal_lugar');
+
+    audit(2,'Reporte Listado de talleres por zona');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('workshop_zone', ["permissions" => $permissions, 'workshops' => $workshops]);
+});
+
+Route::get('/workshops', function(){
+    //TODO: missing delete and edit functions
+    $workshops = DB::select('select * from taller');
+
+    audit(2,'Tabla de Talleres');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('workshops', ["permissions" => $permissions, 'workshops' => $workshops]);
+});
 
 
 

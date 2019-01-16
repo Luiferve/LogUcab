@@ -11,9 +11,9 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Shipment Modification</title>
+    <title>LogUcab | Workshops by Zone</title>
 
-     <!--====== FAVICON ICON =======-->
+    <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
@@ -32,7 +32,6 @@
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
-    <link href="/regform.css" rel="stylesheet">
     <link href="/css/responsive.css" rel="stylesheet">
 
     <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -148,157 +147,64 @@
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
+        </div>
 
-    <div class="container" id="cont1">
-         @if (isset($message))
+        <div class="datatables-area">
+        @if (isset($message))
                 <div class="container" id="alert" style="margin-top: 2%;">
                     <div class="alert alert-success" role="alert">
                         {{$message}}
                     </div>
                 </div>
             @endif
-            <form class="form-horizontal" role="form" method="POST" action="{{url('/shipments/'.$shipment->env_codigo)}}">
-                <div class="form-group">
-                    <label for="cliente" class="col-sm-3 control-label">Cliente*</label>
-                    <div class="col-sm-9">
-                        <input name="cliente" type="text" id="cliente" placeholder="Cedula Cliente" class="form-control" autofocus required
-                        @if (isset($shipment))
-                            value="{{$shipment->env_cliente}}"
-                        @endif
-                        >
+                <div class="table-responsive container">
+                    <div class="table-header">
+                        <button class="add-another btn"><a href="{{url('/employees/add')}}">Add new employee</a></button>
                     </div>
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="employees-table">
+                        <thead>
+                            <tr>
+                                <th>Zona</th>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Pagina Web</th>
+                                <th>Email</th>
+                                <th>Persona de Contacto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($workshops as $wor)
+                                <tr>
+                                    <td>{{$wor->lug_nombre}}</td>
+                                    <td>{{$wor->tal_codigo}}</td>
+                                    <td>{{$wor->tal_nombre}}</td>
+                                    <td>{{$wor->tal_pagina_web}}</td>
+                                    <td>{{$wor->tal_correo}}</td>
+                                    <td>{{$wor->tal_persona_contacto}}</td>
+                                </tr>
+                            @endforeach   
+                        </tbody>
+                    </table>
                 </div>
-                <div class="form-group">
-                    <label for="empleado" class="col-sm-3 control-label">Empleado*</label>
-                    <div class="col-sm-9">
-                        <input name="empleado" type="text" id="empleado" placeholder="Cedula Empleado" class="form-control" autofocus required
-                        @if (isset($shipment))
-                            value="{{$shipment->env_empleado}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-                @csrf
-                <input type="hidden" name="codigo" @if (isset($shipment))
-                            value="{{$shipment->env_codigo}}"
-                        @endif>
-                <input type="hidden" name="paqcodigo" @if (isset($package))
-                    value="{{$package->paq_guia}}"
-                @endif>
-                <div class="form-group">
-                    <label for="origen" class="col-sm-3 control-label">Origen*</label>
-                    <div class="col-sm-9">
-                        <select name="origen" class="form-control" style="margin-bottom: 10px;">
-                            <option value="">Seleccione la sucursal de origen</option>
-                            @foreach ($franchises as $franchise)
-                                <option 
-                                @if (isset($shipment) && $franchise->cod == $shipment->env_suc_origen)
-                                selected 
-                                @endif
-                                value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="destino" class="col-sm-3 control-label">Destino*</label>
-                    <div class="col-sm-9">
-                        <select name="destino" class="form-control" style="margin-bottom: 10px;">
-                            <option value="">Seleccione la sucursal de destino</option>
-                            @foreach ($franchises as $franchise)
-                                <option 
-                                @if (isset($shipment) && $franchise->cod == $shipment->env_suc_destino)
-                                selected 
-                                @endif
-                                value="{{$franchise->cod}}">{{$franchise->nombre}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="estatus" class="col-sm-3 control-label">Estatus*</label>
-                    <div class="col-sm-9">
-                        <select name="estatus" class="form-control" style="margin-bottom: 10px;">
-                            <option value="">Seleccione el estatus</option>
-                            @foreach ($statuses as $status)
-                                <option 
-                                @if (isset($shipment) && $package->status == $status->est_codigo)
-                                selected 
-                                @endif
-                                value="{{$status->est_codigo}}">{{$status->est_nombre}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="peso" class="col-sm-3 control-label">Peso*</label>
-                    <div class="col-sm-9">
-                        <input name="peso" type="number" id="peso" placeholder="Peso" class="form-control" autofocus required
-                        @if (isset($package))
-                            value="{{$package->paq_peso}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="alto" class="col-sm-3 control-label">Alto*</label>
-                    <div class="col-sm-9">
-                        <input name="alto" type="number" id="alto" placeholder="Alto" class="form-control" autofocus required
-                        @if (isset($package))
-                            value="{{$package->paq_alto}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="ancho" class="col-sm-3 control-label">Ancho*</label>
-                    <div class="col-sm-9">
-                        <input name="ancho" type="number" id="ancho" placeholder="Ancho" class="form-control" autofocus required
-                        @if (isset($package))
-                            value="{{$package->paq_ancho}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="profundidad" class="col-sm-3 control-label">Profundidad*</label>
-                    <div class="col-sm-9">
-                        <input name="profundidad" type="number" id="profundidad" placeholder="Profundidad" class="form-control" autofocus required
-                        @if (isset($package))
-                            value="{{$package->paq_profundidad}}"
-                        @endif
-                        >
-                    </div>
-                </div>
-            
-                 <!-- /.form-group -->
-                <div class="form-group">
-                    <div class="col-sm-9 col-sm-offset-3">
-                        <span class="help-block">*Obligatorio</span>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Modificar</button>
-            </form>    
-            </form> <!-- /form -->
-        </div> <!-- ./container -->
+        </div>
 
-              <!--====== SCRIPTS JS ======-->
+        <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="/js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
-    <script src="js/vendor/jquery.easing.1.3.js"></script>
-    <script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
-    <script src="js/vendor/jquery.appear.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/stellar.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/stellarnav.min.js"></script>
-    <script src="js/contact-form.js"></script>
-    <script src="js/jquery.sticky.js"></script>
+    <script src="/js/vendor/jquery.easing.1.3.js"></script>
+    <script src="/js/vendor/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/js/vendor/jquery.appear.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/stellar.js"></script>
+    <script src="/js/wow.min.js"></script>
+    <script src="/js/stellarnav.min.js"></script>
+    <script src="/js/contact-form.js"></script>
+    <script src="/js/jquery.sticky.js"></script>
 
     <!--===== ACTIVE JS =====-->
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
     
 </body>
 
@@ -306,5 +212,7 @@
 
 <!--=====  DATA TABLE =====-->
 <script>  
-   
+    $(document).ready(function(){  
+            $('#employees-table').DataTable();  
+    });  
 </script> 
