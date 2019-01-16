@@ -155,6 +155,7 @@ Route::get('/ship', function () {
 });
 
 Route::post('/ship', function () {
+    updateVIP();
     $userEmail = Cookie::get('user-email');
 
     $types = DB::select('select tip_codigo cod, tip_tipo nombre from tipo_paquete');
@@ -289,6 +290,7 @@ Route::post('/ship', function () {
         }
     }
     
+    updateVIP();
     $permissions = json_decode(Cookie::get('permissions'));
     return view('shipping',['permissions' => $permissions, 'userEmail' => $userEmail,'types' => $types ,'message' => $message, 'countries' => $countries, 'states' => $states,'franchises' => $franchises, 'invoice' => $invoice]);
 });
@@ -1027,3 +1029,8 @@ function audit ($aid,$description,$uname = ''){
     $uid = DB::select('select usu_codigo cod from usuario where usu_email=\''.$uname.'\'')[0]->cod;
     $log = DB::insert('insert into auditoria (aud_usuario,aud_accion,aud_descripcion,aud_fecha) values ('.$uid.','.$aid.',\''.$description.'\',CURRENT_TIMESTAMP)');
 };
+
+function updateVIP (){
+    $clients = DB::select('update cliente set cli_vip=1 where cli_cedula in (select cedula from (select cli_cedula cedula, count(p.*) paquetes from cliente c,envio e,paquete p where env_cliente=cli_cedula and paq_envio=env_codigo and env_fecha between current_date-30 and current_date group by cli_cedula having count(p.*)>5) as tabla)');
+    $clients = DB::select('update cliente set cli_vip=NULL where cli_cedula not in (select cedula from (select cli_cedula cedula, count(p.*) paquetes from cliente c,envio e,paquete p where env_cliente=cli_cedula and paq_envio=env_codigo and env_fecha between current_date-30 and current_date group by cli_cedula having count(p.*)>5) as tabla)');
+}
