@@ -152,6 +152,7 @@
                                 <th>Ancho</th>
                                 <th>Profundidad</th>
                                 <th>Estatus</th>
+                                <th>Fecha Estatus</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -164,6 +165,7 @@
                                     <td>{{$package->paq_ancho}}</td>
                                     <td>{{$package->paq_profundidad}}</td>
                                     <td>{{$package->estatus}}</td>
+                                    <td>{{$package->fecha}}</td>
                                     <td>
                                     <div style="text-align: center">
                                         @if (in_array(2,$permissions))

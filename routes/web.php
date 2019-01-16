@@ -773,7 +773,7 @@ Route::get('/report/mlur', function() {
 });
 
 Route::get('/packages', function () {
-    $packages = DB::select('select p.*,e.est_nombre estatus from paquete p,paq_est pe, estatus_paquete e where p.paq_guia=pe.paq_paquete and pe.paq_estatus_paquete=e.est_codigo');
+    $packages = DB::select('select p.*,e.est_nombre estatus,paq_fecha fecha from paquete p,paq_est pe, estatus_paquete e where p.paq_guia=pe.paq_paquete and pe.paq_estatus_paquete=e.est_codigo');
 
     audit(2,'Tabla de paquetes');
     $permissions = json_decode(Cookie::get('permissions'));
