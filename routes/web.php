@@ -1103,6 +1103,18 @@ Route::get('/airports', function(){
     return view('airports', ["permissions" => $permissions, 'airports' => $airports]);
 });
 
+Route::get('/ports', function(){
+    //TODO: missing delete and edit functions
+    $ports = DB::select('select *,suc_nombre from puerto,sucursal where pue_sucursal=suc_codigo');
+
+    audit(2,'Tabla de Aeropuertos');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('ports', ["permissions" => $permissions, 'ports' => $ports]);
+});
+
+
+
+
 
 function audit ($aid,$description,$uname = ''){
     if ($uname == ''){

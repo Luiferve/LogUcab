@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Aircrafts List</title>
+    <title>LogUcab | Ports List</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
@@ -151,42 +151,28 @@
                         <thead>
                             <tr>
                                 <th>Codigo</th>
-                                <th>Placa</th>
-                                <th>Capacidad Carga</th>
+                                <th>Nombre</th>
+                                <th>Puestos</th>
+                                <th>Muelles</th>
                                 <th>Longitud</th>
-                                <th>Envergadura</th>
-                                <th>Area</th>
-                                <th>Altura</th>
-                                <th>Ancho cabina</th>
-                                <th>Diametro Fuselaje</th>
-                                <th>Peso Vacio</th>
-                                <th>Peso Maximo</th>
-                                <th>Carrera Despegue</th>
-                                <th>Velocidad Maxima</th>
-                                <th>Capacidad Combustible</th>
-                                <th>Motores</th>
-                                <th>Año</th>
+                                <th>Ancho</th>
+                                <th>Calado</th>
+                                <th>Uso</th>
+                                <th>Sucursal</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($airplanes as $air)
+                            @foreach ($ports as $por)
                                 <tr>
-                                    <td>{{$air->med_codigo}}</td>
-                                    <td>{{$air->med_placa}}</td>
-                                    <td>{{$air->med_capacidad_carga}}</td>
-                                    <td>{{$air->avi_longitud}}</td>
-                                    <td>{{$air->avi_envergadura}}</td>
-                                    <td>{{$air->avi_area}}</td>
-                                    <td>{{$air->avi_altura}}</td>
-                                    <td>{{$air->avi_ancho_cabina}}</td>
-                                    <td>{{$air->avi_diametro_fuselaje}}</td>
-                                    <td>{{$air->avi_peso_vacio}}</td>
-                                    <td>{{$air->avi_peso_max_despegue}}</td>
-                                    <td>{{$air->avi_carrera_despegue}}</td>
-                                    <td>{{$air->avi_velocidad_maxima}}</td>
-                                    <td>{{$air->avi_capacidad_combustible}}</td>
-                                    <td>{{$air->avi_cantidad_motores}}</td>
-                                    <td>{{$air->med_año}}</td>
+                                    <td>{{$por->pue_codigo}}</td>
+                                    <td>{{$por->pue_nombre}}</td>
+                                    <td>{{$por->pue_cantidad_puestos}}</td>
+                                    <td>{{$por->pue_cantidad_muelle}}</td>
+                                    <td>{{$por->pue_longitud}}</td>
+                                    <td>{{$por->pue_ancho}}</td>
+                                    <td>{{$por->pue_calado}}</td>
+                                    <td>{{$por->pue_uso}}</td>
+                                    <td>{{$por->suc_nombre}}</td>
                                 </tr>
                             @endforeach   
                         </tbody>
