@@ -1094,6 +1094,15 @@ Route::get('/report/most-used-transport', function(){
     return view('most_used_transport', ["permissions" => $permissions, 'transport' => $transport]);
 });
 
+Route::get('/airports', function(){
+    //TODO: missing delete and edit functions
+    $airports = DB::select('select *,suc_nombre from aeropuerto,sucursal where aer_sucursal=suc_codigo');
+
+    audit(2,'Tabla de Aeropuertos');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('airports', ["permissions" => $permissions, 'airports' => $airports]);
+});
+
 
 function audit ($aid,$description,$uname = ''){
     if ($uname == ''){

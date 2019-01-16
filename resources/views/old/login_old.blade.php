@@ -113,6 +113,7 @@
                                             <li><a href="{{url('/roles')}}">Roles Table</a></li>
                                             <li><a href="{{url('/vehicles')}}">Vehicles Table</a></li>
                                             <li><a href="{{url('/zones')}}">Zones Table</a></li>
+                                            <li><a href="{{url('/airports')}}">Airports Table</a></li>
                                             @endif
                                         </ul>
                                     </li>
@@ -139,6 +140,7 @@
                                             <li><a href="{{url('/report/biggest-office')}}">Biggest Office</a></li>
                                             <li><a href="{{url('/report/employee-detail-date')}}">Employee Detailed by Date</a></li>
                                             <li><a href="{{url('/report/active-employees')}}">Active Employees List</a></li>
+                                            <li><a href="{{url('/report/most-used-transport')}}">Most Used Transport</a><li>
                                         </ul>
                                     </li>
                                 @endif
