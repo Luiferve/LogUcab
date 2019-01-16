@@ -1055,6 +1055,16 @@ Route::get('/report/offices-location', function(){
     return view('offices_location', ["permissions" => $permissions, 'offices' => $offices]);
 });
 
+Route::get('/report/biggest-office', function(){
+    //TODO:missing queries
+    $offices = DB::select('select p.lug_nombre pais, e.lug_nombre estado, m.lug_nombre municipio, suc_nombre sucursal,sum(zon_tamano) tamano from sucursal, zona,lugar p,lugar m,lugar e where suc_lugar=m.lug_codigo and m.lug_lugar=e.lug_codigo and e.lug_lugar=p.lug_codigo and zon_sucursal=suc_codigo group by p.lug_nombre, e.lug_nombre, m.lug_nombre, suc_nombre');
+
+    audit(2,'Reporte Oficina mas amplia por estado, municipio y pais');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('biggest_office', ["permissions" => $permissions, 'region' => $region, 'estados' => $estados, 'pais' => $pais]);
+});
+
+
 
 
 

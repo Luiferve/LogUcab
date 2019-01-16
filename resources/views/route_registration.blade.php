@@ -127,6 +127,7 @@
                                             <li><a href="{{url('/report/international')}}">International Franchises</a></li>
                                             <li><a href="{{url('/report/pack-period')}}">Package Information by Period</a></li>
                                             <li><a href="{{url('/report/offices-location')}}">Franchises Detailed Location</a></li>
+                                            <li><a href="{{url('/report/biggest-office')}}">Biggest Office</a></li>
                                         </ul>
                                     </li>
                                 @endif

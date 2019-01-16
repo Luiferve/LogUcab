@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Clients</title>
+    <title>LogUcab | Biggest Office</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
@@ -25,7 +25,7 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
@@ -141,59 +141,77 @@
         </div>
 
         <div class="datatables-area">
-        @if (isset($message))
-                <div class="container" id="alert" style="margin-top: 2%;">
-                    <div class="alert alert-success" role="alert">
-                        {{$message}}
-                    </div>
-                </div>
-            @endif
+            <div id="municipio" class="container alert alert-info" style="margin-top: 2%;">
                 <div class="table-responsive container">
-                    <div class="table-header">
-                        <button class="add-another btn"><a href="{{url('/routes/add')}}">Add new client</a></button>
-                    </div>
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="clients-table">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="municipio-table">
                         <thead>
                             <tr>
-                                <th>Cedula</th>
-                                <th>Nombre y Apellido</th>
-                                <th>Email</th>
-                                <th>Fecha de Nacimiento</th>
-                                <th>Direccion</th>
-                                <th>Carnet</th>
-                                <th></th>
+                                <th>Region</th>
+                                <th>Sucursal</th>
+                                <th>Tamaño</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($clients as $client)
+                            @foreach ($region as $red)
                                 <tr>
-                                    <td>{{$client->cli_cedula}}</td>
-                                    <td>{{$client->cli_nom}}</td>
-                                    <td>{{$client->cli_em}}</td>
-                                    <td width=30px>{{$client->cli_fn}}</td>
-                                    <td>{{$client->cli_lu}}</td>
-                                    <td>{{$client->cli_car}}</td>
-                                    <td>
-                                        <div style="text-align: center">
-                                        @if (in_array(2,$permissions))
-                                        <a href="{{url('/clients/'.$client->cli_cedula)}}" class="edit_details" title="edit" >
-                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
-                                        @endif
-                                        @if (in_array(3,$permissions))
-                                        <a href="{{url('/clients/delete/'.$client->cli_cedula)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
-                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
-                                        @endif
-                                    </div>
+                                    <td>{{$red->municipio}}</td>
+                                    <td>{{$red->suc_nombre}}</td>
+                                    <td>{{$red->tamano}}</td>
                                 </tr>
                             @endforeach   
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div id="estado" class="container alert alert-info" style="margin-top: 2%;">
+                <div class="table-responsive container">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="estado-table">
+                        <thead>
+                            <tr>
+                                <th>Estado</th>
+                                <th>Sucursal</th>
+                                <th>Tamaño</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($estados as $est)
+                                <tr>
+                                    <td>{{$est->estado}}</td>
+                                    <td>{{$est->suc_nombre}}</td>
+                                    <td>{{$est->tamano}}</td>
+                                </tr>
+                            @endforeach   
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="pais" class="container alert alert-info" style="margin-top: 2%;">
+                <div class="table-responsive container">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="pais-table">
+                        <thead>
+                            <tr>
+                                <th>Pais</th>
+                                <th>Sucursal</th>
+                                <th>Tamaño</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($pais as $pai)
+                                <tr>
+                                    <td>{{$pai->pais}}</td>
+                                    <td>{{$pai->suc_nombre}}</td>
+                                    <td>{{$pai->tamano}}</td>
+                                </tr>
+                            @endforeach   
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-
+        
         <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="/js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
     <script src="/js/vendor/jquery.easing.1.3.js"></script>
@@ -216,6 +234,14 @@
 <!--=====  DATA TABLE =====-->
 <script>  
     $(document).ready(function(){  
-            $('#clients-table').DataTable();  
+            $('#municipio-table').DataTable();  
+    });
+
+    $(document).ready(function(){  
+            $('#estado-table').DataTable();  
+    });
+
+    $(document).ready(function(){  
+            $('#pais-table').DataTable();  
     });  
 </script> 
