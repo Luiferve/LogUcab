@@ -138,6 +138,7 @@
                                             <li><a href="{{url('/report/offices-location')}}">Franchises Detailed Location</a></li>
                                             <li><a href="{{url('/report/biggest-office')}}">Biggest Office</a></li>
                                             <li><a href="{{url('/report/employee-detail-date')}}">Employee Detailed by Date</a></li>
+                                            <li><a href="{{url('/report/active-employees')}}">Active Employees List</a></li>
                                         </ul>
                                     </li>
                                 @endif

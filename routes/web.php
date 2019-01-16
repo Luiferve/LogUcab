@@ -1079,6 +1079,14 @@ Route::post('/report/employee-detail-date', function(){
     return view('employee_date', ["permissions" => $permissions, 'employees' => $employees, 'active' => $active, 'inactive' => $inactive]);
 });
 
+Route::get('/report/active-employees', function(){
+    $employees = DB::select('select emp_cedula, emp_nombre || \' \' || emp_apellido nombre, emp_email_coorporativo mail,emp_cargo,emp_f_ingreso ing from empleado where emp_f_egreso is null');
+
+    audit(2,'Reporte Listado de empleado activos');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('active_employees', ["permissions" => $permissions, 'employees' => $employees]);
+});
+
 
 
 

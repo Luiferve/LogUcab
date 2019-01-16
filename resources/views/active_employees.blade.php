@@ -11,10 +11,10 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Average Package Weight by Franchise</title>
+    <title>LogUcab | Active Employees List</title>
 
-    <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
+     <!--====== FAVICON ICON =======-->
+    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
     <link rel="stylesheet" href="/css/normalize.css">
@@ -25,16 +25,17 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
-    <link href="css/responsive.css" rel="stylesheet">
+    <link href="/regform.css" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
 
-    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
 
@@ -140,30 +141,44 @@
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
-        </div>
 
-        <div class="datatables-area">
+    <div class="container" id="cont1">
+         @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
+                    </div>
+                </div>
+            @endif
+            <div class="datatables-area">
                 <div class="table-responsive container">
                     <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
                         <thead>
                             <tr>
-                                <th>Sucursal</th>
-                                <th>Peso Promedio (KG)</th>
+                                <th>Cedula</th>
+                                <th>Nombre</th>
+                                <th>Email Coorporativo</th>
+                                <th>Cargo</th>
+                                <th>Fecha Ingreso</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($franchises as $franchise)
+                            @foreach ($employees as $emp)
                                 <tr>
-                                    <td>{{$franchise->nombre}}</td>
-                                    <td>{{$franchise->avg}}</td>
+                                    <td>{{$emp->emp_cedula}}</td>
+                                    <td>{{$emp->nombre}}</td>
+                                    <td>{{$emp->mail}}</td>
+                                    <td>{{$emp->emp_cargo}}</td>
+                                    <td>{{$emp->ing}}</td>
                                 </tr>
                             @endforeach   
                         </tbody>
                     </table>
                 </div>
-        </div>
-        
-        <!--====== SCRIPTS JS ======-->
+            </div>
+        </div> <!-- ./container -->
+
+              <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
     <script src="js/vendor/bootstrap.min.js"></script>
 
