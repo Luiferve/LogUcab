@@ -279,6 +279,8 @@ Route::post('/ship', function () {
             $shipment = DB::select('select env_codigo cod from envio order by env_codigo DESC limit 1');
             
             $package = DB::insert('insert into paquete(paq_peso, paq_ancho, paq_alto, paq_profundidad, paq_destinatario, paq_envio, paq_tipo_paquete, paq_tipo_envio) values ('.$_POST['peso'].', '.$_POST['ancho'].', '.$_POST['alto'].', '.$_POST['profundidad'].', '.$receiver[0]->cod.', '.$shipment[0]->cod.', '.$_POST['tipo'].', '.$_POST['tipo-envio'].')');
+            $package = DB::select('select paq_guia from paquete where paq_envio='.$shipment[0]->cod);
+            $status = DB::insert('insert into paq_est (paq_fecha,paq_estatus_paquete,paq_paquete) values(current_date,1,'.$package[0]->paq_guia.')');
             $message = 'Envio Realizado por Bs. '.$cost.'.';
             $invoice = array('Ver Factura',$shipment[0]->cod);
             $_POST = NULL;
@@ -780,8 +782,8 @@ Route::get('/packages', function () {
 
 Route::post('/packages', function () {
     $package = DB::update('update paquete set paq_peso='.$_POST['peso'].', paq_ancho='.$_POST['ancho'].', paq_alto='.$_POST['alto'].', paq_profundidad='.$_POST['profundidad'].' where paq_guia='.$_POST['paqcodigo']);
-    $status = DB::update('update paq_est set paq_fecha=\''.date('d/m/Y').'\', paq_estatus_paquete='.$_POST['estatus'].' where paq_paquete='.$_POST['paqcodigo']);
-
+    $status = DB::insert('insert into paq_est (paq_fecha,paq_estatus_paquete,paq_paquete) values(current_date,'.$_POST['estatus'].','.$_POST['paqcodigo'].')');
+    
     $packages = DB::select('select p.*,e.est_nombre estatus from paquete p,paq_est pe, estatus_paquete e where p.paq_guia=pe.paq_paquete and pe.paq_estatus_paquete=e.est_codigo');
     $message = 'Paquete modificado exitosamente';
 
