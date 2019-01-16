@@ -1064,6 +1064,20 @@ Route::get('/report/biggest-office', function(){
     return view('biggest_office', ["permissions" => $permissions, 'region' => $region, 'estados' => $estados, 'pais' => $pais]);
 });
 
+Route::get('/report/employee-detail-date', function(){
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('employee_date', ["permissions" => $permissions]);
+});
+
+Route::post('/report/employee-detail-date', function(){
+    $employees = DB::select('select emp_cedula, emp_nombre || \' \' || emp_apellido nombre, emp_email_coorporativo mail,emp_cargo,emp_f_ingreso ing,emp_f_egreso egr from empleado where emp_f_ingreso between \''.$_POST['inicio'].'\' and \''.$_POST['fin'].'\'');
+    $active = DB::select('select count(*) from empleado where emp_f_egreso is null');
+    $inactive = DB::select('select count(*) from empleado where emp_f_egreso is not null');
+
+    audit(2,'Reporte Listado de empleado activos o no por rango de fechas');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('employee_date', ["permissions" => $permissions, 'employees' => $employees, 'active' => $active, 'inactive' => $inactive]);
+});
 
 
 
