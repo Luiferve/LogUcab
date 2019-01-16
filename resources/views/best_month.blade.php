@@ -11,7 +11,7 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Clients</title>
+    <title>LogUcab | Month with Most Shipments</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
@@ -25,7 +25,7 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
@@ -135,59 +135,14 @@
         </div>
 
         <div class="datatables-area">
-        @if (isset($message))
-                <div class="container" id="alert" style="margin-top: 2%;">
-                    <div class="alert alert-success" role="alert">
-                        {{$message}}
-                    </div>
-                </div>
-            @endif
-                <div class="table-responsive container">
-                    <div class="table-header">
-                        <button class="add-another btn"><a href="{{url('/routes/add')}}">Add new client</a></button>
-                    </div>
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="clients-table">
-                        <thead>
-                            <tr>
-                                <th>Cedula</th>
-                                <th>Nombre y Apellido</th>
-                                <th>Email</th>
-                                <th>Fecha de Nacimiento</th>
-                                <th>Direccion</th>
-                                <th>Carnet</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($clients as $client)
-                                <tr>
-                                    <td>{{$client->cli_cedula}}</td>
-                                    <td>{{$client->cli_nom}}</td>
-                                    <td>{{$client->cli_em}}</td>
-                                    <td width=30px>{{$client->cli_fn}}</td>
-                                    <td>{{$client->cli_lu}}</td>
-                                    <td>{{$client->cli_car}}</td>
-                                    <td>
-                                        <div style="text-align: center">
-                                        @if (in_array(2,$permissions))
-                                        <a href="{{url('/clients/'.$client->cli_cedula)}}" class="edit_details" title="edit" >
-                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
-                                        @endif
-                                        @if (in_array(3,$permissions))
-                                        <a href="{{url('/clients/delete/'.$client->cli_cedula)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
-                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
-                                        @endif
-                                    </div>
-                                </tr>
-                            @endforeach   
-                        </tbody>
-                    </table>
-                </div>
+        <div id="most" class="container alert alert-info" style="margin-top: 2%;">
+            The month with most shipments made in the last year was {{$month->mes}}, with {{$month->envios}} shipments made
+            </div>
         </div>
-
+        
         <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="/js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
     <script src="/js/vendor/jquery.easing.1.3.js"></script>
@@ -206,10 +161,3 @@
 </body>
 
 </html>
-
-<!--=====  DATA TABLE =====-->
-<script>  
-    $(document).ready(function(){  
-            $('#clients-table').DataTable();  
-    });  
-</script> 

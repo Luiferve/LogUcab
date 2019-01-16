@@ -125,6 +125,7 @@
                                             <li><a href="{{url('/report/frequent')}}">Frequent Clients List</a></li>
                                             <li><a href="{{url('/report/most-send')}}">Clients Who Send the Most by Office</a></li>
                                             <li><a href="{{url('/report/daily-average')}}">Average of Daily Packages by Office</a></li>
+                                            <li><a href="{{url('/report/best-month')}}">Month with Most Shipments</a></li>
                                         </ul>
                                     </li>
                                 @endif

@@ -988,6 +988,14 @@ Route::get('/report/daily-average', function(){
     return view('daily_average', ["permissions" => $permissions,'offices' => $offices] );
 });
 
+Route::get('/report/best-month', function(){
+    $month = DB::select('select to_char(to_timestamp(to_char(extract(month from env_fecha), \'999\'), \'MM\'), \'Month\') mes,count(*) envios from envio where env_fecha between current_date - 365 and current_date group by extract(month from env_fecha) order by envios desc limit 1')[0];
+
+    audit(2,'Reporte Mes con mas envios en un año');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('best_month', ["permissions" => $permissions,'month' => $month] );
+});
+
 Route::get('/vehicles', function() {
     //TODO: configure the options (delete and edit)
     $vehicles = DB::select('select med_codigo,med_tipo,med_placa,suc_nombre from medio_transporte,flota,sucursal where med_flota=flo_codigo and flo_sucursal=suc_codigo');
