@@ -141,6 +141,7 @@
                                             <li><a href="{{url('/report/most-used-transport')}}">Most Used Transport</a><li>
                                             <li><a href="{{url('/report/services')}}">Services by Office</a><li>
                                             <li><a href="{{url('/report/workshop')}}">Workshops by Zone</a><li>
+                                            <li><a href="{{url('/report/most-transit-office')}}">Office with Most Package Transit</a><li>
                                         </ul>
                                     </li>
                                 @endif

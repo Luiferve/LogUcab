@@ -1146,6 +1146,20 @@ Route::get('/workshops', function(){
     return view('workshops', ["permissions" => $permissions, 'workshops' => $workshops]);
 });
 
+Route::get('/report/most-transit-office', function() {
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('most_transit', ["permissions" => $permissions]);
+});
+
+Route::post('/report/most-transit-office', function() {
+    $office = DB::select('select suc_nombre , sum(paquetes) from (select env_suc_destino sucursal, count(*) paquetes from envio where env_fecha between \''.$_POST['inicio'].'\' and \''.$_POST['fin'].'\' group by env_suc_destino union select env_suc_origen sucursal, count(*) from envio group by env_suc_origen) as tabla,sucursal where suc_codigo=sucursal group by suc_nombre order by sum desc limit 1')[0];
+
+    audit(2,'Reporte Oficina con mas transito de paquetes por periodo de tiempo');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('most_transit', ["permissions" => $permissions, 'office' => $office, 'post' => $_POST]);
+});
+
+
 
 
 
