@@ -562,7 +562,7 @@ ul#nav li.active a {
 ul#nav li ul a,
 .is-sticky ul#nav li ul a {
     border-bottom: 1px solid #1a1a1a;
-    padding: 10px;
+    padding: 5px;
     padding-left: 15px;
 }
 
