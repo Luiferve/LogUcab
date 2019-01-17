@@ -140,6 +140,7 @@
                                             <li><a href="{{url('/report/most-expensive')}}">Most Expensive Office</a></li>
                                             <li><a href="{{url('/report/workshop-expenses')}}">Workshop Expenses by Office</a></li>
                                             <li><a href="{{url('/report/maintenance-history')}}">Maintenance History</a></li>
+                                            <li><a href="{{url('/report/weekly-payroll')}}">Weekly Payroll by Office</a></li>
                                         </ul>
                                     </li>
                                 @endif

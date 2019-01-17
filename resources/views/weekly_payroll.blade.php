@@ -11,10 +11,10 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Month with Most Shipments</title>
+    <title>LogUcab | Weekly Payroll List</title>
 
     <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
+    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
     <link rel="stylesheet" href="/css/normalize.css">
@@ -32,9 +32,9 @@
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
-    <link href="/css/responsive.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
 
-    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
 
@@ -156,14 +156,31 @@
         </div>
 
         <div class="datatables-area">
-        <div id="most" class="container alert alert-info" style="margin-top: 2%;">
-            The month with most shipments made in the last year was {{$month->mes}}, with {{$month->envios}} shipments made
-            </div>
+                <div class="table-responsive container">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Sucursal</th>
+                                <th>Nomina Semanal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($nomina as $nom)
+                                <tr>
+                                    <td>{{$nom->codigo}}</td>
+                                    <td>{{$nom->sucursal}}</td>
+                                    <td>{{$nom->nomina}}</td>
+                                </tr>
+                            @endforeach   
+                        </tbody>
+                    </table>
+                </div>
         </div>
         
         <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="/js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
     <script src="/js/vendor/jquery.easing.1.3.js"></script>
@@ -182,3 +199,10 @@
 </body>
 
 </html>
+
+<!--=====  DATA TABLE =====-->
+<script>  
+    $(document).ready(function(){  
+            $('#users-table').DataTable();  
+    });  
+</script> 

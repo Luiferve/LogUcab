@@ -1195,6 +1195,14 @@ Route::get('/report/maintenance-history',function(){
     return view('maintenance_history', ["permissions" => $permissions, 'history' => $history]);
 });
 
+Route::get('/report/weekly-payroll', function(){
+    $nomina = DB::select('select suc_codigo as "codigo", suc_nombre as "sucursal", (select sum(emp_monto_base)*5 from empleado where suc_codigo = emp_sucursal) as "nomina" from sucursal order by suc_codigo, suc_nombre');
+
+    audit(2,'Reporte Listado de nomina semanal por oficina');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('weekly_payroll', ["permissions" => $permissions, 'nomina' => $nomina]);
+});
+
 
 
 
