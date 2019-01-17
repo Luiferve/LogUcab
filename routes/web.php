@@ -1187,6 +1187,14 @@ Route::get('/report/workshop-expenses', function(){
     return view('workshop_expenses', ["permissions" => $permissions, 'expenses' => $expenses]);
 });
 
+Route::get('/report/maintenance-history',function(){
+    $history = DB::select('select tal_flota flota,tal_nombre taller,fal_descripcion falla,tal_salida_real-tal_f_entrada duracion from taller t,falla f ,tal_flo tf where tf.tal_taller=t.tal_codigo and f.fal_tal_flo=tf.tal_codigo');
+
+    audit(2,'Reporte Historial de mantenimiento de flotas');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('maintenance_history', ["permissions" => $permissions, 'history' => $history]);
+});
+
 
 
 

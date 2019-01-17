@@ -11,10 +11,10 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Clients</title>
+    <title>LogUcab | Maintenance History</title>
 
     <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
+    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
     <link rel="stylesheet" href="/css/normalize.css">
@@ -25,16 +25,16 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
-    <link href="/css/responsive.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
 
-    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
 
@@ -155,56 +155,30 @@
         </div>
 
         <div class="datatables-area">
-        @if (isset($message))
-                <div class="container" id="alert" style="margin-top: 2%;">
-                    <div class="alert alert-success" role="alert">
-                        {{$message}}
-                    </div>
-                </div>
-            @endif
                 <div class="table-responsive container">
-                    <div class="table-header">
-                        <button class="add-another btn"><a href="{{url('/routes/add')}}">Add new client</a></button>
-                    </div>
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="clients-table">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
                         <thead>
                             <tr>
-                                <th>Cedula</th>
-                                <th>Nombre y Apellido</th>
-                                <th>Email</th>
-                                <th>Fecha de Nacimiento</th>
-                                <th>Direccion</th>
-                                <th>Carnet</th>
-                                <th></th>
+                                <th>Flota</th>
+                                <th>Taller</th>
+                                <th>Falla</th>
+                                <th>Duracion</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($clients as $client)
+                            @foreach ($history as $his)
                                 <tr>
-                                    <td>{{$client->cli_cedula}}</td>
-                                    <td>{{$client->cli_nom}}</td>
-                                    <td>{{$client->cli_em}}</td>
-                                    <td width=30px>{{$client->cli_fn}}</td>
-                                    <td>{{$client->cli_lu}}</td>
-                                    <td>{{$client->cli_car}}</td>
-                                    <td>
-                                        <div style="text-align: center">
-                                        @if (in_array(2,$permissions))
-                                        <a href="{{url('/clients/'.$client->cli_cedula)}}" class="edit_details" title="edit" >
-                                            <img src="/img/edit.png" alt="Edit" width=20px></a>
-                                        @endif
-                                        @if (in_array(3,$permissions))
-                                        <a href="{{url('/clients/delete/'.$client->cli_cedula)}}" class="delete_details"  title="delete" style="padding-left: 20px;">
-                                            <img src="/img/delete.png" alt="Delete" width=20px></a>
-                                        @endif
-                                    </div>
+                                    <td>{{$his->flota}}</td>
+                                    <td>{{$his->taller}}</td>
+                                    <td>{{$his->falla}}</td>
+                                    <td>{{$his->duracion}}</td>
                                 </tr>
                             @endforeach   
                         </tbody>
                     </table>
                 </div>
         </div>
-
+        
         <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
     <script src="/js/vendor/bootstrap.min.js"></script>
@@ -230,6 +204,6 @@
 <!--=====  DATA TABLE =====-->
 <script>  
     $(document).ready(function(){  
-            $('#clients-table').DataTable();  
+            $('#users-table').DataTable();  
     });  
 </script> 

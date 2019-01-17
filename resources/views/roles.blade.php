@@ -139,6 +139,7 @@
                                             <li><a href="{{url('/report/package-alert')}}">Package Alert</a></li>
                                             <li><a href="{{url('/report/most-expensive')}}">Most Expensive Office</a></li>
                                             <li><a href="{{url('/report/workshop-expenses')}}">Workshop Expenses by Office</a></li>
+                                            <li><a href="{{url('/report/maintenance-history')}}">Maintenance History</a></li>
                                         </ul>
                                     </li>
                                 @endif
