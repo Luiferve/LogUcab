@@ -11,10 +11,10 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Ports List</title>
+    <title>LogUcab | Payroll</title>
 
     <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
+    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
     <link rel="stylesheet" href="/css/normalize.css">
@@ -25,16 +25,16 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
-    <link href="css/responsive.css" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
 
-    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
 
@@ -160,40 +160,40 @@
         </div>
 
         <div class="datatables-area">
+        @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
+                    </div>
+                </div>
+            @endif
                 <div class="table-responsive container">
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
+                    <div class="table-header">
+                    </div>
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="clients-table">
                         <thead>
                             <tr>
-                                <th>Codigo</th>
-                                <th>Nombre</th>
-                                <th>Puestos</th>
-                                <th>Muelles</th>
-                                <th>Longitud</th>
-                                <th>Ancho</th>
-                                <th>Calado</th>
-                                <th>Uso</th>
                                 <th>Sucursal</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($ports as $por)
+                            @foreach ($offices as $ofi)
                                 <tr>
-                                    <td>{{$por->pue_codigo}}</td>
-                                    <td>{{$por->pue_nombre}}</td>
-                                    <td>{{$por->pue_cantidad_puestos}}</td>
-                                    <td>{{$por->pue_cantidad_muelle}}</td>
-                                    <td>{{$por->pue_longitud}}</td>
-                                    <td>{{$por->pue_ancho}}</td>
-                                    <td>{{$por->pue_calado}}</td>
-                                    <td>{{$por->pue_uso}}</td>
-                                    <td>{{$por->suc_nombre}}</td>
+                                    <td>{{$ofi->suc_nombre}}</td>
+                                    <td>
+                                        <div style="text-align: center">
+                                            <a href="{{url('/print-payroll/'.$ofi->suc_codigo)}}" class="invoice_details"  title="invoice">
+                                                <img src="/img/invoice.png" alt="Invoice" width=20px></a>
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach   
                         </tbody>
                     </table>
                 </div>
         </div>
-        
+
         <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
     <script src="/js/vendor/bootstrap.min.js"></script>
@@ -219,6 +219,6 @@
 <!--=====  DATA TABLE =====-->
 <script>  
     $(document).ready(function(){  
-            $('#users-table').DataTable();  
+            $('#clients-table').DataTable();  
     });  
 </script> 

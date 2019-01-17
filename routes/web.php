@@ -1293,6 +1293,22 @@ Route::post('/report/percentage', function(){
     return view('percentage', ["permissions" => $permissions, 'percent' => $percent,'post' => $_POST]);
 });
 
+Route::get('/payroll', function(){
+    $offices = DB::select('select * from sucursal');
+
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('payroll', ["permissions" => $permissions, 'offices' => $offices]);
+});
+
+Route::get('/print-payroll/{id}', function($id){
+    $employees = DB::select('select emp_cedula cedula, emp_nombre || \' \' || emp_apellido nombre, emp_monto_base*20 mensual from sucursal, empleado where emp_sucursal=suc_codigo and suc_codigo='.$id);
+    $office = DB::select('select *,m.lug_nombre municipio,e.lug_nombre estado, p.lug_nombre pais from sucursal,lugar m,lugar e,lugar p where suc_codigo='.$id.' and suc_lugar=m.lug_codigo and m.lug_lugar=e.lug_codigo and e.lug_lugar=p.lug_codigo')[0];
+    $total = DB::select('select sum(mensual) from (select emp_cedula cedula, emp_nombre || \' \' || emp_apellido nombre, emp_monto_base*20 mensual from sucursal, empleado where emp_sucursal=suc_codigo and suc_codigo=1) as t')[0]->sum;
+
+    audit(2,'Recibo de nomina (Sucursal: '.$id.')');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('payroll_invoice', ["permissions" => $permissions,'total' => $total,'office' => $office, 'employees' => $employees]);
+});
 
 
 function audit ($aid,$description,$uname = ''){

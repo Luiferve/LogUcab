@@ -108,6 +108,7 @@
                                             <li><a href="{{url('/ports')}}">Ports Table</a></li>
                                             <li><a href="{{url('/services')}}">Services Table</a></li>
                                             <li><a href="{{url('/workshops')}}">Workshops Table</a></li>
+                                            <li><a href="{{url('/payroll')}}">Payroll Invoice</a></li>
                                             @endif
                                         </ul>
                                     </li>
