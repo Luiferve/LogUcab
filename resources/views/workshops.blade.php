@@ -138,6 +138,7 @@
                                             <li><a href="{{url('/report/most-transit-office')}}">Office with Most Package Transit</a><li>
                                             <li><a href="{{url('/report/package-alert')}}">Package Alert</a></li>
                                             <li><a href="{{url('/report/most-expensive')}}">Most Expensive Office</a></li>
+                                            <li><a href="{{url('/report/workshop-expenses')}}">Workshop Expenses by Office</a></li>
                                         </ul>
                                     </li>
                                 @endif

@@ -1179,6 +1179,13 @@ Route::get('/report/most-expensive', function(){
     return view('most_expensive', ["permissions" => $permissions, 'pais' => $pais,'estados' => $estados]);
 });
 
+Route::get('/report/workshop-expenses', function(){
+    $expenses = DB::select('select suc_nombre,sum(gas_monto) from gasto,suc_tal st,sucursal s where gas_suc_tal=st.suc_codigo and suc_sucursal=s.suc_codigo group by suc_nombre');
+
+    audit(2,'Reporte Total gastos de revision de flotas por sucursal');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('workshop_expenses', ["permissions" => $permissions, 'expenses' => $expenses]);
+});
 
 
 
