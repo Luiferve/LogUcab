@@ -1170,6 +1170,17 @@ Route::get('/report/package-alert', function(){
     return view('package_alert', ["permissions" => $permissions, 'packages' => $packages]);
 });
 
+Route::get('/report/most-expensive', function(){
+    $pais = DB::select('select f1.* from(select p.lug_nombre pais,suc_nombre,costo from (select sucursal, sum(monto) costo from (select gas_monto monto,suc_sucursal sucursal from gasto,suc_ser where gas_suc_ser=suc_codigo union select gas_monto,suc_sucursal from gasto,suc_tal where gas_suc_tal=suc_codigo union select gas_monto,emp_sucursal from gasto,empleado where gas_empleado=emp_cedula) as t1 group by sucursal) as t2,sucursal,lugar m,lugar e, lugar p where sucursal=suc_codigo and suc_lugar=m.lug_codigo and m.lug_lugar=e.lug_codigo and e.lug_lugar=p.lug_codigo) as f1,(select p.lug_nombre pais,max(costo) from (select sucursal, sum(monto) costo from (select gas_monto monto,suc_sucursal sucursal from gasto,suc_ser where gas_suc_ser=suc_codigo union select gas_monto,suc_sucursal from gasto,suc_tal where gas_suc_tal=suc_codigo union select gas_monto,emp_sucursal from gasto,empleado where gas_empleado=emp_cedula) as t1 group by sucursal) as t2,sucursal,lugar m,lugar e, lugar p where sucursal=suc_codigo and suc_lugar=m.lug_codigo and m.lug_lugar=e.lug_codigo and e.lug_lugar=p.lug_codigo group by pais) as f2 where f1.costo=f2.max');
+    $estados = DB::select('select f1.* from(select e.lug_nombre estado,suc_nombre,costo from (select sucursal, sum(monto) costo from (select gas_monto monto,suc_sucursal sucursal from gasto,suc_ser where gas_suc_ser=suc_codigo union select gas_monto,suc_sucursal from gasto,suc_tal where gas_suc_tal=suc_codigo union select gas_monto,emp_sucursal from gasto,empleado where gas_empleado=emp_cedula) as t1 group by sucursal) as t2,sucursal,lugar m,lugar e where sucursal=suc_codigo and suc_lugar=m.lug_codigo and m.lug_lugar=e.lug_codigo) as f1,(select e.lug_nombre estado,max(costo) from (select sucursal, sum(monto) costo from (select gas_monto monto,suc_sucursal sucursal from gasto,suc_ser where gas_suc_ser=suc_codigo union select gas_monto,suc_sucursal from gasto,suc_tal where gas_suc_tal=suc_codigo union select gas_monto,emp_sucursal from gasto,empleado where gas_empleado=emp_cedula) as t1 group by sucursal) as t2,sucursal,lugar m,lugar e where sucursal=suc_codigo and suc_lugar=m.lug_codigo and m.lug_lugar=e.lug_codigo group by estado) as f2 where f1.costo=f2.max');
+
+    audit(2,'Reporte oficinas mas costosas por estado y pais');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('most_expensive', ["permissions" => $permissions, 'pais' => $pais,'estados' => $estados]);
+});
+
+
+
 
 
 function audit ($aid,$description,$uname = ''){
