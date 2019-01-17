@@ -164,8 +164,8 @@
                         <tbody>
                             @foreach ($region as $red)
                                 <tr>
-                                    <td>{{$red->municipio}}</td>
-                                    <td>{{$red->suc_nombre}}</td>
+                                    <td>{{$red->region}}</td>
+                                    <td>{{$red->sucursal}}</td>
                                     <td>{{$red->tamano}}</td>
                                 </tr>
                             @endforeach   
@@ -187,7 +187,7 @@
                             @foreach ($estados as $est)
                                 <tr>
                                     <td>{{$est->estado}}</td>
-                                    <td>{{$est->suc_nombre}}</td>
+                                    <td>{{$est->sucursal}}</td>
                                     <td>{{$est->tamano}}</td>
                                 </tr>
                             @endforeach   
@@ -209,7 +209,7 @@
                             @foreach ($pais as $pai)
                                 <tr>
                                     <td>{{$pai->pais}}</td>
-                                    <td>{{$pai->suc_nombre}}</td>
+                                    <td>{{$pai->sucursal}}</td>
                                     <td>{{$pai->tamano}}</td>
                                 </tr>
                             @endforeach   

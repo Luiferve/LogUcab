@@ -260,7 +260,7 @@ Route::post('/ship', function () {
                     $method[1] = ','.$_POST['card-number'];
                 }
     
-                $payment = DB::insert('insert into pago(pag_tipo, pag_fecha '.$method[0].') values (\''.$_POST['tipo-pago'].'\', \''.date('d/m/Y').'\' '.$method[1].' )');
+                $payment = DB::insert('insert into pago(pag_tipo, pag_fecha '.$method[0].') values (\''.$_POST['tipo-pago'].'\', current_date '.$method[1].' )');
                 $payment = DB::select('select pag_codigo cod from pago order by pag_codigo DESC limit 1')[0]->cod;
             }
     
@@ -1055,8 +1055,9 @@ Route::get('/report/offices-location', function(){
 });
 
 Route::get('/report/biggest-office', function(){
-    //TODO:missing queries
-    $offices = DB::select('select p.lug_nombre pais, e.lug_nombre estado, m.lug_nombre municipio, suc_nombre sucursal,sum(zon_tamano) tamano from sucursal, zona,lugar p,lugar m,lugar e where suc_lugar=m.lug_codigo and m.lug_lugar=e.lug_codigo and e.lug_lugar=p.lug_codigo and zon_sucursal=suc_codigo group by p.lug_nombre, e.lug_nombre, m.lug_nombre, suc_nombre');
+    $pais = DB::select('select t1.pais,sucursal,t1.tamano from (select pais,max(tamano) tamano from (select p.lug_nombre pais,suc_nombre,sum(zon_tamano) tamano from sucursal, zona,lugar p,lugar m,lugar e where suc_lugar=m.lug_codigo and m.lug_lugar=e.lug_codigo and e.lug_lugar=p.lug_codigo and zon_sucursal=suc_codigo group by p.lug_nombre,suc_nombre) as t group by pais) as t1,(select p.lug_nombre pais, suc_nombre sucursal,sum(zon_tamano) tamano from sucursal, zona,lugar p,lugar m,lugar e where suc_lugar=m.lug_codigo and m.lug_lugar=e.lug_codigo and e.lug_lugar=p.lug_codigo and zon_sucursal=suc_codigo group by p.lug_nombre, suc_nombre) as t2 where t1.tamano=t2.tamano');
+    $estados = DB::select('select t1.estado,sucursal,t1.tamano from (select estado,max(tamano) tamano from (select e.lug_nombre estado,sum(zon_tamano) tamano from sucursal, zona,lugar m,lugar e where suc_lugar=m.lug_codigo and m.lug_lugar=e.lug_codigo and zon_sucursal=suc_codigo group by e.lug_nombre, suc_nombre) as t group by estado) as t1,(select e.lug_nombre estado, suc_nombre sucursal,sum(zon_tamano) tamano from sucursal, zona,lugar m,lugar e where suc_lugar=m.lug_codigo and m.lug_lugar=e.lug_codigo and zon_sucursal=suc_codigo group by e.lug_nombre, suc_nombre) as t2 where t1.tamano=t2.tamano');
+    $region = DB::select('select t1.region,sucursal,t1.tamano from (select region,max(tamano) tamano from (select m.lug_nombre region,sum(zon_tamano) tamano from sucursal, zona,lugar m where suc_lugar=m.lug_codigo and zon_sucursal=suc_codigo group by m.lug_nombre, suc_nombre) as t group by region) as t1,(select m.lug_nombre region, suc_nombre sucursal,sum(zon_tamano) tamano from sucursal, zona,lugar m where suc_lugar=m.lug_codigo and zon_sucursal=suc_codigo group by m.lug_nombre, suc_nombre) as t2 where t1.tamano=t2.tamano');
 
     audit(2,'Reporte Oficina mas amplia por estado, municipio y pais');
     $permissions = json_decode(Cookie::get('permissions'));
