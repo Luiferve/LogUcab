@@ -1212,6 +1212,14 @@ Route::get('/report/employees-schedule', function(){
     return view('employees_schedule', ["permissions" => $permissions, 'employees' => $employees]);
 });
 
+Route::get('/report/fleet-detail', function(){
+    $fleet = DB::select('select veh_clasificacion as "tipo", med_placa as "placa", veh_serial_carroceria as "carroceria",veh_serial_motor as "motor", suc_nombre as "sucursal" from medio_transporte, flota, sucursal where suc_codigo = flo_sucursal and med_flota = flo_codigo and flo_tipo = \'Terrestre\' order by veh_clasificacion, veh_serial_motor');
+
+    audit(2,'Reporte Detallado de flota');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('fleet_detail', ["permissions" => $permissions, 'fleet' => $fleet]);
+});
+
 
 
 function audit ($aid,$description,$uname = ''){

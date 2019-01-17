@@ -11,9 +11,9 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Most used Transport</title>
+    <title>LogUcab | Fleet Detail</title>
 
-    <!--====== FAVICON ICON =======-->
+     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
@@ -25,13 +25,14 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
+    <link href="/regform.css" rel="stylesheet">
     <link href="/css/responsive.css" rel="stylesheet">
 
     <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -155,19 +156,46 @@
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
-        </div>
 
-        <div class="datatables-area">
-        <div id="most" class="container alert alert-info" style="margin-top: 2%;">
-            Most used Transport<br>
-            Transport type: {{$transport->med_tipo}}<br>
-            Uses: {{$transport->count}}
+    <div class="container" id="cont1">
+         @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
+                    </div>
+                </div>
+            @endif
+            <div class="datatables-area">
+                <div class="table-responsive container">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
+                        <thead>
+                            <tr>
+                                <th>Tipo Vhiculo</th>
+                                <th>Placa</th>
+                                <th>Serial Carroceria</th>
+                                <th>Serial Motor</th>
+                                <th>Sucursal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($fleet as $fle)
+                                <tr>
+                                    <td>{{$fle->tipo}}</td>
+                                    <td>{{$fle->placa}}</td>
+                                    <td>{{$fle->carroceria}}</td>
+                                    <td>{{$fle->motor}}</td>
+                                    <td>{{$fle->sucursal}}</td>
+                                </tr>
+                            @endforeach   
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-        
-        <!--====== SCRIPTS JS ======-->
+        </div> <!-- ./container -->
+
+              <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="/js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
     <script src="/js/vendor/jquery.easing.1.3.js"></script>
@@ -186,3 +214,10 @@
 </body>
 
 </html>
+
+<!--=====  DATA TABLE =====-->
+<script>  
+    $(document).ready(function(){  
+            $('#users-table').DataTable();  
+    });  
+</script> 

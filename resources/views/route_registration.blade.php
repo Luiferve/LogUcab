@@ -144,6 +144,7 @@
                                             <li><a href="{{url('/report/maintenance-history')}}">Maintenance History</a></li>
                                             <li><a href="{{url('/report/weekly-payroll')}}">Weekly Payroll by Office</a></li>
                                             <li><a href="{{url('/report/employees-schedule')}}">Employees Schedule</a></li>
+                                            <li><a href="{{url('/report/fleet-detail')}}">Fleet Details</a></li>
                                         </ul>
                                     </li>
                                 @endif
