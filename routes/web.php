@@ -1008,12 +1008,22 @@ Route::get('/report/avg-stay', function() {
 });
 
 Route::get('/vehicles', function() {
-    //TODO: configure the options (delete and edit)
+    //TODO: configure the options (edit)
     $vehicles = DB::select('select med_codigo,med_tipo,med_placa,suc_nombre from medio_transporte,flota,sucursal where med_flota=flo_codigo and flo_sucursal=suc_codigo');
 
     audit(2,'Tabla de vehiculos');
     $permissions = json_decode(Cookie::get('permissions'));
     return view('vehicles', ["permissions" => $permissions,'vehicles' => $vehicles] );
+});
+
+Route::get('/vehicles/delete/{id}', function($id){
+    $veh = DB::delete('delete from medio_tansporte where med_placa=\''.$id.'\'');
+    $message = 'Medio de Transporte eliminado exitosamente';
+
+    $vehicles = DB::select('select med_codigo,med_tipo,med_placa,suc_nombre from medio_transporte,flota,sucursal where med_flota=flo_codigo and flo_sucursal=suc_codigo');
+    audit(4,'Vehiculo eliminado('.$id.')');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('vehicles', ["permissions" => $permissions,'vehicles' => $vehicles, 'message' => $message] );
 });
 
 Route::get('/report/international', function(){
@@ -1025,12 +1035,22 @@ Route::get('/report/international', function(){
 });
 
 Route::get('/zones', function() {
-    //TODO: missing delete and edit function
+    //TODO: missing edit function
     $zones = DB::select('select est.lug_nombre estado,suc_nombre,zon_codigo,zon_tamano,zon_tipo from sucursal,zona,lugar mun,lugar est where suc_codigo=zon_sucursal and suc_lugar=mun.lug_codigo and mun.lug_lugar=est.lug_codigo');
 
     audit(2,'Tabla de zonas');
     $permissions = json_decode(Cookie::get('permissions'));
     return view('zones', ["permissions" => $permissions,'zones' => $zones] );
+});
+
+Route::get('/zones/delete/{id}', function($id){
+    $zon = DB::delete('delete from zona where zon_codigo='.$id);
+
+    $zones = DB::select('select est.lug_nombre estado,suc_nombre,zon_codigo,zon_tamano,zon_tipo from sucursal,zona,lugar mun,lugar est where suc_codigo=zon_sucursal and suc_lugar=mun.lug_codigo and mun.lug_lugar=est.lug_codigo');
+
+    audit(4,'Zona eliminada ('.$id.')');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('zones', ["permissions" => $permissions,'zones' => $zones, 'message' => $message] );
 });
 
 Route::get('/report/pack-period', function(){
@@ -1096,7 +1116,7 @@ Route::get('/report/most-used-transport', function(){
 });
 
 Route::get('/airports', function(){
-    //TODO: missing delete and edit functions
+    //TODO: missing edit functions
     $airports = DB::select('select *,suc_nombre from aeropuerto,sucursal where aer_sucursal=suc_codigo');
 
     audit(2,'Tabla de Aeropuertos');
@@ -1104,22 +1124,52 @@ Route::get('/airports', function(){
     return view('airports', ["permissions" => $permissions, 'airports' => $airports]);
 });
 
+Route::get('/airports/delete/{id}', function($id){
+    $air = DB::delete('delete from aeropuerto where aer_codigo='.$id);
+    $airports = DB::select('select *,suc_nombre from aeropuerto,sucursal where aer_sucursal=suc_codigo');
+    $message = 'Aeropuerto eliminado exitosamente';
+
+    audit(4,'Aeropuerto eliminado('.$id.')');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('airports', ["permissions" => $permissions, 'airports' => $airports,'message' => $message]);
+});
+
 Route::get('/ports', function(){
     //TODO: missing delete and edit functions
     $ports = DB::select('select *,suc_nombre from puerto,sucursal where pue_sucursal=suc_codigo');
 
-    audit(2,'Tabla de Aeropuertos');
+    audit(2,'Tabla de Puertos');
     $permissions = json_decode(Cookie::get('permissions'));
     return view('ports', ["permissions" => $permissions, 'ports' => $ports]);
 });
 
+Route::get('/ports/delete/{id}', function($id){
+    $ports = DB::select('select *,suc_nombre from puerto,sucursal where pue_sucursal=suc_codigo');
+    $message = 'Puerto eliminado exitosamente';
+
+    audit(4,'Puerto Eliminado ('.$id.')');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('ports', ["permissions" => $permissions, 'ports' => $ports, 'message' => $message]);
+});
+
 Route::get('/services', function(){
-    //TODO: missing delete and edit functions
+    //TODO: missing  edit functions
     $services = DB::select('select * from servicio');
     
     audit(2,'Tabla de servicios');
     $permissions = json_decode(Cookie::get('permissions'));
     return view('services', ["permissions" => $permissions, 'services' => $services]);
+});
+
+Route::get('/services/delete/{id}', function($id){
+    $message = 'Servicio eliminado exitosamente';
+    $ser = DB::delete('delete from servicio where ser_codigo='.$id);
+
+    $services = DB::select('select * from servicio');
+    
+    audit(4,'Servicio eliminado('.$id.')');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('services', ["permissions" => $permissions, 'services' => $services,'message' => $message]);
 });
 
 Route::get('/report/services', function(){
@@ -1139,12 +1189,22 @@ Route::get('/report/workshop', function(){
 });
 
 Route::get('/workshops', function(){
-    //TODO: missing delete and edit functions
+    //TODO: missing edit functions
     $workshops = DB::select('select * from taller');
 
     audit(2,'Tabla de Talleres');
     $permissions = json_decode(Cookie::get('permissions'));
     return view('workshops', ["permissions" => $permissions, 'workshops' => $workshops]);
+});
+
+Route::get('/workshops/delete/{id}', function($id){
+    $wor = DB::delete('delete from taller where ta_codigo='.$id);
+
+    $workshops = DB::select('select * from taller');
+
+    audit(4,'Taller eliminado('.$id.')');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('workshops', ["permissions" => $permissions, 'workshops' => $workshops,'message' => $message]);
 });
 
 Route::get('/report/most-transit-office', function() {
