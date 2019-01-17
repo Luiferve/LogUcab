@@ -1204,6 +1204,14 @@ Route::get('/report/weekly-payroll', function(){
 });
 
 
+Route::get('/report/employees-schedule', function(){
+    $employee = DB::select('select hor_dia as "dia", hor_h_entrada as "entrada", hor_h_salida as "salida", emp_nombre || \' \' || emp_apellido as "nombre", suc_nombre as "sucursal", zon_nombre as "zona" from emp_zon_hor EZH, emp_zon EZ,empleado, zona, sucursal, horario where EZ.emp_empleado = emp_cedula and EZ.emp_zona_codigo = zon_codigo and EZ.emp_zona_sucursal = suc_codigo and EZ.emp_codigo = EZH.emp_zon_codigo and EZH.emp_horario = hor_codigo order by suc_nombre, emp_apellido, hor_dia=\'Viernes\', hor_dia= \'Jueves\', hor_dia =\'Miercoles\', hor_dia=\'Martes\', hor_dia= \'Lunes\'');
+
+    audit(2,'Reporte Listado de empleados con horario por zona');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('employees_schedule', ["permissions" => $permissions, 'employees' => $employees]);
+});
+
 
 
 function audit ($aid,$description,$uname = ''){
