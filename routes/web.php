@@ -237,12 +237,21 @@ Route::post('/ship', function () {
                 $message = $message.'Faltan datos del remitente. ';
             }
         }
-
-
+        
+        
         $route = DB::select('select rut_codigo cod,rut_duracion from ruta where rut_suc_origen='.$_POST['origen'].' and rut_suc_destino='.$_POST['destino']);
         if (empty($route)){
             $route = DB::insert('insert into ruta(rut_duracion, rut_suc_origen, rut_suc_destino, rut_med_transporte) values('.rand(20,120).', '.$_POST['origen'].', '.$_POST['destino'].', 2)');
             $route = DB::select('select rut_codigo cod,rut_duracion from ruta where rut_suc_origen='.$_POST['origen'].' and rut_suc_destino='.$_POST['destino']);
+        }
+        
+        $cost = 0;
+        $tipoE = DB:: select('select tip_costo from tipo_envio where tip_codigo='.$_POST['tipo-envio'])[0]->tip_costo;
+        $tipoP = DB::select('select tip_costo from tipo_paquete where tip_codigo='.$_POST['tipo'])[0]->tip_costo;
+        if ($_POST['peso'] >= 10){
+            $cost = ($tipoP + $tipoE) * ($_POST['alto'] * $_POST['ancho'] * $_POST['profundidad']);
+        } else {
+            $cost = ($tipoP + $tipoE) * $_POST['peso'];
         }
 
         if ($message == ''){
@@ -260,21 +269,13 @@ Route::post('/ship', function () {
                     $method[1] = ','.$_POST['card-number'];
                 }
     
-                $payment = DB::insert('insert into pago(pag_tipo, pag_fecha '.$method[0].') values (\''.$_POST['tipo-pago'].'\', current_date '.$method[1].' )');
+                $payment = DB::insert('insert into pago(pag_monto,pag_tipo, pag_fecha '.$method[0].') values ('.$cost.',\''.$_POST['tipo-pago'].'\', current_date '.$method[1].' )');
                 $payment = DB::select('select pag_codigo cod from pago order by pag_codigo DESC limit 1')[0]->cod;
             }
     
             // echo(var_dump($employee));
             // echo(var_dump($sender));
             // echo(var_dump($route));
-            $cost = 0;
-            $tipoE = DB:: select('select tip_costo from tipo_envio where tip_codigo='.$_POST['tipo-envio'])[0]->tip_costo;
-            $tipoP = DB::select('select tip_costo from tipo_paquete where tip_codigo='.$_POST['tipo'])[0]->tip_costo;
-            if ($_POST['peso'] >= 10){
-                $cost = ($tipoP + $tipoE) * ($_POST['alto'] * $_POST['ancho'] * $_POST['profundidad']);
-            } else {
-                $cost = ($tipoP + $tipoE) * $_POST['peso'];
-            }
 
             $shipment = DB::insert('insert into envio(env_fecha, env_cliente, env_empleado, env_suc_origen, env_suc_destino, env_ruta, env_pago) values (\''.date('d/m/Y').'\', '.$sender[0]->cedula.', '.$employee[0]->cod.', '.$_POST['origen'].', '.$_POST['destino'].', '.$route[0]->cod.', '.$payment.')');
             $shipment = DB::select('select env_codigo cod from envio order by env_codigo DESC limit 1');
@@ -1308,6 +1309,14 @@ Route::get('/print-payroll/{id}', function($id){
     audit(2,'Recibo de nomina (Sucursal: '.$id.')');
     $permissions = json_decode(Cookie::get('permissions'));
     return view('payroll_invoice', ["permissions" => $permissions,'total' => $total,'office' => $office, 'employees' => $employees]);
+});
+
+Route::get('/report/income-expense', function(){
+    $office = DB::select('select  suc_nombre, ingreso, egreso from (select sucursal, sum(egreso) egreso from (select suc_sucursal sucursal,gas_monto egreso from suc_ser,gasto where gas_suc_ser=suc_codigo union select suc_sucursal,gas_monto from suc_tal,gasto where gas_suc_tal=suc_codigo union select emp_sucursal,gas_monto from empleado,gasto where gas_empleado=emp_cedula) as t group by sucursal) t1, (select suc_codigo sucursal,sum(pag_monto) ingreso from sucursal,envio,pago where env_pago=pag_codigo and env_suc_origen=suc_codigo group by suc_codigo) t2,sucursal where t1.sucursal=t2.sucursal and t1.sucursal=suc_codigo');
+
+    audit(2,'Reporte Ingresos y Egresos');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('income_expense', ["permissions" => $permissions,'office' => $office]);
 });
 
 

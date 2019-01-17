@@ -156,6 +156,7 @@
                                             <li><a href="{{url('/report/employees-schedule')}}">Employees Schedule</a></li>
                                             <li><a href="{{url('/report/fleet-detail')}}">Fleet Details</a></li>
                                             <li><a href="{{url('/report/percentage')}}">Transport Use Percentage</a></li>
+                                            <li><a href="{{url('/report/income-expense')}}">Income and Expenses by Office</a></li>
                                         </ul>
                                     </li>
                                 @endif
