@@ -1160,7 +1160,12 @@ Route::post('/report/most-transit-office', function() {
     return view('most_transit', ["permissions" => $permissions, 'office' => $office, 'post' => $_POST]);
 });
 
-
+Route::get('/report/package-alert', function(){
+    $packages = DB::select('select P.paq_guia, PE.paq_fecha, E.est_nombre from paquete as P, paq_est as PE, estatus_paquete as E where PE.paq_estatus_paquete = E.est_codigo and PE.paq_paquete = P.paq_guia and E.est_nombre = \'Preparando\' and paq_fecha + 1 < current_date');
+    audit(2,'Alerta paquetes con mas de 24 horas');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('package_alert', ["permissions" => $permissions, 'packages' => $packages]);
+});
 
 
 
