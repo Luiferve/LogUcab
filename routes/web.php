@@ -1161,7 +1161,10 @@ Route::post('/report/most-transit-office', function() {
 });
 
 Route::get('/report/package-alert', function(){
-    $packages = DB::select('select P.paq_guia, PE.paq_fecha, E.est_nombre from paquete as P, paq_est as PE, estatus_paquete as E where PE.paq_estatus_paquete = E.est_codigo and PE.paq_paquete = P.paq_guia and E.est_nombre = \'Preparando\' and paq_fecha + 1 < current_date');
+    $user = Cookie::get('user-email');
+    $sucursal = DB::select('select suc_codigo from sucursal,empleado,usuario where usu_empleado=emp_cedula and emp_sucursal=suc_codigo and usu_email=\''.$user.'\'')[0]->suc_codigo;
+    $packages = DB::select('select P.paq_guia, PE.paq_fecha, E.est_nombre from paquete as P, paq_est as PE, estatus_paquete as E, envio where PE.paq_estatus_paquete = E.est_codigo and PE.paq_paquete = P.paq_guia and E.est_nombre = \'Preparando\' and paq_fecha + 1 < current_date and paq_envio=env_codigo and env_suc_origen='.$sucursal);
+    
     audit(2,'Alerta paquetes con mas de 24 horas');
     $permissions = json_decode(Cookie::get('permissions'));
     return view('package_alert', ["permissions" => $permissions, 'packages' => $packages]);
