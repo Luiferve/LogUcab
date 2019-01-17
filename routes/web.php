@@ -1220,6 +1220,19 @@ Route::get('/report/fleet-detail', function(){
     return view('fleet_detail', ["permissions" => $permissions, 'fleet' => $fleet]);
 });
 
+Route::get('/report/percentage', function(){
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('percentage', ["permissions" => $permissions]);
+});
+
+Route::post('/report/percentage', function(){
+    $percent = DB::select('Select med_tipo "medio", count(med_tipo)*100/(select count(*) from envio where env_fecha between \''.$_POST['inicio'].'\' and \''.$_POST['fin'].'\' ) as "porcen" from medio_transporte,sucursal, envio, flota where env_suc_origen = suc_codigo and flo_sucursal = suc_codigo and med_flota = flo_codigo and (env_fecha between \''.$_POST['inicio'].'\' and \''.$_POST['fin'].'\') group by med_tipo;');
+
+    audit(2,'Reporte Porcentaje de Uso de medios de transporte');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('percentage', ["permissions" => $permissions, 'percent' => $percent,'post' => $_POST]);
+});
+
 
 
 function audit ($aid,$description,$uname = ''){

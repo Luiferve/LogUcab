@@ -11,9 +11,9 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Most Expensive Office</title>
+    <title>LogUcab | Transport Use Percentage</title>
 
-    <!--====== FAVICON ICON =======-->
+     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
@@ -25,13 +25,14 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
+    <link href="/regform.css" rel="stylesheet">
     <link href="/css/responsive.css" rel="stylesheet">
 
     <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -156,58 +157,68 @@
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
-        </div>
 
-        <div class="datatables-area">
-            <div id="estado" class="container alert alert-info" style="margin-top: 2%;">
+    <div class="container" id="cont1">
+         @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
+                    </div>
+                </div>
+            @endif
+            <form class="form-horizontal" role="form" method="POST" action="{{url('/report/percentage')}}">
+            <div class="form-group">
+                    <label for="inicio" class="col-sm-3 control-label">Inicio*</label>
+                    <div class="col-sm-9">
+                        <input name="inicio" type="date" id="inicio" placeholder="Inicio" class="form-control" autofocus required
+                        @if (isset($post)) value={{$post['inicio']}} @endif
+                        >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fin" class="col-sm-3 control-label">Fin*</label>
+                    <div class="col-sm-9">
+                        <input name="fin" type="date" id="fin" placeholder="Fin" class="form-control" autofocus required
+                        @if (isset($post)) value={{$post['fin']}} @endif
+                        >
+                    </div>
+                </div>
+                @csrf
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <span class="help-block">*Obligatorio</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Buscar</button>
+            </form>    
+           
+            @if (isset($percent))
+            <div class="datatables-area">
                 <div class="table-responsive container">
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="estado-table">
+                    <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
                         <thead>
                             <tr>
-                                <th>Estado</th>
-                                <th>Sucursal</th>
-                                <th>Costo</th>
+                                <th>Medio de Transporte</th>
+                                <th>Porcentaje de Uso</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($estados as $est)
+                            @foreach ($percent as $per)
                                 <tr>
-                                    <td>{{$est->estado}}</td>
-                                    <td>{{$est->suc_nombre}}</td>
-                                    <td>{{$est->costo}}</td>
+                                    <td>{{$per->medio}}</td>
+                                    <td>{{$per->porcen}}</td>
                                 </tr>
                             @endforeach   
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div id="pais" class="container alert alert-info" style="margin-top: 2%;">
-                <div class="table-responsive container">
-                    <table class="table table-bordered table-hover dt-responsive custom-table" id="pais-table">
-                        <thead>
-                            <tr>
-                                <th>Pais</th>
-                                <th>Sucursal</th>
-                                <th>Costo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($pais as $pai)
-                                <tr>
-                                    <td>{{$pai->pais}}</td>
-                                    <td>{{$pai->suc_nombre}}</td>
-                                    <td>{{$pai->costo}}</td>
-                                </tr>
-                            @endforeach   
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        
-        <!--====== SCRIPTS JS ======-->
+            @endif
+        </div> <!-- ./container -->
+
+              <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="/js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
     <script src="/js/vendor/jquery.easing.1.3.js"></script>
@@ -230,10 +241,6 @@
 <!--=====  DATA TABLE =====-->
 <script>  
     $(document).ready(function(){  
-            $('#estado-table').DataTable();  
-    });
-
-    $(document).ready(function(){  
-            $('#pais-table').DataTable();  
+            $('#users-table').DataTable();  
     });  
 </script> 
