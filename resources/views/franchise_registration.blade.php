@@ -238,21 +238,21 @@
 
               <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
-    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="/js/vendor/bootstrap.min.js"></script>
 
     <!--====== PLUGINS JS ======-->
-    <script src="js/vendor/jquery.easing.1.3.js"></script>
-    <script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
-    <script src="js/vendor/jquery.appear.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/stellar.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/stellarnav.min.js"></script>
-    <script src="js/contact-form.js"></script>
-    <script src="js/jquery.sticky.js"></script>
+    <script src="/js/vendor/jquery.easing.1.3.js"></script>
+    <script src="/js/vendor/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/js/vendor/jquery.appear.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/stellar.js"></script>
+    <script src="/js/wow.min.js"></script>
+    <script src="/js/stellarnav.min.js"></script>
+    <script src="/js/contact-form.js"></script>
+    <script src="/js/jquery.sticky.js"></script>
 
     <!--===== ACTIVE JS =====-->
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
     
 </body>
 

@@ -948,7 +948,7 @@ Route::get('/report/port-franchises', function() {
 
     audit(2,'Reporte Sucursales en Puertos y Aeropuertos');
     $permissions = json_decode(Cookie::get('permissions'));
-    return view('port', ["permissions" => $permissions] );
+    return view('port', ["permissions" => $permissions,'franchises' => $franchises] );
 });
 
 Route::get('/report/avg-weight', function() {
