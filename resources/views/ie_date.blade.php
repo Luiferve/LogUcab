@@ -11,10 +11,10 @@
     <meta name="keywords" content="Portfolio, Agency, Onepage, Html, Business, Blog, Parallax" />
 
     <!--====== TITLE TAG ======-->
-    <title>LogUcab | Services Table</title>
+    <title>LogUcab | Incomes and Expenses by Date</title>
 
-    <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="img/favicon.png" />
+     <!--====== FAVICON ICON =======-->
+    <link rel="shortcut icon" type="image/ico" href="/img/favicon.png" />
 
     <!--====== STYLESHEETS ======-->
     <link rel="stylesheet" href="/css/normalize.css">
@@ -25,16 +25,17 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/js/DataTables-1.10.18/css/dataTables.bootstrap.min.css"/>
-    <script type="/text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
+    <script type="text/javascript" src="/js/DataTables-1.10.18/css/datatables.min.js"></script>
     <script src="/js/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="/js/DataTables-1.10.18/js/dataTables.bootstrap.min.js"></script>
 
     <!--====== MAIN STYLESHEETS ======-->
     <link href="/style.css" rel="stylesheet">
-    <link href="css/responsive.css" rel="stylesheet">
+    <link href="/regform.css" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
 
-    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
 
@@ -165,32 +166,68 @@
                 </nav>
             </div>
             <!--END MAINMENU AREA END-->
-        </div>
 
-        <div class="datatables-area">
+    <div class="container" id="cont1">
+         @if (isset($message))
+                <div class="container" id="alert" style="margin-top: 2%;">
+                    <div class="alert alert-success" role="alert">
+                        {{$message}}
+                    </div>
+                </div>
+            @endif
+            <form class="form-horizontal" role="form" method="POST" action="{{url('/report/ie-date')}}">
+            <div class="form-group">
+                    <label for="inicio" class="col-sm-3 control-label">Inicio*</label>
+                    <div class="col-sm-9">
+                        <input name="inicio" type="date" id="inicio" placeholder="Inicio" class="form-control" autofocus required
+                        @if (isset($post)) value={{$post['inicio']}} @endif
+                        >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fin" class="col-sm-3 control-label">Fin*</label>
+                    <div class="col-sm-9">
+                        <input name="fin" type="date" id="fin" placeholder="Fin" class="form-control" autofocus required
+                        @if (isset($post)) value={{$post['fin']}} @endif
+                        >
+                    </div>
+                </div>
+                @csrf
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <span class="help-block">*Obligatorio</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Buscar</button>
+            </form>    
+           
+            @if (isset($office))
+            <div class="datatables-area">
                 <div class="table-responsive container">
                     <table class="table table-bordered table-hover dt-responsive custom-table" id="users-table">
                         <thead>
                             <tr>
-                                <th>Codigo Servicio</th>
-                                <th>Nombre Servicio</th>
-                                <th></th>
+                                <th>Sucursal</th>
+                                <th>Igresos</th>
+                                <th>Egresos</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($services as $ser)
+                            @foreach ($office as $ofi)
                                 <tr>
-                                    <td>{{$ser->ser_codigo}}</td>
-                                    <td>{{$ser->ser_nombre}}</td>
-                                    <td></td>
+                                    <td>{{$ofi->suc_nombre}}</td>
+                                    <td>{{$ofi->ingreso}}</td>
+                                    <td>{{$ofi->egreso}}</td>
                                 </tr>
                             @endforeach   
                         </tbody>
                     </table>
                 </div>
-        </div>
-        
-        <!--====== SCRIPTS JS ======-->
+            </div>
+            @endif
+        </div> <!-- ./container -->
+
+              <!--====== SCRIPTS JS ======-->
     <!-- <script src="js/vendor/jquery-1.12.4.min.js"></script> -->
     <script src="/js/vendor/bootstrap.min.js"></script>
 

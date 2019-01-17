@@ -1319,6 +1319,19 @@ Route::get('/report/income-expense', function(){
     return view('income_expense', ["permissions" => $permissions,'office' => $office]);
 });
 
+Route::get('/report/ie-date', function(){
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('ie_date', ["permissions" => $permissions]);
+});
+
+Route::post('/report/ie-date',function(){
+    $office = DB::select('select  suc_nombre, ingreso, egreso from (select sucursal, sum(egreso) egreso from (select suc_sucursal sucursal,gas_monto egreso from suc_ser,gasto where gas_suc_ser=suc_codigo and gas_fecha between \''.$_POST['inicio'].'\' and \''.$_POST['fin'].'\' union select suc_sucursal,gas_monto from suc_tal,gasto where gas_suc_tal=suc_codigo and gas_fecha between \''.$_POST['inicio'].'\' and \''.$_POST['fin'].'\' union select emp_sucursal,gas_monto from empleado,gasto where gas_empleado=emp_cedula and gas_fecha between \''.$_POST['inicio'].'\' and \''.$_POST['fin'].'\') as t group by sucursal) t1, (select suc_codigo sucursal,sum(pag_monto) ingreso from sucursal,envio,pago where env_pago=pag_codigo and env_suc_origen=suc_codigo and pag_fecha between \''.$_POST['inicio'].'\' and \''.$_POST['fin'].'\' group by suc_codigo) t2,sucursal where t1.sucursal=t2.sucursal and t1.sucursal=suc_codigo');
+
+    audit(2,'Reporte Ingresos y Egresos por fecha');
+    $permissions = json_decode(Cookie::get('permissions'));
+    return view('ie_date', ["permissions" => $permissions,'office' => $office,'post' => $_POST]);
+});
+
 
 function audit ($aid,$description,$uname = ''){
     if ($uname == ''){

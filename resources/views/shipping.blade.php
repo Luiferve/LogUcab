@@ -141,6 +141,12 @@
                                             <li><a href="{{url('/report/biggest-office')}}">Biggest Office</a></li>
                                             <li><a href="{{url('/report/employee-detail-date')}}">Employee Detailed by Date</a></li>
                                             <li><a href="{{url('/report/active-employees')}}">Active Employees List</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
+                                @if (isset($permissions) && in_array(1,$permissions))
+                                    <li><a href="#">+ Reports</a>
+                                        <ul>
                                             <li><a href="{{url('/report/most-used-transport')}}">Most Used Transport</a><li>
                                             <li><a href="{{url('/report/services')}}">Services by Office</a><li>
                                             <li><a href="{{url('/report/workshop')}}">Workshops by Zone</a><li>
@@ -154,6 +160,7 @@
                                             <li><a href="{{url('/report/fleet-detail')}}">Fleet Details</a></li>
                                             <li><a href="{{url('/report/percentage')}}">Transport Use Percentage</a></li>
                                             <li><a href="{{url('/report/income-expense')}}">Income and Expenses by Office</a></li>
+                                            <li><a href="{{url('/report/ie-date')}}">Income and Expenses by Date</a></li>
                                         </ul>
                                     </li>
                                 @endif
